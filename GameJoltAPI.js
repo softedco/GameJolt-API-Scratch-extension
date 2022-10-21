@@ -68,16 +68,31 @@ class GameJoltAPI {
                             defaultValue: 'current'
                         }
                     }
+                },
+                {
+                    opcode: 'session',
+                    blockType: Scratch.BlockType.COMMAND,
+                    text: '[openOrClose] session',
+                    arguments: {
+                        openOrClose: {
+                            type: Scratch.ArgumentType.STRING,
+                            menu: 'openOrClose',
+                            defaultValue: 'Open'
+                        }
+                    }
                 }
             ],
             menus: {
                 versionTypes: {
                     items: ['current', 'up-to-date']
+                },
+                openOrClose: {
+                    items: ['Open', 'Close']
                 }
             }
         };
     }
-    version (args) {
+    version(args) {
         switch (args.type) {
             case 'current':
                 return currentVersion;
@@ -85,6 +100,14 @@ class GameJoltAPI {
                 return upToDateVersion;
         }
         return err;
+    }
+    session(args) {
+        switch (args.type) {
+            case 'Open':
+                return GJAPI.SessionOpen();
+            case 'Close':
+                return GJAPI.SessionClose();
+        }
     }
 }
 Scratch.extensions.register(new GameJoltAPI());
