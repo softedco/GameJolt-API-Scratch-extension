@@ -49,7 +49,7 @@ const err = 'error';
 const wip = 'work in progress';
 
 const currentVersion = '0.1.000';
-const upToDateVersion = 'plug';
+const upToDateVersion = fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''));
 
 class GameJoltAPI {
     getInfo() {
