@@ -45,22 +45,46 @@ function md5_hh(b, a, c, d, e, f, g) { return md5_cmn(a ^ c ^ d, b, a, e, f, g) 
 
 // Extension
 
-class TestPleaseWork {
+const err = 'error';
+const wip = 'work in progress';
+
+const currentVersion = '0.1.000';
+const upToDateVersion;
+
+class GameJoltAPI {
     getInfo() {
         return {
-            id: 'pleasework',
-            name: 'please work',
+            id: 'GameJoltAPI',
+            name: 'GameJolt API',
             blocks: [
                 {
-                    opcode: 'hiworld',
+                    opcode: 'version',
                     blockType: Scratch.BlockType.REPORTER,
-                    text: 'give me some hiworld stuff'
+                    text: 'Return [type] version',
+                    arguments: {
+                        type: {
+                            type: Scratch.ArgumentType.STRING,
+                            menu: 'versionTypes',
+                            defaultValue: 'current'
+                        }
+                    }
                 }
-            ]
+            ],
+            menus: {
+                versionTypes: {
+                    items: ['current', 'up-to-date']
+                }
+            }
         };
     }
-    hiworld() {
-        return 'oh hi world!';
+    version (args) {
+        switch (args.type) {
+            case 'current':
+                return currentVersion;
+            case 'up-to-date':
+                return upToDateVersion;
+        }
+        return err;
     }
 }
-Scratch.extensions.register(new TestPleaseWork());
+Scratch.extensions.register(new GameJoltAPI());
