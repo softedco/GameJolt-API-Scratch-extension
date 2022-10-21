@@ -49,7 +49,7 @@ const err = 'error';
 const wip = 'work in progress';
 
 const currentVersion = '0.1.000';
-const upToDateVersion;
+const upToDateVersion = 'plug';
 
 class GameJoltAPI {
     getInfo() {
