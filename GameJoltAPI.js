@@ -1,5 +1,6 @@
 
-// API Inclusion
+// Api inclusion
+// Api inclusion
 
 var GJAPI = {};
 GJAPI.iGameID = 0;
@@ -45,157 +46,22 @@ function md5_hh(b, a, c, d, e, f, g) { return md5_cmn(a ^ c ^ d, b, a, e, f, g) 
 
 // Extension
 
-const err = 'error';
-const wip = 'work in progress';
-
-const currentVersion = '0.1.000';
-const upToDateVersion;
-
-class GameJoltAPI {
+class TestPleaseWork {
     getInfo() {
         return {
-            id: 'GameJoltAPI',
-            name: 'GameJolt',
-            blocks:
-            [
+            id: 'pleasework',
+            name: 'please work',
+            blocks: [
                 {
-                    opcode: 'version',
-                    blockType: 'reporter',
-                    text: 'Return [type] version',
-                    arguments:
-                    {
-                        type:
-                        {
-                            type: 'string',
-                            menu: 'versionType',
-                            defaultValue: 'current'
-                        }
-                    }
-                },
-                {
-                    opcode: 'openSession',
-                    blockType: 'command',
-                    text: 'Open a game session with ID:[id] and key:[key]',
-                    arguments:
-                    {
-                        id:
-                        {
-                            type: 'number',
-                            defaultValue: 0
-                        },
-                        key:
-                        {
-                            type: 'string',
-                            defaultValue: 'key'
-                        }
-                    }
-                },
-                {
-                    opcode: 'closeSession',
-                    blockType: 'command',
-                    text: 'Close session'
-                },
-                {
-                    opcode: 'login',
-                    blockType: 'command',
-                    text: 'Login with username:[username] and token:[token]',
-                    arguments:
-                    {
-                        username:
-                        {
-                            type: 'string',
-                            defaultValue: 'username'
-                        },
-                        token:
-                        {
-                            type: 'string',
-                            defaultValue: 'token'
-                        }
-                    }
-                },
-                {
-                    opcode: 'logout',
-                    blockType: 'command',
-                    text: 'Logout'
-                },
-                {
-                    opcode: 'fetchUserByID',
-                    blockType: 'command',
-                    text: 'Fetch user by ID:[id]',
-                    arguments:
-                    {
-                        id:
-                        {
-                            type: 'number',
-                            defaultValue: 0
-                        }
-                    }
-                },
-                {
-                    opcode: 'fetchUserByName',
-                    blockType: 'command',
-                    text: 'Fetch user by username:[username]',
-                    arguments:
-                    {
-                        name:
-                        {
-                            type: 'string',
-                            defaultValue: 'username'
-                        }
-                    }
+                    opcode: 'hiworld',
+                    blockType: Scratch.BlockType.REPORTER,
+                    text: 'give me some hiworld stuff'
                 }
-            ],
-            menus:
-            {
-                versionType:
-                {
-                    items: ['current', 'up-to-date']
-                }
-            }
+            ]
         };
     }
-    version(args)
-    {
-        switch (args.type)
-        {
-            case 'current':
-                return currentVersion;
-            case 'up-to-date':
-                return upToDateVersion;
-        }
-        return err;
-    }
-    openSession(args)
-    {
-        GJAPI.iGameID = args.id;
-        GJAPI.sGameKey = args.key;
-        GJAPI.SessionOpen();
-    }
-    closeSession()
-    {
-        GJAPI.SessionClose();
-    }
-    login(args)
-    {
-        GJAPI.UserLoginManual(args.name, args.token);
-    }
-    logout()
-    {
-        GJAPI.UserLogout();
-    }
-    fetchUserByID(args)
-    {
-        GJAPI.UserFetchID(args.id, function (pResponse) {
-            if (!pResponse.users) return err;
-            GJUserdata_fetch = pResponse;
-        });
-    }
-    fetchUserByName(args)
-    {
-        GJAPI.UserFetchName(args.name, function (pResponse) {
-            if (!pResponse.users) return err;
-            GJUserdata_fetch = pResponse;
-        });
+    hiworld() {
+        return 'oh hi world!';
     }
 }
-Scratch.extensions.register(new GameJoltAPI());
+Scratch.extensions.register(new TestPleaseWork());
