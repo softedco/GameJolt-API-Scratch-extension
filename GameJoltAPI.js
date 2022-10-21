@@ -1,6 +1,5 @@
 
 // Api inclusion
-// Api inclusion
 
 var GJAPI = {};
 GJAPI.iGameID = 0;
