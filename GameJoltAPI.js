@@ -60,7 +60,6 @@ class GameJoltAPI {
             name: 'GameJolt API',
             color1: '2a2731',
             color2: '2f7f6f',
-            color3: 'ccff00',
             menuIconURI: icon,
             blockIconURI: icon,
             blocks: [
