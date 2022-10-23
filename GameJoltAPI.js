@@ -38,7 +38,7 @@ function md5_hh(b,a,c,d,e,f,g){return md5_cmn(a^c^d,b,a,e,f,g)}function md5_ii(b
 const err = 'error';
 const wip = 'work in progress';
 
-const currentVersion = '1.34';
+const currentVersion = '1.44';
 const upToDateVersion = fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''));
 
 let userData;
@@ -186,6 +186,56 @@ class GameJoltAPI {
                             defaultValue: 0
                         }
                     }
+                },
+                {
+                    opcode: 'scoreAdd',
+                    blockType: Scratch.BlockType.COMMAND,
+                    text: 'Add score by id:[id] with value:[value] text:[text] and extra data:[extraData]',
+                    arguments: {
+                        id: {
+                            type: Scratch.ArgumentType.NUMBER,
+                            defaultValue: 0
+                        },
+                        value: {
+                            type: Scratch.ArgumentType.NUMBER,
+                            defaultValue: 1
+                        },
+                        text: {
+                            type: Scratch.ArgumentType.STRING,
+                            defaultValue: '+1 point'
+                        },
+                        extraData: {
+                            type: Scratch.ArgumentType.STRING,
+                            defaultValue: 'optional'
+                        }
+                    }
+                },
+                {
+                    opcode: 'scoreAddGuest',
+                    blockType: Scratch.BlockType.COMMAND,
+                    text: 'Add score by id:[id] with value:[value] text:[text] and extra data:[extraData] as guest:[username]',
+                    arguments: {
+                        id: {
+                            type: Scratch.ArgumentType.NUMBER,
+                            defaultValue: 0
+                        },
+                        value: {
+                            type: Scratch.ArgumentType.NUMBER,
+                            defaultValue: 1
+                        },
+                        text: {
+                            type: Scratch.ArgumentType.STRING,
+                            defaultValue: '+1 point'
+                        },
+                        extraData: {
+                            type: Scratch.ArgumentType.STRING,
+                            defaultValue: 'optional'
+                        },
+                        username: {
+                            type: Scratch.ArgumentType.STRING,
+                            defaultValue: 'username'
+                        }
+                    }
                 }
             ],
             menus: {
@@ -292,6 +342,12 @@ class GameJoltAPI {
             trophyData = pResponse.trophies[0];
         });
         return trophyData;
+    }
+    scoreAdd(args) {
+        GJAPI.ScoreAdd(args.id, args.value, args.text, args.extraData);
+    }
+    scoreAddGuest(args) {
+        GJAPI.ScoreAddGuest(args.id, args.value, args.text, args.username, args.extraData)
     }
 }
 Scratch.extensions.register(new GameJoltAPI());
