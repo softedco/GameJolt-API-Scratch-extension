@@ -58,7 +58,7 @@ class GameJoltAPI {
             blocks: [
                 {
                     opcode: 'version',
-                    blockType: Scratch.blockType.REPORTER,
+                    blockType: Scratch.BlockType.REPORTER,
                     text: 'Return [versionType] version',
                     arguments: {
                         versionType: {
