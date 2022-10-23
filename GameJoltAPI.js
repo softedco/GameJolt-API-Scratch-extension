@@ -41,6 +41,8 @@ const wip = 'work in progress';
 const currentVersion = '1.11';
 const upToDateVersion = fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''));
 
+let userData;
+
 class GameJoltAPI {
     constructor(runtime) {
         this.runtime = runtime;
@@ -135,6 +137,48 @@ class GameJoltAPI {
                             defaultValue: 'username'
                         }
                     }
+                },
+                {
+                    opcode: 'userFetch',
+                    blockType: Scratch.BlockType.COMMAND,
+                    text: 'Fetch user:[usernameOrId] by [fetchType]',
+                    arguments: {
+                        usernameOrId: {
+                            type: Scratch.ArgumentType.STRING,
+                            defaultValue: 'username'
+                        },
+                        fetchType: {
+                            type: Scratch.ArgumentType.STRING,
+                            menu: 'fetchTypes',
+                            defaultValue: 'username'
+                        }
+                    }
+                },
+                {
+                    opcode: 'userFetchCurrent',
+                    blockType: Scratch.BlockType.COMMAND,
+                    text: 'Fetch current user'
+                },
+                {
+                    opcode: 'returnUserData',
+                    blockType: Scratch.ArgumentType.REPORTER,
+                    text: 'Return fetched user data'
+                },
+                {
+                    opcode: 'trophyAchieve',
+                    blockType: Scratch.BlockType.COMMAND,
+                    text: 'Achieve trophy with id:[id]',
+                    arguments: {
+                        id: {
+                            type: Scratch.ArgumentType.NUMBER,
+                            defaultValue: 0
+                        }
+                    }
+                },
+                {
+                    opcode: 'trophyFetch',
+                    blockType: Scratch.BlockType.REPORTER,
+                    text: 'Fetch all trophies'
                 }
             ],
             menus: {
@@ -146,6 +190,9 @@ class GameJoltAPI {
                 },
                 infoTypes: {
                     items: ['username', 'token'] 
+                },
+                fetchTypes: {
+                    items: ['username', 'id']
                 }
             }
         };
@@ -200,6 +247,36 @@ class GameJoltAPI {
             default:
                 return err;
         }
+    }
+    userFetch(args) {
+        switch (args.fetchType) {
+            case 'username':
+                GJAPI.UserFetchName(args.usernameOrId, function (pResponse) {
+                    if (!pResponse.users) return err;
+                    userData = pResponse.users[0];
+                });
+                break;
+            case 'id':
+                GJAPI.UserFetchID(args.usernameOrId, function (pResponse) {
+                    if (!pResponse.users) return err;
+                    userData = pResponse.users[0];
+                });
+                break;
+            default:
+                return err;
+        }
+    }
+    userFetchCurrent() {
+        GJAPI.UserFetchCurrent(function(pResponse) {
+            if (!pResponse.users) return err;
+            userData = pResponse.users[0];
+        });
+    }
+    returnUserData() {
+        return userData;
+    }
+    trophyAchieve(args) {
+        GJAPI.TrophyAchieve(args.id);
     }
 }
 Scratch.extensions.register(new GameJoltAPI());
