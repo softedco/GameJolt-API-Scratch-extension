@@ -63,6 +63,21 @@ class GameJoltAPI {
                     }
                 },
                 {
+                    opcode: 'setGame',
+                    blockType: Scratch.BlockType.COMMAND,
+                    text: 'Set game id:[id] and key:[key]',
+                    arguments: {
+                        id: {
+                            type: Scratch.ArgumentType.NUMBER,
+                            defaultValue: 0
+                        },
+                        key: {
+                            type: Scratch.ArgumentType.STRING,
+                            defaultValue: 'key'
+                        }
+                    }
+                },
+                {
                     opcode: 'gamejoltBool',
                     blockType: Scratch.BlockType.BOOLEAN,
                     text: 'GameJolt?'
@@ -144,6 +159,10 @@ class GameJoltAPI {
             default:
                 return err;
         }
+    }
+    setGame(args) {
+        GJAPI.iGameID = args.id;
+        GJAPI.sGameKey = args.key;
     }
     gamejoltBool() {
         return GJAPI.bOnGJ;
