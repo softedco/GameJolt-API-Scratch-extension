@@ -38,7 +38,7 @@ function md5_hh(b,a,c,d,e,f,g){return md5_cmn(a^c^d,b,a,e,f,g)}function md5_ii(b
 const err = 'error';
 const wip = 'work in progress';
 
-const currentVersion = '1.0';
+const currentVersion = '1.1';
 const upToDateVersion = fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''));
 
 class GameJoltAPI {
@@ -61,11 +61,76 @@ class GameJoltAPI {
                             defaultValue: 'current'
                         }
                     }
+                },
+                {
+                    opcode: 'gamejoltBool',
+                    blockType: Scratch.BlockType.BOOLEAN,
+                    text: 'GameJolt?'
+                },
+                {
+                    opcode: 'session',
+                    blockType: Scratch.BlockType.COMMAND,
+                    text: '[openOrClose] session',
+                    arguments: {
+                        openOrClose: {
+                            type: Scratch.ArgumentType.STRING,
+                            menu: 'openOrClose',
+                            defaultValue: 'Open'
+                        }
+                    }
+                },
+                {
+                    opcode: 'sessionBool',
+                    blockType: Scratch.BlockType.BOOLEAN,
+                    text: 'Session?'
+                },
+                {
+                    opcode: 'loginManual',
+                    blockType: Scratch.BlockType.COMMAND,
+                    text: 'Login with username:[username] and token:[token]',
+                    arguments: {
+                        username: {
+                            type: Scratch.ArgumentType.STRING,
+                            defaultValue: 'username'
+                        },
+                        token: {
+                            type: Scratch.ArgumentType.STRING,
+                            defaultValue: 'token'
+                        }
+                    }
+                },
+                {
+                    opcode: 'logout',
+                    blockType: Scratch.BlockType.COMMAND,
+                    text: 'Logout'
+                },
+                {
+                    opcode: 'loginBool',
+                    blockType: Scratch.BlockType.BOOLEAN,
+                    text: 'Login?'
+                },
+                {
+                    opcode: 'loginUserInfo',
+                    blockType: Scratch.BlockType.REPORTER,
+                    text: "Return logged in user's [infoType]",
+                    arguments: {
+                        data: {
+                            type: Scratch.ArgumentType.STRING,
+                            menu: 'infoTypes',
+                            defaultValue: 'username'
+                        }
+                    }
                 }
             ],
             menus: {
                 versionTypes: {
                     items: ['current', 'up-to-date']
+                },
+                openOrClose: {
+                    items: ['Open', 'Close']
+                },
+                infoTypes: {
+                    items: ['username', 'token'] 
                 }
             }
         };
@@ -76,6 +141,43 @@ class GameJoltAPI {
                 return currentVersion;
             case 'up-to-date':
                 return upToDateVersion;
+            default:
+                return err;
+        }
+    }
+    gamejoltBool() {
+        return GJAPI.bOnGJ;
+    }
+    session(args) {
+        switch (args.openOrClose) {
+            case 'Open':
+                GJAPI.SessionOpen();
+                break;
+            case 'Close':
+                GJAPI.SessionClose();
+                break;
+            default:
+                return err;
+        }
+    }
+    sessionBool() {
+        return GJAPI.bSessionActive;
+    }
+    loginManual(args) {
+        GJAPI.UserLoginManual(args.username, args.token);
+    }
+    logout() {
+        GJAPI.UserLogout();
+    }
+    loginBool() {
+        return bLoggedIn;
+    }
+    loginUserInfo(args) {
+        switch(args.infoType) {
+            case 'username':
+                return GJAPI.sUserName;
+            case 'token':
+                return GJAPI.sUserToken;
             default:
                 return err;
         }
