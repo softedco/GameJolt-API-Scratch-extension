@@ -161,7 +161,7 @@ class GameJoltAPI {
                 },
                 {
                     opcode: 'returnUserData',
-                    blockType: Scratch.ArgumentType.REPORTER,
+                    blockType: Scratch.BlockType.REPORTER,
                     text: 'Return fetched user data'
                 },
                 {
