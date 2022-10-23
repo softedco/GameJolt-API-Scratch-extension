@@ -38,7 +38,7 @@ function md5_hh(b,a,c,d,e,f,g){return md5_cmn(a^c^d,b,a,e,f,g)}function md5_ii(b
 const err = 'error';
 const wip = 'work in progress';
 
-const currentVersion = '1.2';
+const currentVersion = '1.11';
 const upToDateVersion = fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''));
 
 class GameJoltAPI {
