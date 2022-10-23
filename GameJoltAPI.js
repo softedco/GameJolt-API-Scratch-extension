@@ -74,7 +74,7 @@ class GameJoltAPI {
                     items: ['current', 'up-to-date']
                 }
             }
-        }
+        };
     }
     version(args) {
         switch(args.versionType) {
