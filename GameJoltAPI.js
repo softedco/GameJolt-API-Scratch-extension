@@ -38,10 +38,11 @@ function md5_hh(b,a,c,d,e,f,g){return md5_cmn(a^c^d,b,a,e,f,g)}function md5_ii(b
 const err = 'error';
 const wip = 'work in progress';
 
-const currentVersion = '1.11';
+const currentVersion = '1.34';
 const upToDateVersion = fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''));
 
 let userData;
+let trophyData;
 
 class GameJoltAPI {
     constructor(runtime) {
@@ -178,7 +179,13 @@ class GameJoltAPI {
                 {
                     opcode: 'trophyFetch',
                     blockType: Scratch.BlockType.REPORTER,
-                    text: 'Fetch all trophies'
+                    text: 'Fetch trophy by id:[id]',
+                    arguments: {
+                        id: {
+                            type: Scratch.ArgumentType.NUMBER,
+                            defaultValue: 0
+                        }
+                    }
                 }
             ],
             menus: {
@@ -277,6 +284,14 @@ class GameJoltAPI {
     }
     trophyAchieve(args) {
         GJAPI.TrophyAchieve(args.id);
+    }
+    trophyFetch(args) {
+        GJAPI.TrophyFetchSingle(args.id, function(pResponse)
+        {
+            if(!pResponse.trophies) return err;
+            trophyData = pResponse.trophies[0];
+        });
+        return trophyData;
     }
 }
 Scratch.extensions.register(new GameJoltAPI());
