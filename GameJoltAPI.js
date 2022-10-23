@@ -38,11 +38,12 @@ function md5_hh(b,a,c,d,e,f,g){return md5_cmn(a^c^d,b,a,e,f,g)}function md5_ii(b
 const err = 'error';
 const wip = 'work in progress';
 
-const currentVersion = '1.44';
+const currentVersion = '1.54';
 const upToDateVersion = fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''));
 
 let userData;
 let trophyData;
+let scoreData;
 
 class GameJoltAPI {
     constructor(runtime) {
@@ -236,6 +237,17 @@ class GameJoltAPI {
                             defaultValue: 'username'
                         }
                     }
+                },
+                {
+                    opcode: 'scoreFetch',
+                    blockType: Scratch.BlockType.REPORTER,
+                    text: 'Fetch score by id:[id]',
+                    arguments: {
+                        id: {
+                            type: Scratch.ArgumentType.NUMBER,
+                            defaultValue: 0
+                        }
+                    }
                 }
             ],
             menus: {
@@ -348,6 +360,14 @@ class GameJoltAPI {
     }
     scoreAddGuest(args) {
         GJAPI.ScoreAddGuest(args.id, args.value, args.text, args.username, args.extraData)
+    }
+    scoreFetch(args) {
+        GJAPI.ScoreFetch(args.id, GJAPI.SCORE_ONLY_USER, 1, function(pResponse)
+        {
+            if(!pResponse.scores) return err;
+            scoreData = pResponse.scores[0];
+        });
+        return scoreData;
     }
 }
 Scratch.extensions.register(new GameJoltAPI());
