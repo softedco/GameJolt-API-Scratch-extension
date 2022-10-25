@@ -251,7 +251,7 @@ class GameJoltAPI {
                 {
                     opcode: 'scoreFetch',
                     blockType: Scratch.BlockType.REPORTER,
-                    text: 'Fetch [amount][globalOrPersonal] score/scores by ID:[ID]',
+                    text: 'Fetch [amount][globalOrPerUser] score/scores by ID:[ID]',
                     arguments: {
                         amount: {
                             type: Scratch.ArgumentType.NUMBER,
