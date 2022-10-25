@@ -56,7 +56,7 @@ class GameJoltAPI {
         return {
             id: 'GameJoltAPI',
             name: 'GameJolt API',
-            color1: '2A2731',ccff00ccff00
+            color1: '2A2731',
             color2: '2F7F6F',
             color3: 'CCFF00',
             menuIconURI: menuIcon,
