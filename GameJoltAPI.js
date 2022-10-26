@@ -2,8 +2,8 @@
 // Api inclusion
 
 var GJAPI = {};
-GJAPI.iGameID = 0;
-GJAPI.sGameKey = '';
+GJAPI.iGameID;
+GJAPI.sGameKey;
 GJAPI.bAutoLogin = true;
 
 GJAPI.sAPI="https://gamejolt.com/api/game/v1";GJAPI.sLogName="[Game Jolt API]";GJAPI.iLogStack=20;GJAPI.asQueryParam=function(){for(var b={},a=window.location.search.substring(1).split("&"),c=0;c<a.length;++c){var d=a[c].split("=");"undefined"===typeof b[d[0]]?b[d[0]]=d[1]:"string"===typeof b[d[0]]?b[d[0]]=[b[d[0]],d[1]]:b[d[0]].push(d[1])}return b}();
@@ -493,13 +493,13 @@ class GameJoltAPI {
             case 'username':
                 GJAPI.UserFetchName(args.usernameOrID, function (pResponse) {
                     if (!pResponse.users) { userData = err; return err; }
-                    userData = pResponse.users[0];
+                    userData = pResponse.users;
                 });
                 break;
             case 'id':
                 GJAPI.UserFetchID(args.usernameOrID, function (pResponse) {
                     if (!pResponse.users) { userData = err; return err; }
-                    userData = pResponse.users[0];
+                    userData = pResponse.users;
                 });
                 break;
             default:
@@ -509,30 +509,30 @@ class GameJoltAPI {
     userFetchCurrent() {
         GJAPI.UserFetchCurrent(function (pResponse) {
             if (!pResponse.users) { userData = err; return err; }
-            userData = pResponse.users[0];
+            userData = pResponse.users;
         });
     }
     returnUserData(args) {
         if (userData == undefined) { userData = err; return err; }
         switch (args.userDataType) {
             case 'username':
-                if (userData['username'] == undefined) { userData = err; return err; }
-                return userData['username'];
+                if (userData[0]['username'] == undefined) { userData = err; return err; }
+                return userData[0]['username'];
             case 'ID':
-                if (userData['id'] == undefined) { userData = err; return err; }
-                return userData['id'];
+                if (userData[0]['id'] == undefined) { userData = err; return err; }
+                return userData[0]['id'];
             case 'status':
-                if (userData['status'] == undefined) { userData = err; return err; }
-                return userData['status'];
+                if (userData[0]['status'] == undefined) { userData = err; return err; }
+                return userData[0]['status'];
             case 'profile description':
-                if (userData['developer_description'] == undefined) { userData = err; return err; }
-                return userData['developer_description'];
+                if (userData[0]['developer_description'] == undefined) { userData = err; return err; }
+                return userData[0]['developer_description'];
             case 'sign up date':
-                if (userData['signed_up'] == undefined) { userData = err; return err; }
-                return userData['signed_up'];
+                if (userData[0]['signed_up'] == undefined) { userData = err; return err; }
+                return userData[0]['signed_up'];
             case 'last login':
-                if (userData[';ast_logged_in'] == undefined) { userData = err; return err; }
-                return userData['last_logged_in'];
+                if (userData[0][';ast_logged_in'] == undefined) { userData = err; return err; }
+                return userData[0]['last_logged_in'];
             default:
                 return err;
         };
