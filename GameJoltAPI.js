@@ -627,7 +627,7 @@ class GameJoltAPI {
         }
     }
     returnScoreData(args) {
-        if (scoreData == undefined ||scoreData[args.index] == undefined) { return err; }
+        if (scoreData == undefined || scoreData[args.index] == undefined) { return err; }
         switch(args.scoreDataType) {
             case 'value':
                 if (scoreData[args.index].sort == undefined) { return err; }
