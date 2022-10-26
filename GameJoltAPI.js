@@ -36,7 +36,7 @@ function md5_hh(b,a,c,d,e,f,g){return md5_cmn(a^c^d,b,a,e,f,g)}function md5_ii(b
 // Extension
 
 const err = 'error';
-const currentVersion = '1.15.32';
+const currentVersion = '1.15.33';
 const upToDateVersion = fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''));
 
 const GameJoltIcon = 'data:image/png;base64,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';
@@ -531,23 +531,23 @@ class GameJoltAPI {
         if (userData == undefined) { userData = err; return err; }
         switch (args.userDataType) {
             case 'username':
-                if (userData['username'] == undefined) { userData = err; return err; }
-                return userData['username'];
+                if (userData.username == undefined) { userData = err; return err; }
+                return userData.username;
             case 'ID':
-                if (userData['id'] == undefined) { userData = err; return err; }
-                return userData['id'];
+                if (userData.id == undefined) { userData = err; return err; }
+                return userData.id;
             case 'status':
-                if (userData['status'] == undefined) { userData = err; return err; }
-                return userData['status'];
+                if (userData.status == undefined) { userData = err; return err; }
+                return userData.status;
             case 'profile description':
-                if (userData['developer_description'] == undefined) { userData = err; return err; }
-                return userData['developer_description'];
+                if (userData.developer_description == undefined) { userData = err; return err; }
+                return userData.developer_description;
             case 'sign up date':
-                if (userData['signed_up'] == undefined) { userData = err; return err; }
-                return userData['signed_up'];
+                if (userData.signed_up == undefined) { userData = err; return err; }
+                return userData.signed_up;
             case 'last login':
-                if (userData['last_logged_in'] == undefined) { userData = err; return err; }
-                return userData['last_logged_in'];
+                if (userData.last_logged_in == undefined) { userData = err; return err; }
+                return userData.last_logged_in;
             default:
                 return err;
         };
@@ -564,21 +564,21 @@ class GameJoltAPI {
                 });
                 switch(args.trophyDataType) {
                     case 'value':
-                        if (trophyData['trophy'] == undefined || trophyData[args.value]['trophy'] == undefined) { trophyData = err; return err; }
-                        if (!Array.isArray(trophyData['trophy'])) { return trophyData['trophy']; }
-                        return trophyData[args.value]['trophy'];
+                        if (trophyData.trophy == undefined || trophyData[args.value].trophy == undefined) { trophyData = err; return err; }
+                        if (!Array.isArray(trophyData.trophy)) { return trophyData.trophy; }
+                        return trophyData[args.value].trophy;
                     case 'title':
-                        if (trophyData['title'] == undefined || trophyData[args.value]['title'] == undefined) { trophyData = err; return err; }
-                        if (!Array.isArray(trophyData['title'])) { return trophyData['title']; }
-                        return trophyData[args.value]['title'];
+                        if (trophyData.title == undefined || trophyData[args.value].title == undefined) { trophyData = err; return err; }
+                        if (!Array.isArray(trophyData.title)) { return trophyData.title; }
+                        return trophyData[args.value].title;
                     case 'description':
-                        if (trophyData['description'] == undefined || trophyData[args.value]['description'] == undefined) { trophyData = err; return err; }
-                        if (!Array.isArray(trophyData['description'])) { return trophyData['description']; }
-                        return trophyData[args.value]['description'];
+                        if (trophyData.description == undefined || trophyData[args.value].description == undefined) { trophyData = err; return err; }
+                        if (!Array.isArray(trophyData.description)) { return trophyData.description; }
+                        return trophyData[args.value].description;
                     case 'date':
-                        if (trophyData['achieved'] == undefined || trophyData[args.value]['achieved'] == undefined) { trophyData = err; return err; }
-                        if (!Array.isArray(trophyData['achieved'])) { return trophyData['achieved']; }
-                        return trophyData[args.value]['achieved'];
+                        if (trophyData.achieved == undefined || trophyData[args.value].achieved == undefined) { trophyData = err; return err; }
+                        if (!Array.isArray(trophyData.achieved)) { return trophyData.achieved; }
+                        return trophyData[args.value].achieved;
                     default:
                         trophyData = err;
                         return err;
@@ -590,17 +590,17 @@ class GameJoltAPI {
                 });
                 switch(args.trophyDataType) {
                     case 'value':
-                        if (trophyData['trophy'] == undefined) { trophyData = err; return err; }
-                        return trophyData['trophy'];
+                        if (trophyData.trophy == undefined) { trophyData = err; return err; }
+                        return trophyData.trophy;
                     case 'title':
-                        if (trophyData['title'] == undefined) { trophyData = err; return err; }
-                        return trophyData['title'];
+                        if (trophyData.title == undefined) { trophyData = err; return err; }
+                        return trophyData.title;
                     case 'description':
-                        if (trophyData['description'] == undefined) { trophyData = err; return err; }
-                        return trophyData['description'];
+                        if (trophyData.description == undefined) { trophyData = err; return err; }
+                        return trophyData.description;
                     case 'date':
-                        if (trophyData['achieved'] == undefined) { trophyData = err; return err; }
-                        return trophyData['achieved'];
+                        if (trophyData.achieved == undefined) { trophyData = err; return err; }
+                        return trophyData.achieved;
                     default:
                         trophyData = err;
                         return err;
@@ -640,24 +640,24 @@ class GameJoltAPI {
         if (!Array.isArray(scoreData)) { return scoreData; }
         switch (args.scoreDataType) {
             case 'value':
-                if (scoreData[args.index]['sort'] == undefined) { return err; }
-                return scoreData[args.index]['sort'];
+                if (scoreData[args.index].sort == undefined) { return err; }
+                return scoreData[args.index].sort;
             case 'text':
-                if (scoreData[args.index]['score'] == undefined) { return err; }
-                return scoreData[args.index]['score'];
+                if (scoreData[args.index].score == undefined) { return err; }
+                return scoreData[args.index].score;
             case 'username':
-                if (scoreData[args.index]['user'] == undefined) { return err; }
-                if (scoreData[args.index]['user'] == '') {
-                    if (scoreData[args.index]['guest'] == undefined) { return err; }
-                    return scoreData[args.index]['guest'];
+                if (scoreData[args.index].user == undefined) { return err; }
+                if (scoreData[args.index].user == '') {
+                    if (scoreData[args.index].guest == undefined) { return err; }
+                    return scoreData[args.index].guest;
                 }
-                return scoreData[args.index]['user'];
+                return scoreData[args.index].user;
             case 'date':
-                if (scoreData[args.index]['scored'] == undefined) { return err; }
-                return scoreData[args.index]['scored'];
+                if (scoreData[args.index].scored == undefined) { return err; }
+                return scoreData[args.index].scored;
             case 'extra data':
-                if (scoreData[args.index]['extra_data'] == undefined) { return err; }
-                return scoreData[args.index]['extra_data'];
+                if (scoreData[args.index].extra_data == undefined) { return err; }
+                return scoreData[args.index].extra_data;
             default:
                 return err;
         }
@@ -726,17 +726,17 @@ class GameJoltAPI {
                     if (!pResponse.keys) { keyData = err; return err; }
                     keyData = pResponse.keys;
                 });
-                if (keyData[args.index]['key'] == undefined) { return err; }
-                if (!Array.isArray(keyData['key'])) { return err; }
-                return keyData[args.index]['key'];
+                if (keyData[args.index].key == undefined) { return err; }
+                if (!Array.isArray(keyData.key)) { return err; }
+                return keyData[args.index].key;
             case 'user':
                 GJAPI.DataStoreGetKeys(GJAPI.DATA_STORE_USER, function (pResponse) {
                     if (!pResponse.keys) { keyData = err; return err; }
                     keyData = pResponse.keys;
                 });
-                if (keyData[args.index]['key'] == undefined) { return err; }
-                if (!Array.isArray(keyData['key'])) { return err; }
-                return keyData[args.index]['key'];
+                if (keyData[args.index].key == undefined) { return err; }
+                if (!Array.isArray(keyData.key)) { return err; }
+                return keyData[args.index].key;
             default:
                 keyData = err;
                 return err;
