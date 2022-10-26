@@ -492,13 +492,13 @@ class GameJoltAPI {
             case 'username':
                 GJAPI.UserFetchName(args.usernameOrID, function (pResponse) {
                     if (!pResponse.users) { userData = err; return err; }
-                    userData = pResponse.users;
+                    userData = pResponse.users[0];
                 });
                 break;
             case 'id':
                 GJAPI.UserFetchID(args.usernameOrID, function (pResponse) {
                     if (!pResponse.users) { userData = err; return err; }
-                    userData = pResponse.users;
+                    userData = pResponse.users[0];
                 });
                 break;
             default:
@@ -508,30 +508,30 @@ class GameJoltAPI {
     userFetchCurrent() {
         GJAPI.UserFetchCurrent(function (pResponse) {
             if (!pResponse.users) { userData = err; return err; }
-            userData = pResponse.users;
+            userData = pResponse.users[0];
         });
     }
     returnUserData(args) {
         if (userData == undefined) { userData = err; return err; }
         switch (args.userDataType) {
             case 'username':
-                if (userData[0]['username'] == undefined) { userData = err; return err; }
-                return userData[0]['username'];
+                if (userData['username'] == undefined) { userData = err; return err; }
+                return userData['username'];
             case 'ID':
-                if (userData[0]['id'] == undefined) { userData = err; return err; }
-                return userData[0]['id'];
+                if (userData['id'] == undefined) { userData = err; return err; }
+                return userData['id'];
             case 'status':
-                if (userData[0]['status'] == undefined) { userData = err; return err; }
-                return userData[0]['status'];
+                if (userData['status'] == undefined) { userData = err; return err; }
+                return userData['status'];
             case 'profile description':
-                if (userData[0]['developer_description'] == undefined) { userData = err; return err; }
-                return userData[0]['developer_description'];
+                if (userData['developer_description'] == undefined) { userData = err; return err; }
+                return userData['developer_description'];
             case 'sign up date':
-                if (userData[0]['signed_up'] == undefined) { userData = err; return err; }
-                return userData[0]['signed_up'];
+                if (userData['signed_up'] == undefined) { userData = err; return err; }
+                return userData['signed_up'];
             case 'last login':
-                if (userData[0][';ast_logged_in'] == undefined) { userData = err; return err; }
-                return userData[0]['last_logged_in'];
+                if (userData[';ast_logged_in'] == undefined) { userData = err; return err; }
+                return userData['last_logged_in'];
             default:
                 return err;
         };
