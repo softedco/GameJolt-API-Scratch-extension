@@ -438,7 +438,7 @@ class GameJoltAPI {
                     items: ['value', 'text', 'username', 'extra data']
                 },
                 trophyDataTypes: {
-                    items: ['difficulty', 'title', 'description', 'date']
+                    items: ['title', 'description', 'date']
                 },
                 openOrClose: {
                     items: ['Open', 'Close']
