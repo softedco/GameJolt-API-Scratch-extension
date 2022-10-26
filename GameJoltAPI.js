@@ -583,7 +583,7 @@ class GameJoltAPI {
             case 'ID':
                 GJAPI.TrophyFetchSingle(args.value, function (pResponse) {
                     if (!pResponse.trophies) { trophyData = err; return err; }
-                    trophyData = pResponse.trophies;
+                    trophyData = pResponse.trophies[0];
                 });
                 if (trophyData == undefined) { trophyData = err; return err; }
                 switch(args.trophyDataType) {
