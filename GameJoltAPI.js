@@ -36,7 +36,7 @@ function md5_hh(b,a,c,d,e,f,g){return md5_cmn(a^c^d,b,a,e,f,g)}function md5_ii(b
 // Extension
 
 const err = 'error';
-const currentVersion = '1.15.38';
+const currentVersion = '1.15.39';
 const upToDateVersion = fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''));
 
 const GameJoltIcon = 'data:image/png;base64,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';
@@ -45,11 +45,11 @@ const userIcon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9
 const trophyIcon = 'data:image/png;base64,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';
 const storeIcon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAAAXNSR0IArs4c6QAABVJJREFUeF7t3d1t20AQRWGrIwMpKQXEJaiEpICUFCAdMZBebAT6WcJDz/Lyy6uJ2Z1zz44oKZJOL/4hEETgFNSLVhB4ITQJoggQOipOzRCaA1EECB0Vp2YIzYEoAoSOilMzhOZAFAFCR8WpmWGhl2VZ4EKgi8DpdBpydeiiSxOE7orSuhcChOZBFAFCR8WpGUJzIIoAoaPi1AyhORBFgNBRcWqG0ByIIkDoqDg10yb06/kNfQSGCfw9/xy6ltBDmFzUTYDQ3QlYv5QAoUtxKtZNgNDdCVi/lAChS3Eq1k2A0N0JWL+UAKFLcSrWTYDQ3QlYv5QAoUtxKtZNgNDdCVi/lAChS3Eq1k2A0N0JWL+UAKFLcSrWTYDQ3QlYv5QAoUtxKtZNgNDdCVi/lAChS3Eq1k2A0N0JWL+UAKFLcSrWTYDQ3QlYv5QAoUtxKtZNgNDdCVi/lAChS3Eq1k2A0N0JWL+UAKFLcSrWTYDQ3QlYv5QAoUtxKtZNgNDdCVi/lAChS3Eq1k1geqH/vIz9Utz3848hlr/Pv4auU+82ptn5EfqO3oQm9IXA2Dhd8cObJvRtsRy421xMaBP6SiDlgBCa0IR+8KzKLYcD0npATGgCtgpY/aoJoQlNaLcc7wSqJ4x6n3tVx4Q2oU3or5zQQ2/ruQiBlQTafqdw5T5djsAQAUIPYXLRXggQei9J2ecQAUIPYXLRXggQei9J2ecQAUIPYXLRXggQei9J2ecQAUIPYXLRXggQei9J2ecQgTahX89vQxt0EQIXAtP/Xw5CE3UNAUKvoeXa6QkQevqIbHANAUKvoeXa6QkQevqIbHANAUKvoeXa6QkQevqIbHANAUKvoeXa6QkQevqIbHANgemF9t12t+NM+equ6k+5E/rO8SfMbTDVAlbXIzShrwRSDjChCU3oBzfpvqzRAWk9ICY0AVsFdA9NwCgBCU1oQj+453XL4YBEHRBCE5rQX/kqx+hHsKrvxdTb5zuU316WoXfKp/+QLAH3KWD1GzqEvnOeHZB9HhBCE/pKIOUAE5rQhPak8J1A9T2gerftGn0EMaFNaBPahDahn702NjpRqx+RTGgT2oQ2oU1oE/o/AsuyDL2lM/qZwmeA/f0YBKa/5SD0MUSs6pLQVSTVmYIAoaeIwSaqCBC6iqQ6UxAg9BQx2EQVAUJXkVRnCgKEniIGm6giQOgqkupMQYDQU8RgE1UEphe6qlF1EPhIoO0zhWJAYAsChN6CqpptBAjdht7CWxAg9BZU1WwjQOg29BbeggCht6CqZhsBQreht/AWBAi9BVU12wgQug29hbcg0Ca0bx+9HWfX1wRUf+1Adb3p3/omNKEvBEYPMKHvPJ6NAqyeMOp97gATmtBXAikHmNCEJvSDZ53lP7zpHvpzD8FHu4UxoU1oE9qEfidwtAk4e78mtAltQpvQJvSzd++6XjWZfkL7ssZn6vj7RwKE5kMUAUJHxakZQnMgigCho+LUDKE5EEWA0FFxaobQHIgiQOioODVDaA5EESB0VJyaITQHoggQOipOzRCaA1EECB0Vp2YIzYEoAoSOilMzhOZAFAFCR8WpGUJzIIoAoaPi1AyhORBFgNBRcWqG0ByIIkDoqDg1Q2gORBEgdFScmiE0B6IIEDoqTs0QmgNRBKYXOoq2ZqYh0PbDm9MQsJEoAoSOilMzhOZAFAFCR8WpGUJzIIoAoaPi1AyhORBFgNBRcWqG0ByIIlAudBQdzcQSOMV2prFDEiD0IWPPbZrQudkesjNCHzL23KYJnZvtITsj9CFjz22a0LnZHrIzQh8y9tymCZ2b7SE7+wcob7kPY5BclgAAAABJRU5ErkJggg==';
 
-let userData = undefined;
-let trophyData = undefined;
-let scoreData = undefined;
-let storeData = undefined;
-let keyData = undefined;
+let userData;
+let trophyData;
+let scoreData;
+let storeData;
+let keyData;
 
 class GameJoltAPI {
     constructor(runtime) {
@@ -529,25 +529,25 @@ class GameJoltAPI {
         });
     }
     returnUserData(args) {
-        if (userData = undefined) { userData = err; return err; }
+        if (typeof userData != 'object') { userData = err; return err; }
         switch(args.userDataType) {
             case 'username':
-                if (userData.username == undefined) { userData = err; return err; }
+                userData.username = userData.username ?? err;
                 return userData.username;
             case 'ID':
-                if (userData.id == undefined) { userData = err; return err; }
+                userData.id = userData.id ?? err;
                 return userData.id;
             case 'status':
-                if (userData.status == undefined) { userData = err; return err; }
+                userData.status = userData.status ?? err;
                 return userData.status;
             case 'profile description':
-                if (userData.developer_description == undefined) { userData = err; return err; }
+                userData.developer_description = userData.developer_description ?? err;
                 return userData.developer_description;
             case 'sign up date':
-                if (userData.signed_up == undefined) { userData = err; return err; }
+                userData.signed_up = userData.signed_up ?? err;
                 return userData.signed_up;
             case 'last login':
-                if (userData.last_logged_in == undefined) { userData = err; return err; }
+                userData.last_logged_in = userData.last_logged_in ?? err;
                 return userData.last_logged_in;
             default:
                 return err;
@@ -566,13 +566,13 @@ class GameJoltAPI {
                 });
                 switch(args.trophyDataType) {
                     case 'title':
-                        if (trophyData.title == undefined) { trophyData = err; return err; }
+                        trophyData.title = trophyData.title ?? err;
                         return trophyData.title;
                     case 'description':
-                        if (trophyData.description == undefined) { trophyData = err; return err; }
+                        trophyData.description = trophyData.description ?? err;
                         return trophyData.description;
                     case 'date':
-                        if (trophyData.achieved == undefined) { trophyData = err; return err; }
+                        trophyData.achieved = trophyData.achieved ?? err;
                         return trophyData.achieved;
                     default:
                         trophyData = err;
@@ -585,13 +585,13 @@ class GameJoltAPI {
                 });
                 switch(args.trophyDataType) {
                     case 'title':
-                        if (trophyData.title == undefined) { trophyData = err; return err; }
+                        trophyData.title = trophyData.title ?? err;
                         return trophyData.title;
                     case 'description':
-                        if (trophyData.description == undefined) { trophyData = err; return err; }
+                        trophyData.description = trophyData.description ?? err;
                         return trophyData.description;
                     case 'date':
-                        if (trophyData.achieved == undefined) { trophyData = err; return err; }
+                        trophyData.achieved = trophyData.achieved ?? err;
                         return trophyData.achieved;
                     default:
                         trophyData = err;
@@ -628,24 +628,24 @@ class GameJoltAPI {
         }
     }
     returnScoreData(args) {
-        if (!GJAPI.bSessionActive || GJAPI.iGameID == undefined || GJAPI.sGameKey == undefined) { return err; }
-        if (scoreData == undefined || scoreData[args.index] == undefined) { return err; }
+        if (!GJAPI.bSessionActive || GJAPI.iGameID ?? true || GJAPI.sGameKey ?? true) { return err; }
+        if (scoreData ?? true || scoreData[args.index] ?? true) { return err; }
         switch(args.scoreDataType) {
             case 'value':
-                if (scoreData[args.index].sort == undefined) { return err; }
+                scoreData[args.index].sort = scoreData[args.index].sort ?? err;
                 return scoreData[args.index].sort;
             case 'text':
-                if (scoreData[args.index].score == undefined) { return err; }
+                scoreData[args.index].score = scoreData[args.index].score ?? err;
                 return scoreData[args.index].score;
             case 'username':
-                if (scoreData[args.index].user == undefined) { return err; }
                 if (scoreData[args.index].user == '') {
-                    if (scoreData[args.index].guest == undefined) { return err; }
+                    scoreData[args.index].guest = scoreData[args.index].guest ?? err;
                     return scoreData[args.index].guest;
                 }
+                scoreData[args.index].user = scoreData[args.index].user ?? err;
                 return scoreData[args.index].user;
             case 'extra data':
-                if (scoreData[args.index].extra_data == undefined) { return err; }
+                scoreData[args.index].extra_data = scoreData[args.index].extra_data ?? err;
                 return scoreData[args.index].extra_data;
             default:
                 return err;
@@ -664,21 +664,21 @@ class GameJoltAPI {
         }
     }
     dataStoreFetch(args) {
-        if (!GJAPI.bSessionActive || GJAPI.iGameID == undefined || GJAPI.sGameKey == undefined) { storeData = err; return err; }
+        if (!GJAPI.bSessionActive || GJAPI.iGameID ?? true || GJAPI.sGameKey ?? true ) { storeData = err; return err; }
         switch(args.globalOrPerUser) {
             case 'global':
                 GJAPI.DataStoreFetch(GJAPI.DATA_STORE_GLOBAL, args.key, function (pResponse) {
                     if (!pResponse.success) { storeData = err; return err; }
                     storeData = pResponse.data;
                 });
-                if (storeData == undefined) { return err; }
+                storeData = storeData ?? err;
                 return storeData;
             case 'user':
                 GJAPI.DataStoreFetch(GJAPI.DATA_STORE_USER, args.key, function (pResponse) {
                     if (!pResponse.success) { storeData = err; return err; }
                     storeData = pResponse.data;
                 });
-                if (storeData == undefined) { return err; }
+                storeData = storeData ?? err;
                 return storeData;
             default:
                 storeData = err;
@@ -710,21 +710,21 @@ class GameJoltAPI {
         }
     }
     dataStoreGetKey(args) {
-        if (!GJAPI.bSessionActive || GJAPI.iGameID == undefined || GJAPI.sGameKey == undefined) { keyData = err; return err; }
+        if (!GJAPI.bSessionActive || GJAPI.iGameID ?? true || GJAPI.sGameKey ?? true) { keyData = err; return err; }
         switch(args.globalOrPerUser) {
             case 'global':
                 GJAPI.DataStoreGetKeys(GJAPI.DATA_STORE_GLOBAL, function (pResponse) {
                     if (!pResponse.keys) { keyData = err; return err; }
                     keyData = pResponse.keys[args.index].key;
                 });
-                if (keyData == undefined) { keyData = err; return err; }
+                keyData = keyData ?? err;
                 return keyData;
             case 'user':
                 GJAPI.DataStoreGetKeys(GJAPI.DATA_STORE_USER, function (pResponse) {
                     if (!pResponse.keys) { keyData = err; return err; }
                     keyData = pResponse.keys[args.index].key;
                 });
-                if (keyData == undefined) { keyData = err; return err; }
+                keyData = keyData ?? err;
                 return keyData;
             default:
                 keyData = err;
