@@ -49,7 +49,7 @@ let i;
 
 let userData;
 let trophyData;
-let achievedData;
+let achievedData = false;
 let scoreData;
 let storeData;
 let keyData;
