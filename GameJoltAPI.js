@@ -626,7 +626,7 @@ class GameJoltAPI {
             }
         });
         if (achievedData[0] == err) { return err; }
-        return achievedData.includes(args.ID.toString());
+        return achievedData[0];
     }
     scoreAdd(args) {
         GJAPI.ScoreAdd(args.ID, args.value, args.text, args.extraData);
