@@ -625,8 +625,8 @@ class GameJoltAPI {
                 achievedData[i] = pResponse.trophies[i].id;
             }
         });
-        if (achievedData[0] == err) { return err; }
-        return achievedData[0];
+        if ((achievedData ?? true) || achievedData[0] == err) { return err; }
+        return achievedData.includes(args.ID);
     }
     scoreAdd(args) {
         GJAPI.ScoreAdd(args.ID, args.value, args.text, args.extraData);
