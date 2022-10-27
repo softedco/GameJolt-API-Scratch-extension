@@ -628,8 +628,8 @@ class GameJoltAPI {
         }
     }
     returnScoreData(args) {
-        if (!GJAPI.bSessionActive || GJAPI.iGameID ?? true || GJAPI.sGameKey ?? true) { return err; }
-        if (scoreData ?? true || scoreData[args.index] ?? true) { return err; }
+        if (!GJAPI.bSessionActive || (GJAPI.iGameID ?? true) || (GJAPI.sGameKey ?? true)) { return err; }
+        if ((scoreData ?? true) || (scoreData[args.index] ?? true)) { return err; }
         switch(args.scoreDataType) {
             case 'value':
                 scoreData[args.index].sort = scoreData[args.index].sort ?? err;
@@ -664,7 +664,7 @@ class GameJoltAPI {
         }
     }
     dataStoreFetch(args) {
-        if (!GJAPI.bSessionActive || GJAPI.iGameID ?? true || GJAPI.sGameKey ?? true ) { storeData = err; return err; }
+        if (!GJAPI.bSessionActive || (GJAPI.iGameID ?? true) || (GJAPI.sGameKey ?? true) ) { storeData = err; return err; }
         switch(args.globalOrPerUser) {
             case 'global':
                 GJAPI.DataStoreFetch(GJAPI.DATA_STORE_GLOBAL, args.key, function (pResponse) {
@@ -710,7 +710,7 @@ class GameJoltAPI {
         }
     }
     dataStoreGetKey(args) {
-        if (!GJAPI.bSessionActive || GJAPI.iGameID ?? true || GJAPI.sGameKey ?? true) { keyData = err; return err; }
+        if (!GJAPI.bSessionActive || (GJAPI.iGameID ?? true) || (GJAPI.sGameKey ?? true)) { keyData = err; return err; }
         switch(args.globalOrPerUser) {
             case 'global':
                 GJAPI.DataStoreGetKeys(GJAPI.DATA_STORE_GLOBAL, function (pResponse) {
