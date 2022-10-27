@@ -625,7 +625,7 @@ class GameJoltAPI {
                 achievedData[i] = pResponse.trophies[i].id;
             }
         });
-        if ((achievedData ?? true) || achievedData == err) { achievedData = err; return err; }
+        if ((achievedData ?? true) || achievedData == err) { return err; }
         return achievedData.includes(args.ID);
     }
     scoreAdd(args) {
