@@ -49,7 +49,7 @@ let i;
 
 let userData;
 let trophyData;
-let achievedData = false;
+let achievedData;
 let scoreData;
 let storeData;
 let keyData;
@@ -453,7 +453,7 @@ class GameJoltAPI {
                     items: ['value', 'text', 'username', 'extra data']
                 },
                 trophyDataTypes: {
-                    items: ['title', 'description', 'date']
+                    items: ['ID', 'title', 'description', 'date']
                 },
                 openOrClose: {
                     items: ['Open', 'Close']
@@ -621,10 +621,11 @@ class GameJoltAPI {
         if (!GJAPI.bLoggedIn || !GJAPI.bSessionActive) { achievedData = err; return err; }
         GJAPI.TrophyFetch(GJAPI.TROPHY_ONLY_ACHIEVED, function (pResponse) {
             if (!pResponse.trophies) { achievedData = err; return err; }
-            achievedData = false;
+            achievedData = undefined;
             for (i = 0; i < pResponse.trophies.length; i++) {
                 if (args.ID == pResponse.trophies[i].id) { achievedData = true; }
             }
+            if (achievedData ?? true) { achievedData = false; }
         });
         return achievedData;
     }
