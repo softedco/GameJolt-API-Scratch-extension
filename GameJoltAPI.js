@@ -49,7 +49,7 @@ let i;
 
 let userData;
 let trophyData;
-let achievedData = [];
+let achievedData;
 let scoreData;
 let storeData;
 let keyData;
@@ -625,7 +625,7 @@ class GameJoltAPI {
                 achievedData[i] = pResponse.trophies[i].id;
             }
         });
-        if ((achievedData ?? true) || achievedData[0] == err) { return err; }
+        if ((achievedDatap[0] ?? true) || achievedData[0] == err) { return err; }
         return achievedData.includes(args.ID);
     }
     scoreAdd(args) {
