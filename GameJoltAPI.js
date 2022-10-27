@@ -619,8 +619,11 @@ class GameJoltAPI {
         if (!GJAPI.bLoggedIn || !GJAPI.bSessionActive) { achievedData = err; return err; }
         GJAPI.TrophyFetch(GJAPI.TROPHY_ONLY_ACHIEVED, function (pResponse) {
             if (!pResponse.trophies) { achievedData = err; return err; }
-            achievedData = pResponse.trophies.id;
+            for (var i = 0; i < pResponse.trophies.length; ++i) {
+                achievedData[i] = pResponse.trophies[i].id;
+            }
         });
+        if (achievedData ?? true) { return err; }
         return achievedData.includes(args.ID);
     }
     scoreAdd(args) {
