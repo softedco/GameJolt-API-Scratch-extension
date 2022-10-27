@@ -623,7 +623,7 @@ class GameJoltAPI {
             if (!pResponse.trophies) { achievedData = err; return err; }
             achievedData = false;
             for (i = 0; i < pResponse.trophies.length; i++) {
-                achievedData = (args.ID == pResponse.trophies[i].id) ? true;
+                if (args.ID == pResponse.trophies[i].id) { achievedData = true; }
             }
         });
         return achievedData;
