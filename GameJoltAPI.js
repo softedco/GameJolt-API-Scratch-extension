@@ -49,7 +49,7 @@ let i;
 
 let userData;
 let trophyData;
-let achievedData;
+let achievedData = [];
 let scoreData;
 let storeData;
 let keyData;
@@ -618,14 +618,14 @@ class GameJoltAPI {
         }
     }
     trophyBool(args) {
-        if (!GJAPI.bLoggedIn || !GJAPI.bSessionActive) { achievedData = [err]; return err; }
+        if (!GJAPI.bLoggedIn || !GJAPI.bSessionActive) { achievedData[0] = err; return err; }
         GJAPI.TrophyFetch(GJAPI.TROPHY_ONLY_ACHIEVED, function (pResponse) {
-            if (!pResponse.trophies) { achievedData = [err]; return err; }
+            if (!pResponse.trophies) { achievedData[0] = err; return err; }
             for (i = 0; i < pResponse.trophies.length; i++) {
                 achievedData[i] = pResponse.trophies[i].id;
             }
         });
-        if (achievedData[0] ?? true) { return err; }
+        if ((achievedData[0] ?? true) || achievedData[0] == err) { return err; }
         return achievedData.includes(args.ID);
     }
     scoreAdd(args) {
