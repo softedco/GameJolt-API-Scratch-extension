@@ -619,9 +619,9 @@ class GameJoltAPI {
     }
     trophyBool(args) {
         if (!GJAPI.bLoggedIn || !GJAPI.bSessionActive) { achievedData = err; return err; }
-        achievedData = false;
         GJAPI.TrophyFetch(GJAPI.TROPHY_ONLY_ACHIEVED, function (pResponse) {
             if (!pResponse.trophies) { achievedData = err; return err; }
+            achievedData = false;
             for (i = 0; i < pResponse.trophies.length; i++) {
                 if (args.ID == pResponse.trophies[i].id) { achievedData = true; }
             }
