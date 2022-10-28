@@ -585,7 +585,7 @@ class GameJoltAPI {
                     if (!pResponse.trophies) { trophyData = err; return err; }
                     trophyData = pResponse.trophies;
                 });
-                if (tytrophyData != 'object') { return err; }
+                if (typeof trophyData != 'object') { return err; }
                 if (typeof trophyData[args.value] != 'object') { return err; }
                 switch(args.trophyDataType) {
                     case 'title':
