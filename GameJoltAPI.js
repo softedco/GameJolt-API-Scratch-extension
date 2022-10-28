@@ -615,15 +615,14 @@ class GameJoltAPI {
         }
     }
     trophyBool(args) {
-        if (!GJAPI.bLoggedIn || !GJAPI.bSessionActive) { achievedData = err; return err; }
+        if (!GJAPI.bLoggedIn || !GJAPI.bSessionActive) { return err; }
         GJAPI.TrophyFetch(GJAPI.TROPHY_ONLY_ACHIEVED, function (pResponse) {
-            if (!pResponse.trophies) { achievedData = err; return err; }
+            if (!pResponse.trophies) { return err; }
             achievedData = [];
             for (i = 0; i < pResponse.trophies.length; i++) {
                 achievedData[i] = pResponse.trophies[i].id;
             }
         });
-        if ((achievedData ?? true) || achievedData == err) { return err; }
         return achievedData.includes(args.ID);
     }
     scoreAdd(args) {
