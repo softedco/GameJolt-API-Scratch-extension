@@ -578,7 +578,6 @@ class GameJoltAPI {
         GJAPI.TrophyAchieve(args.ID);
     }
     trophyFetch(args) {
-        if (!GJAPI.bLoggedIn || !GJAPI.bSessionActive) { trophyData = err; return err; }
         switch(args.indexOrID) {
             case 'index':
                 GJAPI.TrophyFetch(GJAPI.TROPHY_ALL, function (pResponse) {
@@ -586,7 +585,7 @@ class GameJoltAPI {
                     trophyData = pResponse.trophies;
                 });
                 if (trophyData != 'object') { return err; }
-                if (typeof trophyData[args.value] != 'object') { return err; }
+                if (typeof trophyData[args.value] != 'object' && Array.isArray(trophyData)) { return err; }
                 switch(args.trophyDataType) {
                     case 'title':
                         trophyData[args.value].title = trophyData[args.value].title ?? err;
