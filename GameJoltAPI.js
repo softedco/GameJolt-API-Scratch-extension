@@ -623,7 +623,8 @@ class GameJoltAPI {
                 achievedData[i] = pResponse.trophies[i].id;
             }
         });
-        return achievedData.includes(args.ID);
+        if (achivedData ?? true) { return err; }
+        return achievedData;
     }
     scoreAdd(args) {
         GJAPI.ScoreAdd(args.ID, args.value, args.text, args.extraData);
