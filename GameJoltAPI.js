@@ -495,9 +495,11 @@ class GameJoltAPI {
         switch (args.openOrClose) {
             case 'Open':
                 GJAPI.SessionOpen();
+                GJAPI.bSessionActive = true;
                 break;
             case 'Close':
                 GJAPI.SessionClose();
+                GJAPI.bSessionActive = false;
                 break;
             default:
                 return err;
