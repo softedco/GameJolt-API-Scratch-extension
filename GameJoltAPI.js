@@ -448,16 +448,16 @@ class GameJoltAPI {
                     items: ['username', 'ID']
                 },
                 userDataTypes: {
-                    items: ['username', 'ID', 'status', 'profile description', 'sign up date', 'last login', 'values']
+                    items: ['username', 'ID', 'status', 'profile description', 'sign up date', 'last login', 'values', 'names']
                 },
                 operationTypes: {
                     items: ['add', 'subtract', 'multiply', 'divide', 'append', 'prepend']
                 },
                 scoreDataTypes: {
-                    items: ['value', 'text', 'username', 'extra data', 'values']
+                    items: ['value', 'text', 'username', 'extra data', 'values', 'names']
                 },
                 trophyDataTypes: {
-                    items: ['title', 'description', 'date', 'values']
+                    items: ['title', 'description', 'date', 'values', 'names']
                 },
                 trophyTypes: {
                     items: ['achieved', 'not achieved', 'any']
