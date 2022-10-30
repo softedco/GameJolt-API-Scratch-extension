@@ -575,6 +575,8 @@ class GameJoltAPI {
                 return userData.last_logged_in;
             case 'values':
                 return Object.values(userData);
+            case 'names':
+                return Object.getOwnPropertyNames(userData);
             default:
                 return err;
         };
@@ -603,6 +605,8 @@ class GameJoltAPI {
                         return trophyData[args.value].achieved;
                     case 'values':
                         return Object.values(trophyData[args.value]);
+                    case 'names':
+                        return Object.getOwnPropertyNames(trophyData[args.value]);
                     default:
                         trophyData = err;
                         return err;
@@ -625,6 +629,8 @@ class GameJoltAPI {
                         return trophyData.achieved;
                     case 'values':
                         return Object.values(trophyData);
+                    case 'names':
+                        return Object.getOwnPropertyNames(trophyData);
                     default:
                         trophyData = err;
                         return err;
@@ -714,6 +720,8 @@ class GameJoltAPI {
                 return scoreData[args.index].extra_data;
             case 'values':
                 return Object.values(scoreData[args.index]);
+            case 'name':
+                return Object.getOwnPropertyNames(scoreData[args.index]);
             default:
                 return err;
         }
