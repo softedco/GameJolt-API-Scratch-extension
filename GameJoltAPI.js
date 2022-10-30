@@ -180,7 +180,7 @@ class GameJoltAPI {
                         userDataType: {
                             type: Scratch.ArgumentType.STRING,
                             menu: 'userDataTypes',
-                            defaultValue: 'username'
+                            defaultValue: 'ID'
                         }
                     }
                 },
@@ -205,7 +205,7 @@ class GameJoltAPI {
                         trophyDataType: {
                             type: Scratch.ArgumentType.STRING,
                             menu: 'trophyDataTypes',
-                            defaulValue: 'title'
+                            defaultValue: 'ID'
                         },
                         indexOrID: {
                             type: Scratch.ArgumentType.STRING,
