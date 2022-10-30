@@ -574,7 +574,7 @@ class GameJoltAPI {
                 userData.last_logged_in = userData.last_logged_in ?? err;
                 return userData.last_logged_in;
             case 'values':
-                return userData.values();
+                return Object.values(userData);
             default:
                 return err;
         };
@@ -602,7 +602,7 @@ class GameJoltAPI {
                         trophyData[args.value].achieved = trophyData[args.value].achieved ?? err;
                         return trophyData[args.value].achieved;
                     case 'values':
-                        return trophyData[args.value].values();
+                        return Object.values(trophyData[args.value]);
                     default:
                         trophyData = err;
                         return err;
@@ -624,7 +624,7 @@ class GameJoltAPI {
                         trophyData.achieved = trophyData.achieved ?? err;
                         return trophyData.achieved;
                     case 'values':
-                        return trophyData[args.value].values();
+                        return Object.values(trophyData);
                     default:
                         trophyData = err;
                         return err;
@@ -713,7 +713,7 @@ class GameJoltAPI {
                 scoreData[args.index].extra_data = scoreData[args.index].extra_data ?? err;
                 return scoreData[args.index].extra_data;
             case 'values':
-                return scoreData[args.value].values();
+                return Object.values(scoreData[args.index]);
             default:
                 return err;
         }
