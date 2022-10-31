@@ -1,4 +1,3 @@
-
 // Extension made by softed
 // Thanks to LukasStudioTV for the inspiration
 // and MikeDev101 for sandbox detection
