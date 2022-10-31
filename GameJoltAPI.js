@@ -1,5 +1,5 @@
 
-const editor = true;
+const editor = true; // Set to false when pasting
 
 // Api inclusion
 
