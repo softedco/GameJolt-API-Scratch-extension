@@ -839,8 +839,7 @@ class GameJoltAPI {
             timeData = pResponse;
         });
         if (typeof timeData != 'object') { return err; }
-        timeData[args.timeType] = timeData[args.timeType] ?? err;
-        return timeData[args.timeType];
+        return Object.getOwnPropertyNames(timeData);
     }
 }
 Scratch.extensions.register(new GameJoltAPI());
