@@ -32,7 +32,7 @@ function md5_hh(b,a,c,d,e,f,g){return md5_cmn(a^c^d,b,a,e,f,g)}function md5_ii(b
 
 // Extension
 
-if (!editor) {
+if (Scratch.extensions ?? true) {
     var Scratch = {
         BlockType: {
             COMMAND: 'command',
@@ -42,6 +42,18 @@ if (!editor) {
         ArgumentType: {
             STRING: 'string',
             NUMBER: 'number'
+        },
+        extensions: {
+            register(args) {
+                (
+                    function ()
+                    {
+                        let extensionInstance = new GameJoltAPI(window.vm.extensionManager.runtime);
+                        let serviceName = window.vm.extensionManager._registerInternalExtension(extensionInstance);
+                        window.vm.extensionManager._loadedExtensions.set(extensionInstance.getInfo().id, serviceName);
+                    }
+                )()
+            }
         }
     };
 }
@@ -771,18 +783,4 @@ class GameJoltAPI {
         }
     }
 }
-if (editor)
-{
-    Scratch.extensions.register(new GameJoltAPI());
-}
-else
-{
-    (
-        function ()
-        {
-            let extensionInstance = new GameJoltAPI(window.vm.extensionManager.runtime);
-            let serviceName = window.vm.extensionManager._registerInternalExtension(extensionInstance);
-            window.vm.extensionManager._loadedExtensions.set(extensionInstance.getInfo().id, serviceName);
-        }
-    )()
-}
+Scratch.extensions.register(new GameJoltAPI());
