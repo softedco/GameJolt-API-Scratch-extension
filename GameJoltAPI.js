@@ -31,7 +31,7 @@ function md5_hh(b,a,c,d,e,f,g){return md5_cmn(a^c^d,b,a,e,f,g)}function md5_ii(b
 // Extension
 
 let editor = true;
-editor = typeof Scratch.extensions != 'object';
+editor = typeof Scratch != 'object';
 
 if (!editor) {
     const Scratch = {
