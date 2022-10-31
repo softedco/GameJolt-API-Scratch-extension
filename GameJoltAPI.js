@@ -30,23 +30,6 @@ function md5_hh(b,a,c,d,e,f,g){return md5_cmn(a^c^d,b,a,e,f,g)}function md5_ii(b
 
 // Extension
 
-let editor = true;
-editor = Scratch.extensions ?? false;
-
-if (!editor) {
-    const Scratch = {
-        BlockType: {
-            COMMAND: 'command',
-            REPORTER: 'reporter',
-            BOOLEAN: 'boolean'
-        },
-        ArgumentType: {
-            STRING: 'string',
-            NUMBER: 'number'
-        }
-    };
-}
-
 const err = 'error';
 const currentVersion = '1.20.52';
 const upToDateVersion = fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''));
@@ -772,12 +755,19 @@ class GameJoltAPI {
         }
     }
 }
-if (editor)
+if (Scratch.extensions ?? true)
 {
-    Scratch.extensions.register(new GameJoltAPI());
-}
-else
-{
+    const Scratch = {
+        BlockType: {
+            COMMAND: 'command',
+            REPORTER: 'reporter',
+            BOOLEAN: 'boolean'
+        },
+        ArgumentType: {
+            STRING: 'string',
+            NUMBER: 'number'
+        }
+    };
     (
         function ()
         {
@@ -786,4 +776,8 @@ else
             window.vm.extensionManager._loadedExtensions.set(extensionInstance.getInfo().id, serviceName)
         }
     )()
+}
+else
+{
+    Scratch.extensions.register(new GameJoltAPI());
 }
