@@ -624,8 +624,7 @@ class GameJoltAPI {
             friendsData = pResponse.friends;
         });
         if (typeof friendsData != 'object') { return err; }
-        friendsData[args.index] = friendsData[args.index] ?? err;
-        return friendsData[args.index];
+        return Object.getOwnPropertyNames(friendsData);
     }
     trophyAchieve(args) {
         GJAPI.TrophyAchieve(args.ID);
@@ -839,7 +838,8 @@ class GameJoltAPI {
             timeData = pResponse;
         });
         if (typeof timeData != 'object') { return err; }
-        return Object.getOwnPropertyNames(timeData);
+        timeData[args.timeType] = timeData[args.timeType] ?? err;
+        return timeData[args.timeType];
     }
 }
 Scratch.extensions.register(new GameJoltAPI());
