@@ -16,7 +16,13 @@ GJAPI.abTrophyCache={};GJAPI.TROPHY_ONLY_ACHIEVED=1;GJAPI.TROPHY_ONLY_NOTACHIEVE
 GJAPI.TrophyFetch=function(b,a){GJAPI.bLoggedIn?GJAPI.SendRequest("/trophies/"+(b===GJAPI.TROPHY_ALL?"":"?achieved="+(b>=GJAPI.TROPHY_ONLY_ACHIEVED?"true":"false")),GJAPI.SEND_FOR_USER,a):GJAPI.LogTrace("TrophyFetch("+b+") failed: no user logged in")};GJAPI.TrophyFetchSingle=function(b,a){GJAPI.bLoggedIn?GJAPI.SendRequest("/trophies/?trophy_id="+b,GJAPI.SEND_FOR_USER,a):GJAPI.LogTrace("TrophyFetchSingle("+b+") failed: no user logged in")};GJAPI.SCORE_ONLY_USER=!0;GJAPI.SCORE_ALL=!1;
 GJAPI.ScoreAdd=function(b,a,c,d,e){GJAPI.bLoggedIn?GJAPI.ScoreAddGuest(b,a,c,"",d,e):GJAPI.LogTrace("ScoreAdd("+b+", "+a+", "+c+") failed: no user logged in")};GJAPI.ScoreAddGuest=function(b,a,c,d,e,f){var g=d&&d.length?!0:!1;GJAPI.SendRequest("/scores/add/?sort="+a+"&score="+c+(g?"&guest="+d:"")+(b?"&table_id="+b:"")+(e?"&extra_data="+e:""),g?GJAPI.SEND_GENERAL:GJAPI.SEND_FOR_USER,f)};
 GJAPI.ScoreFetch=function(b,a,c,d){!GJAPI.bLoggedIn&&a?GJAPI.LogTrace("ScoreFetch("+b+", "+a+", "+c+") failed: no user logged in"):GJAPI.SendRequest("/scores/?limit="+c+(b?"&table_id="+b:""),a!==GJAPI.SCORE_ONLY_USER?GJAPI.SEND_GENERAL:GJAPI.SEND_FOR_USER,d)};GJAPI.DATA_STORE_USER=0;GJAPI.DATA_STORE_GLOBAL=1;GJAPI.DataStoreSet=function(b,a,c,d){GJAPI.SendRequestEx("/data-store/set/?key="+a,b===GJAPI.DATA_STORE_USER,"json","data="+c,d)};
-GJAPI.DataStoreFetch=function(b,a,c){GJAPI.SendRequestEx("/data-store/?key="+a,b===GJAPI.DATA_STORE_USER,"dump","",c)};GJAPI.DataStoreUpdate=function(b,a,c,d,e){GJAPI.SendRequest("/data-store/update/?key="+a+"&operation="+c+"&value="+d,b===GJAPI.DATA_STORE_USER,e)};GJAPI.DataStoreRemove=function(b,a,c){GJAPI.SendRequest("/data-store/remove/?key="+a,b===GJAPI.DATA_STORE_USER,c)};GJAPI.DataStoreGetKeys=function(b,a){GJAPI.SendRequest("/data-store/get-keys/",b===GJAPI.DATA_STORE_USER,a)};
+GJAPI.DataStoreFetch = function (b, a, c) { GJAPI.SendRequestEx("/data-store/?key=" + a, b === GJAPI.DATA_STORE_USER, "dump", "", c) }; GJAPI.DataStoreUpdate = function (b, a, c, d, e) { GJAPI.SendRequest("/data-store/update/?key=" + a + "&operation=" + c + "&value=" + d, b === GJAPI.DATA_STORE_USER, e) }; GJAPI.DataStoreRemove = function (b, a, c) { GJAPI.SendRequest("/data-store/remove/?key=" + a, b === GJAPI.DATA_STORE_USER, c) }; GJAPI.DataStoreGetKeys = function (b, a) { GJAPI.SendRequest("/data-store/get-keys/", b === GJAPI.DATA_STORE_USER, a) };
+
+// Custom API requests
+GJAPI.TimeFetch = function (b) { GJAPI.SendRequest('/time/?game_id=' + GJAPI.iGameID, GJAPI.SEND_GENERAL, b); };
+GJAPI.FriendsFetch = function (b) { if(!GJAPI.bLoggedIn) {GJAPI.LogTrace("FriendsFetch() failed: no user logged in"); return; } GJAPI.SendRequest('/friends/?game_id=' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken, GJAPI.SEND_FOR_USER, b)};
+
+// API
 function __CreateAjax(b,a,c){"string"!==typeof a&&(a="");if(window.XMLHttpRequest){var d=new XMLHttpRequest;d.onreadystatechange=function(){4===d.readyState&&c(d.responseText)};""!==a?(d.open("POST",b),d.setRequestHeader("Content-Type","application/x-www-form-urlencoded"),d.send(a)):(d.open("GET",b),d.send())}else console.error(GJAPI.sLogName+" XMLHttpRequest not supported")}var hexcase=0;function hex_md5(b){return rstr2hex(rstr_md5(str2rstr_utf8(b)))}
 function hex_hmac_md5(b,a){return rstr2hex(rstr_hmac_md5(str2rstr_utf8(b),str2rstr_utf8(a)))}function md5_vm_test(){return"900150983cd24fb0d6963f7d28e17f72"==hex_md5("abc").toLowerCase()}function rstr_md5(b){return binl2rstr(binl_md5(rstr2binl(b),8*b.length))}
 function rstr_hmac_md5(b,a){var c=rstr2binl(b);16<c.length&&(c=binl_md5(c,8*b.length));var d=Array(16);b=Array(16);for(var e=0;16>e;e++)d[e]=c[e]^909522486,b[e]=c[e]^1549556828;a=binl_md5(d.concat(rstr2binl(a)),512+8*a.length);return binl2rstr(binl_md5(b.concat(a),640))}function rstr2hex(b){try{hexcase}catch(f){hexcase=0}for(var a=hexcase?"0123456789ABCDEF":"0123456789abcdef",c="",d,e=0;e<b.length;e++)d=b.charCodeAt(e),c+=a.charAt(d>>>4&15)+a.charAt(d&15);return c}
@@ -29,22 +35,6 @@ function binl_md5(b,a){b[a>>5]|=128<<a%32;b[(a+64>>>9<<4)+14]=a;a=1732584193;for
 a,b[f+2],23,-995338651);a=md5_ii(a,c,d,e,b[f+0],6,-198630844);e=md5_ii(e,a,c,d,b[f+7],10,1126891415);d=md5_ii(d,e,a,c,b[f+14],15,-1416354905);c=md5_ii(c,d,e,a,b[f+5],21,-57434055);a=md5_ii(a,c,d,e,b[f+12],6,1700485571);e=md5_ii(e,a,c,d,b[f+3],10,-1894986606);d=md5_ii(d,e,a,c,b[f+10],15,-1051523);c=md5_ii(c,d,e,a,b[f+1],21,-2054922799);a=md5_ii(a,c,d,e,b[f+8],6,1873313359);e=md5_ii(e,a,c,d,b[f+15],10,-30611744);d=md5_ii(d,e,a,c,b[f+6],15,-1560198380);c=md5_ii(c,d,e,a,b[f+13],21,1309151649);a=md5_ii(a,
 c,d,e,b[f+4],6,-145523070);e=md5_ii(e,a,c,d,b[f+11],10,-1120210379);d=md5_ii(d,e,a,c,b[f+2],15,718787259);c=md5_ii(c,d,e,a,b[f+9],21,-343485551);a=safe_add(a,g);c=safe_add(c,h);d=safe_add(d,k);e=safe_add(e,l)}return[a,c,d,e]}function md5_cmn(b,a,c,d,e,f){return safe_add(bit_rol(safe_add(safe_add(a,b),safe_add(d,f)),e),c)}function md5_ff(b,a,c,d,e,f,g){return md5_cmn(a&c|~a&d,b,a,e,f,g)}function md5_gg(b,a,c,d,e,f,g){return md5_cmn(a&d|c&~d,b,a,e,f,g)}
 function md5_hh(b,a,c,d,e,f,g){return md5_cmn(a^c^d,b,a,e,f,g)}function md5_ii(b,a,c,d,e,f,g){return md5_cmn(c^(a|~d),b,a,e,f,g)}function safe_add(b,a){var c=(b&65535)+(a&65535);return(b>>16)+(a>>16)+(c>>16)<<16|c&65535}function bit_rol(b,a){return b<<a|b>>>32-a};
-
-// Custom API requests
-GJAPI.TimeFetch = function(pCallback)
-{
-    GJAPI.SendRequest('/time/?game_id=' + GJAPI.iGameID, GJAPI.SEND_GENERAL, function (pResponse) {
-        if (typeof pCallback == 'function') { pCallback(pResponse); }
-    });
-};
-
-GJAPI.FriendsFetch = function(pCallback)
-{
-    if(!GJAPI.bLoggedIn) {GJAPI.LogTrace("FriendsFetch() failed: no user logged in"); return; }
-    GJAPI.SendRequest('/friends/?game_id=' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken, GJAPI.SEND_FOR_USER, function (pResponse) {
-        if (typeof pCallback == 'function') { pCallback(pResponse); }
-    })
-};
 
 // Sandbox detection
 const sandboxed = typeof window == 'undefined' || !window.vm;
@@ -821,37 +811,10 @@ class GameJoltAPI {
     timeFetch(args) {
         GJAPI.TimeFetch(function (pResponse) {
             if (!pResponse.success) { timeData = err; return err; }
-            timeData = pResponse.time;
+            timeData = pResponse;
         });
         if (typeof timeData != 'object') { return err; }
-        switch (args.timeType) {
-            case 'timestamp':
-                timeData.timestamp = timeData.timestamp ?? err;
-                return timeData.timestamp;
-            case 'timezone':
-                timeData.timezone = timeData.timezone ?? err;
-                return timeData.timezone;
-            case 'current year':
-                timeData.year = timeData.year ?? err;
-                return timeData.year;
-            case 'current month':
-                timeData.month = timeData.month ?? err;
-                return timeData.month;
-            case 'current day':
-                timeData.day = timeData.day ?? err;
-                return timeData.day;
-            case 'current hour':
-                timeData.hour = timeData.hour ?? err;
-                return timeData.hour;
-            case 'current minute':
-                timeData.minute = timeData.minute ?? err;
-                return timeData.minute;
-            case 'current second':
-                timeData.second = timeData.second ?? err;
-                return timeData.second;
-            default:
-                return err;
-        }
+        return Object.getOwnPropertyNames(timeData);
     }
 }
 Scratch.extensions.register(new GameJoltAPI());
