@@ -33,7 +33,7 @@ function md5_hh(b,a,c,d,e,f,g){return md5_cmn(a^c^d,b,a,e,f,g)}function md5_ii(b
 // Extension
 
 if (!editor) {
-    const Scratch = {
+    let Scratch = {
         BlockType: {
             COMMAND: 'command',
             REPORTER: 'reporter',
@@ -43,7 +43,7 @@ if (!editor) {
             STRING: 'string',
             NUMBER: 'number'
         }
-    }
+    };
 }
 
 const err = 'error';
@@ -782,7 +782,7 @@ else
         {
             let extensionInstance = new GameJoltAPI(window.vm.extensionManager.runtime);
             let serviceName = window.vm.extensionManager._registerInternalExtension(extensionInstance);
-            window.vm.extensionManager._loadedExtensions.set(extensionInstance.getInfo().id, serviceName)
+            window.vm.extensionManager._loadedExtensions.set(extensionInstance.getInfo().id, serviceName);
         }
     )()
 }
