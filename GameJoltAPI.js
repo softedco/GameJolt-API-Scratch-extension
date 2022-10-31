@@ -32,7 +32,9 @@ function md5_hh(b,a,c,d,e,f,g){return md5_cmn(a^c^d,b,a,e,f,g)}function md5_ii(b
 
 // Extension
 
-if (!editor) {
+var Scratch;
+
+if (Scratch ?? true) {
     var Scratch = {
         BlockType: {
             COMMAND: 'command',
