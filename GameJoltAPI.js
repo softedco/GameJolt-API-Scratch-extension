@@ -815,7 +815,7 @@ class GameJoltAPI {
         }
     }
     timeFetch(args) {
-        GJAPI.TimeFetch(function pResponse {
+        GJAPI.TimeFetch(function (pResponse) {
             if (!pResponse.success) { timeData = err; return err; }
             timeData = pResponse.time;
         });
