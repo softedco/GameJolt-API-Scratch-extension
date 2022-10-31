@@ -813,7 +813,6 @@ class GameJoltAPI {
             if (!pResponse.success) { timeData = err; return err; }
             timeData = pResponse;
         });
-        if (typeof timeData != 'object') { return err; }
         return Object.getOwnPropertyNames(timeData);
     }
 }
