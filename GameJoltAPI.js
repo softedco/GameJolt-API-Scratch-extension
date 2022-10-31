@@ -2,7 +2,7 @@
 // Thanks to LukasStudioTV for the inspiration
 // and MikeDev101 for sandbox detection
 
-// API
+// API Library by MausGames
 let GJAPI = {};GJAPI.iGameID;GJAPI.sGameKey;GJAPI.bAutoLogin = true;GJAPI.sAPI="https://api.gamejolt.com/api/game/v1_2";GJAPI.sLogName="[Game Jolt API]";GJAPI.iLogStack=20;GJAPI.asQueryParam=function(){for(var b={},a=window.location.search.substring(1).split("&"),c=0;c<a.length;++c){var d=a[c].split("=");"undefined"===typeof b[d[0]]?b[d[0]]=d[1]:"string"===typeof b[d[0]]?b[d[0]]=[b[d[0]],d[1]]:b[d[0]].push(d[1])}return b}();
 GJAPI.bOnGJ=window.location.hostname.match(/gamejolt/)?!0:!1;GJAPI.LogTrace=function(b){GJAPI.iLogStack&&(--GJAPI.iLogStack||(b="(\u256f\u00b0\u25a1\u00b0\uff09\u256f\ufe35 \u253b\u2501\u253b"),console.warn(GJAPI.sLogName+" "+b),console.trace())};GJAPI.SEND_FOR_USER=!0;GJAPI.SEND_GENERAL=!1;GJAPI.SendRequest=function(b,a,c){GJAPI.SendRequestEx(b,a,"json","",c)};
 GJAPI.SendRequestEx=function(b,a,c,d,e){b=GJAPI.sAPI+encodeURI(b)+(-1===b.indexOf("/?")?"?":"&")+"game_id="+GJAPI.iGameID+"&format="+c;GJAPI.bLoggedIn&&a===GJAPI.SEND_FOR_USER&&(b+="&username="+GJAPI.sUserName+"&user_token="+GJAPI.sUserToken);b+="&signature="+hex_md5(b+GJAPI.sGameKey);__CreateAjax(b,d,function(f){console.info(GJAPI.sLogName+" <"+b+"> "+f);if(""!==f&&"function"===typeof e)switch(c){case "json":e(eval("("+f+")").response);break;case "dump":var g=f.indexOf("\n"),h=f.substr(0,g-1);f=
@@ -814,7 +814,7 @@ class GameJoltAPI {
     timeFetch(args) {
         GJAPI.TimeFetch(function (pResponse) {
             if (!pResponse.success) { timeData = err; return err; }
-            timeData = pResponse.time;
+            timeData = pResponse;
         });
         if (typeof timeData != 'object') { return err; }
         return Object.getOwnPropertyNames(timeData);
