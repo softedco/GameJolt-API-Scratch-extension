@@ -43,7 +43,7 @@ if (!editor) {
             STRING: 'string',
             NUMBER: 'number'
         }
-    };
+    }
 }
 
 const err = 'error';
