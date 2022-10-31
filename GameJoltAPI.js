@@ -33,13 +33,17 @@ function md5_hh(b,a,c,d,e,f,g){return md5_cmn(a^c^d,b,a,e,f,g)}function md5_ii(b
 // Custom API requests
 GJAPI.TimeFetch = function(pCallback)
 {
-    GJAPI.SendRequest('/time/?game_id=' + GJAPI.iGameID, GJAPI.SEND_GENERAL, pCallback);
+    GJAPI.SendRequest('/time/?game_id=' + GJAPI.iGameID, GJAPI.SEND_GENERAL, function (pResponse) {
+        if (typeof pCallback == 'function') { pCallback(pResponse); }
+    });
 };
 
 GJAPI.FriendsFetch = function(pCallback)
 {
     if(!GJAPI.bLoggedIn) {GJAPI.LogTrace("FriendsFetch() failed: no user logged in"); return; }
-    GJAPI.SendRequest('/friends/?game_id=' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken, GJAPI.SEND_FOR_USER, pCallback)
+    GJAPI.SendRequest('/friends/?game_id=' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken, GJAPI.SEND_FOR_USER, function (pResponse) {
+        if (typeof pCallback == 'function') { pCallback(pResponse); }
+    })
 };
 
 // Sandbox detection
