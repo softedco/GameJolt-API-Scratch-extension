@@ -873,7 +873,7 @@ class GameJoltAPI {
             case 'description':
                 tablesData[args.index].description = tablesData[args.index].description ?? err;
                 return tablesData[args.index].description;
-            case 'primary boolean':
+            case 'primary':
                 tablesData[args.index].primary = tablesData[args.index].primary ?? err;
                 return tablesData[args.index].primary;
             default:
