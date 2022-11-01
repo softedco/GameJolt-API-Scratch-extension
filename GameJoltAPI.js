@@ -40,18 +40,10 @@ GJAPI.FriendsFetch = function (pCallback) {
 };
 GJAPI.TrophyRemove = function (iTrophyID, pCallback) {
     if (!GJAPI.bLoggedIn) { GJAPI.LogTrace('TrophyRemove(' + iTrophyID + ') failed: no user logged in'); return; }
-    // Check if the trophy is not achieved
     if (!GJAPI.abTrophyCache[iTrophyID]) { return; }
     GJAPI.SendRequest('/trophies/remove-achieved/?game_id=' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken + '&trophy_id=' + iTrophyID, GJAPI.SEND_FOR_USER,
-    function(pResponse)
-    {
-        // check for success
-        if (pResponse.success == 'true')
-        {
-            // save status
-            GJAPI.abTrophyCache[iTrophyID] = false;
-        }
-        // execute nested callback
+    function(pResponse) {
+        if (pResponse.success == 'true') { GJAPI.abTrophyCache[iTrophyID] = false; }
         if (typeof pCallback == 'function') { pCallback(pResponse); }
     });
 };
