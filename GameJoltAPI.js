@@ -70,7 +70,7 @@ if (!sandboxed) {
 
 // Extension
 const err = 'error';
-const currentVersion = '1.23.52\n';
+const currentVersion = '1.23.53\n';
 const upToDateVersion = fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''));
 
 const GameJoltIcon = 'data:image/png;base64,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';
@@ -80,8 +80,6 @@ const trophyIcon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAA
 const scoreIcon = 'data:image/png;base64,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';
 const storeIcon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAAAXNSR0IArs4c6QAABVJJREFUeF7t3d1t20AQRWGrIwMpKQXEJaiEpICUFCAdMZBebAT6WcJDz/Lyy6uJ2Z1zz44oKZJOL/4hEETgFNSLVhB4ITQJoggQOipOzRCaA1EECB0Vp2YIzYEoAoSOilMzhOZAFAFCR8WpmWGhl2VZ4EKgi8DpdBpydeiiSxOE7orSuhcChOZBFAFCR8WpGUJzIIoAoaPi1AyhORBFgNBRcWqG0ByIIkDoqDg10yb06/kNfQSGCfw9/xy6ltBDmFzUTYDQ3QlYv5QAoUtxKtZNgNDdCVi/lAChS3Eq1k2A0N0JWL+UAKFLcSrWTYDQ3QlYv5QAoUtxKtZNgNDdCVi/lAChS3Eq1k2A0N0JWL+UAKFLcSrWTYDQ3QlYv5QAoUtxKtZNgNDdCVi/lAChS3Eq1k2A0N0JWL+UAKFLcSrWTYDQ3QlYv5QAoUtxKtZNgNDdCVi/lAChS3Eq1k2A0N0JWL+UAKFLcSrWTYDQ3QlYv5QAoUtxKtZNgNDdCVi/lAChS3Eq1k1geqH/vIz9Utz3848hlr/Pv4auU+82ptn5EfqO3oQm9IXA2Dhd8cObJvRtsRy421xMaBP6SiDlgBCa0IR+8KzKLYcD0npATGgCtgpY/aoJoQlNaLcc7wSqJ4x6n3tVx4Q2oU3or5zQQ2/ruQiBlQTafqdw5T5djsAQAUIPYXLRXggQei9J2ecQAUIPYXLRXggQei9J2ecQAUIPYXLRXggQei9J2ecQAUIPYXLRXggQei9J2ecQgTahX89vQxt0EQIXAtP/Xw5CE3UNAUKvoeXa6QkQevqIbHANAUKvoeXa6QkQevqIbHANAUKvoeXa6QkQevqIbHANAUKvoeXa6QkQevqIbHANgemF9t12t+NM+equ6k+5E/rO8SfMbTDVAlbXIzShrwRSDjChCU3oBzfpvqzRAWk9ICY0AVsFdA9NwCgBCU1oQj+453XL4YBEHRBCE5rQX/kqx+hHsKrvxdTb5zuU316WoXfKp/+QLAH3KWD1GzqEvnOeHZB9HhBCE/pKIOUAE5rQhPak8J1A9T2gerftGn0EMaFNaBPahDahn702NjpRqx+RTGgT2oQ2oU1oE/o/AsuyDL2lM/qZwmeA/f0YBKa/5SD0MUSs6pLQVSTVmYIAoaeIwSaqCBC6iqQ6UxAg9BQx2EQVAUJXkVRnCgKEniIGm6giQOgqkupMQYDQU8RgE1UEphe6qlF1EPhIoO0zhWJAYAsChN6CqpptBAjdht7CWxAg9BZU1WwjQOg29BbeggCht6CqZhsBQreht/AWBAi9BVU12wgQug29hbcg0Ca0bx+9HWfX1wRUf+1Adb3p3/omNKEvBEYPMKHvPJ6NAqyeMOp97gATmtBXAikHmNCEJvSDZ53lP7zpHvpzD8FHu4UxoU1oE9qEfidwtAk4e78mtAltQpvQJvSzd++6XjWZfkL7ssZn6vj7RwKE5kMUAUJHxakZQnMgigCho+LUDKE5EEWA0FFxaobQHIgiQOioODVDaA5EESB0VJyaITQHoggQOipOzRCaA1EECB0Vp2YIzYEoAoSOilMzhOZAFAFCR8WpGUJzIIoAoaPi1AyhORBFgNBRcWqG0ByIIkDoqDg1Q2gORBEgdFScmiE0B6IIEDoqTs0QmgNRBKYXOoq2ZqYh0PbDm9MQsJEoAoSOilMzhOZAFAFCR8WpGUJzIIoAoaPi1AyhORBFgNBRcWqG0ByIIlAudBQdzcQSOMV2prFDEiD0IWPPbZrQudkesjNCHzL23KYJnZvtITsj9CFjz22a0LnZHrIzQh8y9tymCZ2b7SE7+wcob7kPY5BclgAAAABJRU5ErkJggg==';
 const timeIcon = 'data:image/png;base64,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';
-
-let i;
 
 let userData;
 let friendsData;
@@ -94,6 +92,9 @@ let keyData;
 let timeData;
 
 class GameJoltAPI {
+    constructor(runtime) {
+        this.runtime = runtime;
+    }
     getInfo() {
         return {
             id: 'GameJoltAPI',
@@ -632,7 +633,7 @@ class GameJoltAPI {
         GJAPI.TrophyAchieve(args.ID);
     }
     trophyFetch(args) {
-        switch(args.indexOrID) {
+        switch (args.indexOrID) {
             case 'index':
                 GJAPI.TrophyFetch(GJAPI.TROPHY_ALL, function (pResponse) {
                     if (!pResponse.trophies) { trophyData = err; return err; }
@@ -671,6 +672,7 @@ class GameJoltAPI {
                 if (typeof trophyData != 'object') { return err; }
                 switch(args.trophyDataType) {
                     case 'ID':
+                        // Why?
                         trophyData.id = trophyData.id ?? err;
                         return trophyData.id;
                     case 'title':
@@ -704,7 +706,7 @@ class GameJoltAPI {
         GJAPI.ScoreAddGuest(args.ID, args.value, args.text, args.username, args.extraData);
     }
     scoreFetch(args) {
-        switch(args.globalOrPerUser) {
+        switch (args.globalOrPerUser) {
             case 'global':
                 GJAPI.ScoreFetch(args.ID, GJAPI.SCORE_ALL, args.amount, function (pResponse) {
                     if (!pResponse.scores) { scoreData = err; return err; }
@@ -725,7 +727,7 @@ class GameJoltAPI {
     returnScoreData(args) {
         if (typeof scoreData != 'object') { return err; }
         if (typeof scoreData[args.index] != 'object') { return err; }
-        switch(args.scoreDataType) {
+        switch (args.scoreDataType) {
             case 'value':
                 scoreData[args.index].sort = scoreData[args.index].sort ?? err;
                 return scoreData[args.index].sort;
@@ -753,7 +755,7 @@ class GameJoltAPI {
         }
     }
     dataStoreSet(args) {
-        switch(args.globalOrPerUser) {
+        switch (args.globalOrPerUser) {
             case 'global':
                 GJAPI.DataStoreSet(GJAPI.DATA_STORE_GLOBAL, args.key, args.data);
                 break;
@@ -786,7 +788,7 @@ class GameJoltAPI {
         }
     }
     dataStoreUpdate(args) {
-        switch(args.globalOrPerUser) {
+        switch (args.globalOrPerUser) {
             case 'global':
                 GJAPI.DataStoreUpdate(GJAPI.DATA_STORE_GLOBAL, args.key, args.operationType, args.value);
                 break;
@@ -798,7 +800,7 @@ class GameJoltAPI {
         }
     }
     dataStoreRemove(args) {
-        switch(args.globalOrPerUser) {
+        switch (args.globalOrPerUser) {
             case 'global':
                 GJAPI.DataStoreRemove(GJAPI.DATA_STORE_GLOBAL, args.key);
                 break;
@@ -810,7 +812,7 @@ class GameJoltAPI {
         }
     }
     dataStoreGetKey(args) {
-        switch(args.globalOrPerUser) {
+        switch (args.globalOrPerUser) {
             case 'global':
                 GJAPI.DataStoreGetKeys(GJAPI.DATA_STORE_GLOBAL, function (pResponse) {
                     if (!pResponse.keys) { keyData = err; return err; }
