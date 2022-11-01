@@ -579,7 +579,7 @@ class GameJoltAPI {
     }
     sessionBool() {
         GJAPI.SessionCheck(function (pResponse) {
-            if (!pResponse.success) { sessionData = false; return false; }
+            if (!Boolean(pResponse.success)) { sessionData = false; return false; }
             sessionData = true;
         });
         if (sessionData == undefined) { return err; }
