@@ -579,7 +579,7 @@ class GameJoltAPI {
     }
     sessionBool() {
         GJAPI.SessionCheck(function (pResponse) {
-            if (pResponse.success == 'false') { sessionData = false; return false; } // Jesus Christ
+            if (pResponse.success == 'false') { sessionData = false;} // Jesus Christ
             sessionData = true;
         });
         if (sessionData == undefined) { return err; }
