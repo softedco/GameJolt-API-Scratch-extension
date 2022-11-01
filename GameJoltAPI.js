@@ -40,7 +40,9 @@ GJAPI.FriendsFetch = function (pCallback) {
 };
 
 // Sandbox detection
-if (typeof window != 'undefined') {
+const sandboxed = typeof window == 'undefined' || !window.vm;
+
+if (!sandboxed) {
     var Scratch = {
         BlockType: {
             COMMAND: 'command',
