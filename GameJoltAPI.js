@@ -1,7 +1,6 @@
 // Extension made by softed
-// Thanks to LukasStudioTV for the inspiration
-// MausGames for the API Library
-// and MikeDev101 for sandbox detection
+// Special thanks to:
+// Martin Mauersics 'MausGames', 'MikeDev101', 'LukasStudioTV'
 
 // API Library
 let GJAPI = {};GJAPI.iGameID;GJAPI.sGameKey;GJAPI.bAutoLogin = true;GJAPI.sAPI="https://api.gamejolt.com/api/game/v1_2";GJAPI.sLogName="[Game Jolt API]";GJAPI.iLogStack=20;GJAPI.asQueryParam=function(){for(var b={},a=window.location.search.substring(1).split("&"),c=0;c<a.length;++c){var d=a[c].split("=");"undefined"===typeof b[d[0]]?b[d[0]]=d[1]:"string"===typeof b[d[0]]?b[d[0]]=[b[d[0]],d[1]]:b[d[0]].push(d[1])}return b}();
