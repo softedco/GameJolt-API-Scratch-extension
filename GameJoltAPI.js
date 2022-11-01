@@ -1,8 +1,9 @@
 // Extension made by softed
 // Thanks to LukasStudioTV for the inspiration
+// MausGames for the API Library
 // and MikeDev101 for sandbox detection
 
-// API Library by MausGames
+// API Library
 let GJAPI = {};GJAPI.iGameID;GJAPI.sGameKey;GJAPI.bAutoLogin = true;GJAPI.sAPI="https://api.gamejolt.com/api/game/v1_2";GJAPI.sLogName="[Game Jolt API]";GJAPI.iLogStack=20;GJAPI.asQueryParam=function(){for(var b={},a=window.location.search.substring(1).split("&"),c=0;c<a.length;++c){var d=a[c].split("=");"undefined"===typeof b[d[0]]?b[d[0]]=d[1]:"string"===typeof b[d[0]]?b[d[0]]=[b[d[0]],d[1]]:b[d[0]].push(d[1])}return b}();
 GJAPI.bOnGJ=window.location.hostname.match(/gamejolt/)?!0:!1;GJAPI.LogTrace=function(b){GJAPI.iLogStack&&(--GJAPI.iLogStack||(b="(\u256f\u00b0\u25a1\u00b0\uff09\u256f\ufe35 \u253b\u2501\u253b"),console.warn(GJAPI.sLogName+" "+b),console.trace())};GJAPI.SEND_FOR_USER=!0;GJAPI.SEND_GENERAL=!1;GJAPI.SendRequest=function(b,a,c){GJAPI.SendRequestEx(b,a,"json","",c)};
 GJAPI.SendRequestEx=function(b,a,c,d,e){b=GJAPI.sAPI+encodeURI(b)+(-1===b.indexOf("/?")?"?":"&")+"game_id="+GJAPI.iGameID+"&format="+c;GJAPI.bLoggedIn&&a===GJAPI.SEND_FOR_USER&&(b+="&username="+GJAPI.sUserName+"&user_token="+GJAPI.sUserToken);b+="&signature="+hex_md5(b+GJAPI.sGameKey);__CreateAjax(b,d,function(f){console.info(GJAPI.sLogName+" <"+b+"> "+f);if(""!==f&&"function"===typeof e)switch(c){case "json":e(eval("("+f+")").response);break;case "dump":var g=f.indexOf("\n"),h=f.substr(0,g-1);f=
@@ -30,7 +31,7 @@ a,b[f+2],23,-995338651);a=md5_ii(a,c,d,e,b[f+0],6,-198630844);e=md5_ii(e,a,c,d,b
 c,d,e,b[f+4],6,-145523070);e=md5_ii(e,a,c,d,b[f+11],10,-1120210379);d=md5_ii(d,e,a,c,b[f+2],15,718787259);c=md5_ii(c,d,e,a,b[f+9],21,-343485551);a=safe_add(a,g);c=safe_add(c,h);d=safe_add(d,k);e=safe_add(e,l)}return[a,c,d,e]}function md5_cmn(b,a,c,d,e,f){return safe_add(bit_rol(safe_add(safe_add(a,b),safe_add(d,f)),e),c)}function md5_ff(b,a,c,d,e,f,g){return md5_cmn(a&c|~a&d,b,a,e,f,g)}function md5_gg(b,a,c,d,e,f,g){return md5_cmn(a&d|c&~d,b,a,e,f,g)}
 function md5_hh(b,a,c,d,e,f,g){return md5_cmn(a^c^d,b,a,e,f,g)}function md5_ii(b,a,c,d,e,f,g){return md5_cmn(c^(a|~d),b,a,e,f,g)}function safe_add(b,a){var c=(b&65535)+(a&65535);return(b>>16)+(a>>16)+(c>>16)<<16|c&65535}function bit_rol(b,a){return b<<a|b>>>32-a};
 
-// Custom API requests
+// Custom requests
 GJAPI.TimeFetch = function (pCallback) {
     GJAPI.SendRequest('/time/?game_id=' + GJAPI.iGameID, GJAPI.SEND_GENERAL, pCallback);
 };
