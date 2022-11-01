@@ -564,7 +564,7 @@ class GameJoltAPI {
                     userData = pResponse.users[0];
                 });
                 break;
-            case 'id':
+            case 'ID':
                 GJAPI.UserFetchID(args.usernameOrID, function (pResponse) {
                     if (!pResponse.users) { userData = err; return err; }
                     userData = pResponse.users[0];
