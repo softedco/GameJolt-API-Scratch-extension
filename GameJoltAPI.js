@@ -37,7 +37,7 @@ GJAPI.TimeFetch = function (pCallback) {
 GJAPI.FriendsFetch = function (pCallback) {
     if (!GJAPI.bLoggedIn) { GJAPI.LogTrace("FriendsFetch() failed: no user logged in"); return; }
     GJAPI.SendRequest('/friends/?game_id' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken, GJAPI.SEND_FOR_USER, pCallback);
-}
+};
 
 // Sandbox detection
 const sandboxed = typeof window == 'undefined' || !window.vm;
