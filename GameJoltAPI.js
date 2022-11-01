@@ -12,7 +12,7 @@ GJAPI.SessionOpen=function(){GJAPI.bLoggedIn?GJAPI.iSessionHandle||GJAPI.SendReq
 GJAPI.SessionClose=function(){GJAPI.bLoggedIn?(GJAPI.iSessionHandle&&(window.clearInterval(GJAPI.iSessionHandle),window.removeEventListener("beforeunload",GJAPI.SessionClose),GJAPI.iSessionHandle=0),GJAPI.SendRequest("/sessions/close/",GJAPI.SEND_FOR_USER)):GJAPI.LogTrace("SessionClose() failed: no user logged in")};GJAPI.bLoggedIn&&GJAPI.SessionOpen();
 GJAPI.UserLoginManual=function(b,a,c){GJAPI.bLoggedIn?GJAPI.LogTrace("UserLoginManual("+b+", "+a+") failed: user "+GJAPI.sUserName+" already logged in"):GJAPI.SendRequest("/users/auth/?username="+b+"&user_token="+a,GJAPI.SEND_GENERAL,function(d){d.success&&(GJAPI.bLoggedIn=!0,GJAPI.sUserName=b,GJAPI.sUserToken=a,GJAPI.SessionOpen());"function"===typeof c&&c(d)},!1)};
 GJAPI.UserLogout=function(){GJAPI.bLoggedIn?(GJAPI.SessionClose(),GJAPI.bLoggedIn=!1,GJAPI.sUserName="",GJAPI.sUserToken="",GJAPI.abTrophyCache={}):GJAPI.LogTrace("UserLogout() failed: no user logged in")};GJAPI.UserFetchID=function(b,a){GJAPI.SendRequest("/users/?user_id="+b,GJAPI.SEND_GENERAL,a)};GJAPI.UserFetchName=function(b,a){GJAPI.SendRequest("/users/?username="+b,GJAPI.SEND_GENERAL,a)};GJAPI.UserFetchCurrent=function(b){GJAPI.bLoggedIn?GJAPI.UserFetchName(GJAPI.sUserName,b):GJAPI.LogTrace("UserFetchCurrent() failed: no user logged in")};
-GJAPI.abTrophyCache={};GJAPI.TROPHY_ONLY_ACHIEVED=1;GJAPI.TROPHY_ONLY_NOTACHIEVED=-1;GJAPI.TROPHY_ALL=0;GJAPI.TrophyAchieve=function(b,a){GJAPI.bLoggedIn?GJAPI.abTrophyCache[b]||GJAPI.SendRequest('/trophies/add-achieved/?game_id='+GJAPI.iGameID+'&username='+GJAPI.sUserName+'&user_token='+GJAPI.sUserToken+'&trophy_id'+b,GJAPI.SEND_FOR_USER,function(c){c.success&&(GJAPI.abTrophyCache[b]=!0);"function"===typeof a&&a(c)}):GJAPI.LogTrace("TrophyAchieve("+b+") failed: no user logged in")};
+GJAPI.abTrophyCache={};GJAPI.TROPHY_ONLY_ACHIEVED=1;GJAPI.TROPHY_ONLY_NOTACHIEVED=-1;GJAPI.TROPHY_ALL=0;GJAPI.TrophyAchieve=function(b,a){GJAPI.bLoggedIn?GJAPI.abTrophyCache[b]||GJAPI.SendRequest('/trophies/add-achieved/?game_id='+GJAPI.iGameID+'&username='+GJAPI.sUserName+'&user_token='+GJAPI.sUserToken+'&trophy_id='+b,GJAPI.SEND_FOR_USER,function(c){c.success&&(GJAPI.abTrophyCache[b]=!0);"function"===typeof a&&a(c)}):GJAPI.LogTrace("TrophyAchieve("+b+") failed: no user logged in")};
 GJAPI.TrophyFetch=function(b,a){GJAPI.bLoggedIn?GJAPI.SendRequest("/trophies/"+(b===GJAPI.TROPHY_ALL?"":"?achieved="+(b>=GJAPI.TROPHY_ONLY_ACHIEVED?"true":"false")),GJAPI.SEND_FOR_USER,a):GJAPI.LogTrace("TrophyFetch("+b+") failed: no user logged in")};GJAPI.TrophyFetchSingle=function(b,a){GJAPI.bLoggedIn?GJAPI.SendRequest("/trophies/?trophy_id="+b,GJAPI.SEND_FOR_USER,a):GJAPI.LogTrace("TrophyFetchSingle("+b+") failed: no user logged in")};GJAPI.SCORE_ONLY_USER=!0;GJAPI.SCORE_ALL=!1;
 GJAPI.ScoreAdd=function(b,a,c,d,e){GJAPI.bLoggedIn?GJAPI.ScoreAddGuest(b,a,c,"",d,e):GJAPI.LogTrace("ScoreAdd("+b+", "+a+", "+c+") failed: no user logged in")};GJAPI.ScoreAddGuest=function(b,a,c,d,e,f){var g=d&&d.length?!0:!1;GJAPI.SendRequest("/scores/add/?sort="+a+"&score="+c+(g?"&guest="+d:"")+(b?"&table_id="+b:"")+(e?"&extra_data="+e:""),g?GJAPI.SEND_GENERAL:GJAPI.SEND_FOR_USER,f)};
 GJAPI.ScoreFetch=function(b,a,c,d){!GJAPI.bLoggedIn&&a?GJAPI.LogTrace("ScoreFetch("+b+", "+a+", "+c+") failed: no user logged in"):GJAPI.SendRequest("/scores/?limit="+c+(b?"&table_id="+b:""),a!==GJAPI.SCORE_ONLY_USER?GJAPI.SEND_GENERAL:GJAPI.SEND_FOR_USER,d)};GJAPI.DATA_STORE_USER=0;GJAPI.DATA_STORE_GLOBAL=1;GJAPI.DataStoreSet=function(b,a,c,d){GJAPI.SendRequestEx("/data-store/set/?key="+a,b===GJAPI.DATA_STORE_USER,"json","data="+c,d)};
@@ -36,14 +36,14 @@ GJAPI.TimeFetch = function (pCallback) {
 };
 GJAPI.FriendsFetch = function (pCallback) {
     if (!GJAPI.bLoggedIn) { GJAPI.LogTrace('FriendsFetch() failed: no user logged in'); return; }
-    GJAPI.SendRequest('/friends/?game_id' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken, GJAPI.SEND_FOR_USER, pCallback);
+    GJAPI.SendRequest('/friends/?game_id=' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken, GJAPI.SEND_FOR_USER, pCallback);
 };
 GJAPI.TrophyRemove = function (iTrophyID, pCallback) {
     if (!GJAPI.bLoggedIn) { GJAPI.LogTrace('TrophyRemove(' + iTrophyID + ') failed: no user logged in'); return; }
     // Check if the trophy is not achieved
     if (!GJAPI.abTrophyCache[iTrophyID]) { return; }
 
-    GJAPI.SendRequest('/trophies/remove-achieved/?game_id=' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken + '&trophy_id' + iTrophyID, GJAPI.SEND_FOR_USER,
+    GJAPI.SendRequest('/trophies/remove-achieved/?game_id=' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken + '&trophy_id=' + iTrophyID, GJAPI.SEND_FOR_USER,
     function(pResponse)
     {
         // check for success
