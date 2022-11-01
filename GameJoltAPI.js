@@ -90,6 +90,7 @@ if (!sandboxed) {
 
 // Extension
 const err = 'error';
+const f = 'false'; /* The API returns a string instead of a boolean value */
 const currentVersion = '1.25.55\n';
 const upToDateVersion = fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''));
 
@@ -579,7 +580,7 @@ class GameJoltAPI {
     }
     sessionBool() {
         GJAPI.SessionCheck(function (pResponse) {
-            if (pResponse.success == 'false') { sessionData = false; return; } // Jesus Christ
+            if (pResponse.success == f) { sessionData = false; return; } // Jesus Christ
             sessionData = true;
         });
         if (sessionData == undefined) { return err; }
@@ -667,7 +668,7 @@ class GameJoltAPI {
     }
     friendsFetch(args) {
         GJAPI.FriendsFetch(function (pResponse) {
-            if (pResponse.success == 'false') { friendsData = err; return; }
+            if (pResponse.success == f) { friendsData = err; return; }
             friendsData = pResponse.friends;
         });
         if (typeof friendsData != 'object') { return err; }
@@ -819,14 +820,14 @@ class GameJoltAPI {
         switch(args.globalOrPerUser) {
             case 'global':
                 GJAPI.DataStoreFetch(GJAPI.DATA_STORE_GLOBAL, args.key, function (pResponse) {
-                    if (pResponse.success == 'false') { storeData = err; return; }
+                    if (pResponse.success == f) { storeData = err; return; }
                     storeData = pResponse.data;
                 });
                 storeData = storeData ?? err;
                 return storeData;
             case 'user':
                 GJAPI.DataStoreFetch(GJAPI.DATA_STORE_USER, args.key, function (pResponse) {
-                    if (pResponse.success == 'false') { storeData = err; return; }
+                    if (pResponse.success == f) { storeData = err; return; }
                     storeData = pResponse.data;
                 });
                 storeData = storeData ?? err;
@@ -887,7 +888,7 @@ class GameJoltAPI {
     }
     timeFetch(args) {
         GJAPI.TimeFetch(function (pResponse) {
-            if (pResponse.success == 'false') { timeData = err; return; }
+            if (pResponse.success == f) { timeData = err; return; }
             timeData = pResponse;
         });
         if (typeof timeData != 'object') { return err; }
