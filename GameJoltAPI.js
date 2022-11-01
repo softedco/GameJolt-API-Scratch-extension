@@ -110,7 +110,7 @@ let scoreData;
 let storeData;
 let keyData;
 let timeData;
-let sessionData;
+let sessionData = false;
 
 class GameJoltAPI {
     constructor(runtime) {
@@ -581,7 +581,6 @@ class GameJoltAPI {
         GJAPI.SessionCheck(function (pResponse) {
             sessionData = pResponse.success ? true : false;
         });
-        if (sessionData ?? true) { return err; }
         return sessionData;
     }
     loginManual(args) {
