@@ -829,7 +829,7 @@ class GameJoltAPI {
             if (pResponse.success == f) { rankData = err; return; }
             rankData = pResponse.rank;
         });
-        if (rankData == undefined) { return err; }
+        rankData = rankData ?? err;
         return rankData;
     }
     dataStoreSet(args) {
