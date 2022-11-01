@@ -60,7 +60,7 @@ GJAPI.SessionCheck = function (pCallback) {
     GJAPI.SendRequest('/sessions/check/?game_id' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken, GJAPI.SEND_GENERAL, pCallback);
 };
 GJAPI.ScoreFetchEx = function (iScoreTableID, bOnlyUser, iLimit, iBetterOrWorse, iValue, pCallback) {
-    if (!GJAPI.bLoggedIn && bOnlyUser) { GJAPI.LogTrace("ScoreFetch(" + iScoreTableID + ", " + bOnlyUser + ", " + iLimit + ", " + iBetterOrWorse + ") failed: no user logged in"); return; }
+    if (!GJAPI.bLoggedIn && bOnlyUser) { GJAPI.LogTrace("ScoreFetch(" + iScoreTableID + ", " + bOnlyUser + ", " + iLimit + ", " + iBetterOrWorse + ", " + iValue + ") failed: no user logged in"); return; }
     var bFetchAll = (bOnlyUser == GJAPI.SCORE_ONLY_USER) ? false : true;
     GJAPI.SendRequest("/scores/"         +
                       "?limit=" + iLimit +
