@@ -624,8 +624,7 @@ class GameJoltAPI {
             friendsData = pResponse.friends;
         });
         if (typeof friendsData != 'object') { return err; }
-        friendsData[args.index] = friendsData[args.index] ?? err;
-        return friendsData[args.index];
+        return Object.getOwnPropertyNames(friendsData[args.index]);
     }
     trophyAchieve(args) {
         GJAPI.TrophyAchieve(args.ID);
