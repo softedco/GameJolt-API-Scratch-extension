@@ -152,18 +152,32 @@ if (!sandboxed) {
 }
 
 /* Scratch extension by softed
- * Works on Turbowarp by GarboMuffin
- * Also works on SheepTester's Epicques
+ * Works on Turbowarp by GarboMuffin (Sandboxed and unsandboxed)
+ * SheepTester's Epicques (Unsandboxed)
+ * Ogadaki's Adacraft (Unsandboxed)
+ */
+
+/* Some constants to replace repetitive literals
+ * TODO: Make err an object with different error messages
  */
 const err = 'error';
-const f = 'false'; /* Apparently API response object's success property is a string and not a boolean */
 
+/* Apparently API response object's success property is a string and not a boolean
+ * That's why there is stuff like 'pResponse.success == f'
+ */
+const f = 'false';
+
+/* Version object
+ * Useful for checking if the code is outdated or not
+ * It's a constant so you have to refresh the page to update the upToDate field
+ */
 const version = {
     current: '1.30.61\n',
     upToDate: fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''))
 };
 
-/* GameJolt icon by GameJolt
+/* Icons object
+ * GameJolt icon by GameJolt
  * Other icons by softed
  * Can be used outside of this extension if proper credit is given
  */
@@ -177,9 +191,14 @@ const icons = {
     time: 'data:image/png;base64,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',
 };
 
+/* Data object for storing API response objects */
 let data = {};
 
 class GameJoltAPI {
+
+    /* Runtime constructor
+     * Not necessary since the extension doesn't interact with runtime
+     */
     constructor(runtime) {
         this.runtime = runtime;
     }
@@ -241,7 +260,8 @@ class GameJoltAPI {
                     }
                 },
 
-                /* Not necessary since the library handles pinging for you
+                /* Session pinging
+                 * Not necessary since the library handles pinging for you
                  * Still useful for debugging purposes
                  */
                 {
@@ -257,7 +277,8 @@ class GameJoltAPI {
                     text: 'Session?'
                 },
 
-                /* Not necessary since the library handles logging in for you
+                /* Manual login
+                 * Not necessary since the library handles logging in for you
                  * Still useful due to the fact that automatically logged in users might struggle with submitting scores
                  */
                 {
@@ -655,6 +676,11 @@ class GameJoltAPI {
                     }
                 }
             ],
+
+            /* TODO: Merge some similar API library methods
+             * So the values could be passed as an argument representing their type
+             * Eliminating the switch-case madness almost completely
+             */
             menus: {
                 versionTypes: {
                     items: [
