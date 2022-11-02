@@ -209,8 +209,7 @@ class GameJoltAPI {
                     arguments: {
                         versionType: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'versionTypes',
-                            defaultValue: 'current'
+                            menu: 'versionTypes'
                         }
                     }
                 },
@@ -244,8 +243,7 @@ class GameJoltAPI {
                     arguments: {
                         openOrClose: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'openOrClose',
-                            defaultValue: 'Open'
+                            menu: 'openOrClose'
                         }
                     }
                 },
@@ -309,8 +307,7 @@ class GameJoltAPI {
                         },
                         fetchType: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'fetchTypes',
-                            defaultValue: 'username'
+                            menu: 'fetchTypes'
                         }
                     }
                 },
@@ -328,8 +325,7 @@ class GameJoltAPI {
                     arguments: {
                         userDataType: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'userDataTypes',
-                            defaultValue: 'ID'
+                            menu: 'userDataTypes'
                         }
                     }
                 },
@@ -377,13 +373,11 @@ class GameJoltAPI {
                     arguments: {
                         trophyDataType: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'trophyDataTypes',
-                            defaultValue: 'ID'
+                            menu: 'trophyDataTypes'
                         },
                         indexOrID: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'indexOrID',
-                            defaultValue: 'index'
+                            menu: 'indexOrID'
                         },
                         value: {
                             type: Scratch.ArgumentType.NUMBER,
@@ -455,13 +449,11 @@ class GameJoltAPI {
                         },
                         globalOrPerUser: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'globalOrPerUser',
-                            defaultValue: 'global'
+                            menu: 'globalOrPerUser'
                         },
                         betterOrWorse: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'betterOrWorse',
-                            defaultValue: 'better'
+                            menu: 'betterOrWorse'
                         },
                         value: {
                             type: Scratch.ArgumentType.NUMBER,
@@ -489,8 +481,7 @@ class GameJoltAPI {
                         },
                         betterOrWorse: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'betterOrWorse',
-                            defaultValue: 'better'
+                            menu: 'betterOrWorse'
                         },
                         value: {
                             type: Scratch.ArgumentType.NUMBER,
@@ -510,8 +501,7 @@ class GameJoltAPI {
                     arguments: {
                         scoreDataType: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'scoreDataTypes',
-                            defaultValue: 'value'
+                            menu: 'scoreDataTypes'
                         },
                         index: {
                             type: Scratch.ArgumentType.NUMBER,
@@ -543,8 +533,7 @@ class GameJoltAPI {
                     arguments: {
                         tableDataType: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'tableDataTypes',
-                            defaultValue: 'ID'
+                            menu: 'tableDataTypes'
                         },
                         index: {
                             type: Scratch.ArgumentType.NUMBER,
@@ -560,8 +549,7 @@ class GameJoltAPI {
                     arguments: {
                         globalOrPerUser: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'globalOrPerUser',
-                            defaultValue: 'global'
+                            menu: 'globalOrPerUser'
                         },
                         key: {
                             type: Scratch.ArgumentType.STRING,
@@ -581,8 +569,7 @@ class GameJoltAPI {
                     arguments: {
                         globalOrPerUser: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'globalOrPerUser',
-                            defaultValue: 'global'
+                            menu: 'globalOrPerUser'
                         },
                         key: {
                             type: Scratch.ArgumentType.STRING,
@@ -598,8 +585,7 @@ class GameJoltAPI {
                     arguments: {
                         globalOrPerUser: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'globalOrPerUser',
-                            defaultValue: 'global'
+                            menu: 'globalOrPerUser'
                         },
                         key: {
                             type: Scratch.ArgumentType.STRING,
@@ -607,8 +593,7 @@ class GameJoltAPI {
                         },
                         operationType: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'operationTypes',
-                            defaultValue: 'add'
+                            menu: 'operationTypes'
                         },
                         value: {
                             type: Scratch.ArgumentType.STRING,
@@ -624,8 +609,7 @@ class GameJoltAPI {
                     arguments: {
                         globalOrPerUser: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'globalOrPerUser',
-                            defaultValue: 'global'
+                            menu: 'globalOrPerUser'
                         },
                         key: {
                             type: Scratch.ArgumentType.STRING,
@@ -641,8 +625,7 @@ class GameJoltAPI {
                     arguments: {
                         globalOrPerUser: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'globalOrPerUser',
-                            defaultValue: 'global'
+                            menu: 'globalOrPerUser'
                         },
                         index: {
                             type: Scratch.ArgumentType.NUMBER,
@@ -658,8 +641,7 @@ class GameJoltAPI {
                     arguments: {
                         timeType: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'timeTypes',
-                            defaultValue: 'timestamp'
+                            menu: 'timeTypes'
                         }
                     }
                 }
