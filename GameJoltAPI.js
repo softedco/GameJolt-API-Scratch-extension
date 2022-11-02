@@ -157,8 +157,11 @@ if (!sandboxed) {
  */
 const err = 'error';
 const f = 'false'; /* Apparently API response object's success property is a string and not a boolean */
-const currentVersion = '1.30.60\n';
-const upToDateVersion = fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''));
+
+const version = {
+    current: '1.30.61\n',
+    upToDate: fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''))
+};
 
 /* GameJoltIcon by GameJolt
  * Other icons by softed
@@ -661,34 +664,66 @@ class GameJoltAPI {
                     }
                 }
             ],
-
-            /* TODO: Add values to eliminate switch-case madness 
-             * This shouldn't break backwards compatibility
-             */
             menus: {
                 versionTypes: {
-                    items: ['current', 'up-to-date']
+                    items: [
+                        { text: 'current', value: 'current' },
+                        { text: 'up to date', value: 'upToDate' }
+                    ]
                 },
                 fetchTypes: {
                     items: ['username', 'ID']
                 },
                 userDataTypes: {
-                    items: ['ID', 'username', 'developer username', 'description', 'status', 'type', 'avatar URL', 'website URL', 'sign up date', 'last login']
+                    items: [
+                        { text: 'ID', value: 'id' },
+                        { text: 'username', value: 'username' },
+                        { text: 'developer username', value: 'developer_name' },
+                        { text: 'description', value: 'developer_description' },
+                        { text: 'status', value: 'status' },
+                        { text: 'type', value: 'type' },
+                        { text: 'avatar URL', value: 'avatar_url' },
+                        { text: 'website', value: 'website' },
+                        { text: 'sign up date', value: 'signed_up' },
+                        { text: 'sign up timestamp', value: 'signed_up_timestamp' },
+                        { text: 'last login', value: 'last_logged_in' },
+                        { text: 'last login timestamp', value: 'last_logged_in_timestamp'}
+                    ]
                 },
                 operationTypes: {
                     items: ['add', 'subtract', 'multiply', 'divide', 'append', 'prepend']
                 },
                 scoreDataTypes: {
-                    items: ['value', 'text', 'extra data', 'username', 'user ID', 'score date', 'score timestamp']
+                    items: [
+                        { text: 'value', value: 'sort' },
+                        { text: 'text', value: 'score' },
+                        { text: 'extra data', value: 'extra_data' },
+                        { text: 'username', value: 'user' },
+                        { text: 'user ID', value: 'user_id' },
+                        { text: 'score date', value: 'stored' },
+                        { text: 'score timestamp', value: 'stored_timestamp'}
+                    ]
                 },
                 trophyDataTypes: {
-                    items: ['ID', 'title', 'description', 'difficulty', 'image URL', 'achievement date']
+                    items: [
+                        { text: 'ID', value: 'id' },
+                        { text: 'title', value: 'title' },
+                        { text: 'description', value: 'description' },
+                        { text: 'difficulty', value: 'difficulty' },
+                        { text: 'image URL', value: 'image_url' },
+                        { text: 'achievement date', value: 'achieved'}
+                    ]
                 },
                 timeTypes: {
                     items: ['timestamp', 'timezone', 'year', 'month', 'day', 'hour', 'minute', 'second']
                 },
                 tableDataTypes: {
-                    items: ['ID', 'name', 'description', 'primary']
+                    items: [
+                        { text: 'ID', value: 'id' },
+                        { text: 'name', value: 'name' },
+                        { text: 'description', value: 'description' },
+                        { text: 'primary', value: 'primary' }
+                    ]
                 },
                 openOrClose: {
                     items: ['Open', 'Close']
@@ -706,14 +741,7 @@ class GameJoltAPI {
         };
     }
     version(args) {
-        switch (args.versionType) {
-            case 'current':
-                return currentVersion;
-            case 'up-to-date':
-                return upToDateVersion;
-            default:
-                return err;
-        }
+        return version[args.versionType];
     }
     gamejoltBool() {
         return GJAPI.bOnGJ;
@@ -791,40 +819,8 @@ class GameJoltAPI {
     }
     returnUserData(args) {
         if (typeof userData != 'object') { userData = err; return err; }
-        switch (args.userDataType) {
-            case 'ID':
-                userData.id = userData.id ?? err;
-                return userData.id;
-            case 'username':
-                userData.username = userData.username ?? err;
-                return userData.username;
-            case 'developer username':
-                userData.developer_name = userData.developer_name ?? err;
-                return userData.developer_name;
-            case 'description':
-                userData.developer_description = userData.developer_description ?? err;
-                return userData.developer_description;
-            case 'status':
-                userData.status = userData.status ?? err;
-                return userData.status;
-            case 'type':
-                userData.type = userData.type ?? err;
-                return userData.type;
-            case 'avatar URL':
-                userData.avatar_url = userData.avatar_url ?? err;
-                return userData.avatar_url;
-            case 'website URL':
-                userData.developer_website = userData.developer_website ?? err;
-                return userData.developer_website;
-            case 'sign up date':
-                userData.signed_up = userData.signed_up ?? err;
-                return userData.signed_up;
-            case 'last login':
-                userData.last_logged_in = userData.last_logged_in ?? err;
-                return userData.last_logged_in;
-            default:
-                return err;
-        };
+        userData[args.userDataType] = userData[args.userDataType] ?? err;
+        return userData[args.userDataType];
     }
     friendsFetch(args) {
         GJAPI.FriendsFetch( function (pResponse) {
@@ -851,62 +847,16 @@ class GameJoltAPI {
                 });
                 if (typeof trophyData != 'object') { return err; }
                 if (typeof trophyData[args.value] != 'object') { return err; }
-                switch (args.trophyDataType) {
-                    case 'ID':
-                        trophyData[args.value].id = trophyData[args.value].id ?? err;
-                        return trophyData[args.value].id;
-                    case 'title':
-                        trophyData[args.value].title = trophyData[args.value].title ?? err;
-                        return trophyData[args.value].title;
-                    case 'description':
-                        trophyData[args.value].description = trophyData[args.value].description ?? err;
-                        return trophyData[args.value].description;
-                    case 'difficulty':
-                        trophyData[args.value].difficulty = trophyData[args.value].difficulty ?? err;
-                        return trophyData[args.value].difficulty;
-                    case 'image URL':
-                        trophyData[args.value].image_url = trophyData[args.value].image_url ?? err;
-                        return trophyData[args.value].image_url;
-                    case 'achievement date':
-                        trophyData[args.value].achieved = trophyData[args.value].achieved ?? err;
-                        return trophyData[args.value].achieved;
-                    default:
-                        trophyData = err;
-                        return err;
-                }
+                trophyData[args.value][args.trophyDataType] = trophyData[args.value][args.trophyDataType] ?? err;
+                trophyData[args.value][args.trophyDataType];
             case 'ID':
                 GJAPI.TrophyFetchSingle(args.value, function (pResponse) {
                     if (!pResponse.trophies) { trophyData = err; return; }
                     trophyData = pResponse.trophies[0];
                 });
                 if (typeof trophyData != 'object') { return err; }
-                switch(args.trophyDataType) {
-                    case 'ID':
-
-                        /* Say hello to Scratch's architecture
-                         * Even dynamic menus can't fix this
-                         */
-                        trophyData.id = trophyData.id ?? err;
-                        return trophyData.id;
-                    case 'title':
-                        trophyData.title = trophyData.title ?? err;
-                        return trophyData.title;
-                    case 'description':
-                        trophyData.description = trophyData.description ?? err;
-                        return trophyData.description;
-                    case 'difficulty':
-                        trophyData.difficulty = trophyData.difficulty ?? err;
-                        return trophyData.difficulty;
-                    case 'image URL':
-                        trophyData.image_url = trophyData.image_url ?? err;
-                        return trophyData.image_url;
-                    case 'achievement date':
-                        trophyData.achieved = trophyData.achieved ?? err;
-                        return trophyData.achieved;
-                    default:
-                        trophyData = err;
-                        return err;
-                }
+                trophyData[args.trophyDataType] = trophyData[args.trophyDataType] ?? err;
+                trophyData[args.trophyDataType];
             default:
                 trophyData = err;
                 return err;
@@ -940,35 +890,14 @@ class GameJoltAPI {
     returnScoreData(args) {
         if (typeof scoreData != 'object') { return err; }
         if (typeof scoreData[args.index] != 'object') { return err; }
-        switch (args.scoreDataType) {
-            case 'value':
-                scoreData[args.index].sort = scoreData[args.index].sort ?? err;
-                return scoreData[args.index].sort;
-            case 'text':
-                scoreData[args.index].score = scoreData[args.index].score ?? err;
-                return scoreData[args.index].score;
-            case 'extra data':
-                scoreData[args.index].extra_data = scoreData[args.index].extra_data ?? err;
-                return scoreData[args.index].extra_data;
-            case 'username':
-                if (scoreData[args.index].user == '') {
-                    scoreData[args.index].guest = scoreData[args.index].guest ?? err;
-                    return scoreData[args.index].guest;
-                }
-                scoreData[args.index].user = scoreData[args.index].user ?? err;
-                return scoreData[args.index].user;
-            case 'user ID':
-                scoreData[args.index].user_id = scoreData[args.index].user_id ?? err;
-                return scoreData[args.index].user_id;
-            case 'score date':
-                scoreData[args.index].stored = scoreData[args.index].stored ?? err;
-                return scoreData[args.index].stored;
-            case 'score timestamp':
-                scoreData[args.index].stored_timestamp = scoreData[args.index].stored_timestamp ?? err;
-                return scoreData[args.index].stored_timestamp;
-            default:
-                return err;
+        if (args.scoreDataType == 'user') {
+            if (scoreData[args.index].user == '') {
+                scoreData[args.index].guest = scoreData[args.index].guest ?? err;
+                return scoreData[args.index].guest;
+            }
         }
+        scoreData[args.index][args.scoreDataType] = scoreData[args.index][args.scoreDataType] ?? err;
+        return scoreData[args.index][args.scoreDataType];
     }
     scoreGetRank(args) {
         GJAPI.ScoreGetRank(args.ID, args.value, function (pResponse) {
@@ -985,23 +914,8 @@ class GameJoltAPI {
         });
         if (typeof tablesData != 'object') { return err; }
         if (typeof tablesData[args.index] != 'object') { return err; }
-        switch (args.tableDataType) {
-            case 'ID':
-                tablesData[args.index].id = tablesData[args.index].id ?? err;
-                return tablesData[args.index].id;
-            case 'name':
-                tablesData[args.index].name = tablesData[args.index].name ?? err;
-                return tablesData[args.index].name;
-            case 'description':
-                tablesData[args.index].description = tablesData[args.index].description ?? err;
-                return tablesData[args.index].description;
-            case 'primary boolean':
-                tablesData[args.index].primary = tablesData[args.index].primary ?? err;
-                return tablesData[args.index].primary;
-            default:
-                tablesData = err;
-                return err;
-        }
+        tablesData[args.index][args.tableDataType] = tablesData[args.index][args.tableDataType] ?? err;
+        return tablesData[args.index][args.tableDataType];
     }
     dataStoreSet(args) {
         GJAPI.DataStoreSet(args.globalOrPerUser == 'global' ? GJAPI.DATA_STORE_GLOBAL : GJAPI.DATA_STORE_USER, args.key, args.data);
