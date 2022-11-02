@@ -372,7 +372,7 @@ class GameJoltAPI {
                         fetchType: {
                             type: Scratch.ArgumentType.STRING,
                             menu: 'fetchTypes',
-                            defaultValue: GJAPI.FETCH_USERNAME
+                            defaultValue: String(GJAPI.FETCH_USERNAME)
                         }
                     }
                 },
@@ -735,8 +735,8 @@ class GameJoltAPI {
                 },
                 fetchTypes: {
                     items: [
-                        { text: 'username', value: GJAPI.FETCH_USERNAME },
-                        { text: 'ID', value: GJAPI.FETCH_ID }
+                        { text: 'username', value: String(GJAPI.FETCH_USERNAME) },
+                        { text: 'ID', value: String(GJAPI.FETCH_ID) }
                     ]
                 },
                 userDataTypes: {
@@ -848,7 +848,7 @@ class GameJoltAPI {
         return GJAPI.bLoggedIn;
     }
     userFetch(args) {
-        GJAPI.UserFetchComb(args.fetchType, args.usernameOrID, function (pResponse) {
+        GJAPI.UserFetchComb(args.fetchType != f, args.usernameOrID, function (pResponse) {
             if (!pResponse.users) { data.user = err; return; }
             data.user = pResponse.users[0];
         });
