@@ -44,6 +44,8 @@ GJAPI.SESSION_OPEN = true;
 GJAPI.SESSION_CLOSE = false;
 GJAPI.FETCH_USERNAME = true;
 GJAPI.FETCH_ID = false;
+GJAPI.FETCH_ALL = true;
+GJAPI.FETCH_SINGLE = false;
 
 GJAPI.TimeFetch = function (pCallback) {
     GJAPI.SendRequest('/time/?game_id=' + GJAPI.iGameID, GJAPI.SEND_GENERAL, pCallback);
@@ -110,6 +112,20 @@ GJAPI.UserFetchComb = function (bUsername, bValue, pCallback) {
         return;
     }
     GJAPI.SendRequest("/users/?user_id=" + bValue, GJAPI.SEND_GENERAL, pCallback);
+};
+
+/* TrophyFetch and TrophyFetchSingle combined
+ * Use GJAPI.FETCH_ALL and GJAPI.FETCH_SINGLE for better code readability
+ */
+GJAPI.TrophyFetchComb = function (iSingle, iValue, pCallback) {
+    if (!GJAPI.bLoggedIn) { GJAPI.LogTrace('TrophyFetchComb(' + iSingle + ', ' + iValue + ') failed: no user logged in'); return; }
+    if (iSingle) {
+        GJAPI.SendRequest("/trophies/?trophy_id=" + iValue, GJAPI.SEND_FOR_USER, pCallback);
+        return;
+    }
+    var sTrophyData = (iValue == GJAPI.TROPHY_ALL) ? "" :
+        "?achieved=" + ((iValue >= GJAPI.TROPHY_ONLY_ACHIEVED) ? "true" : "false");
+    GJAPI.SendRequest("/trophies/" + sTrophyData, GJAPI.SEND_FOR_USER, pCallback);
 };
 
 /* ScoreFetch but with better_than and worse_than parameters
@@ -217,7 +233,7 @@ const f = 'false';
  * It's a constant so you have to refresh the page to update the upToDate field
  */
 const version = {
-    current: '1.30.62\n',
+    current: '1.30.63\n',
     upToDate: fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''))
 };
 
@@ -803,7 +819,10 @@ class GameJoltAPI {
                     ]
                 },
                 indexOrID: {
-                    items: ['index', 'ID']
+                    items: [
+                        { text: 'index', value: String(GJAPI.FETCH_ALL) },
+                        { text: 'ID', value: String(GJAPI.FETCH_SINGLE) }
+                    ]
                 },
                 betterOrWorse: {
                     items: [
@@ -881,28 +900,14 @@ class GameJoltAPI {
         GJAPI.TrophyRemove(args.ID);
     }
     trophyFetch(args) {
-        switch (args.indexOrID) {
-            case 'index':
-                GJAPI.TrophyFetch(GJAPI.TROPHY_ALL, function (pResponse) {
-                    if (!pResponse.trophies) { data.trophies = err; return; }
-                    data.trophies = pResponse.trophies;
-                });
-                if (typeof data.trophies != 'object') { return err; }
-                if (typeof data.trophies[args.value] != 'object') { return err; }
-                data.trophies[args.value][args.trophyDataType] = data.trophies[args.value][args.trophyDataType] ?? err;
-                return data.trophies[args.value][args.trophyDataType];
-            case 'ID':
-                GJAPI.TrophyFetchSingle(args.value, function (pResponse) {
-                    if (!pResponse.trophies) { data.trophies = err; return; }
-                    data.trophies = pResponse.trophies[0];
-                });
-                if (typeof data.trophies != 'object') { return err; }
-                data.trophies[args.trophyDataType] = data.trophies[args.trophyDataType] ?? err;
-                return data.trophies[args.trophyDataType];
-            default:
-                data.trophies = err;
-                return err;
-        }
+        GJAPI.TrophyFetchComb(args.indexOrID != f, (args.indexOrID != f) ? args.value : GJAPI.TROPHY_ALL, function (pResponse) {
+            if (!pResponse.trophies) { data.trophies = err; return; }
+            data.trophies = pResponse.trophies;
+        });
+        if (typeof data.trophies != 'object') { return err; }
+        if (typeof data.trophies[args.indexOrID != f ? 0 : args.value] != 'object') { return err; }
+        data.trophies[args.indexOrID != f ? 0 : args.value][args.trophyDataType] = data.trophies[args.indexOrID != f ? 0 : args.value][args.trophyDataType] ?? err;
+        return data.trophies[args.indexOrID != f ? 0 : args.value][args.trophyDataType];
     }
     scoreAdd(args) {
         GJAPI.ScoreAdd(args.ID, args.value, args.text, args.extraData);
