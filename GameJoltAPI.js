@@ -40,6 +40,10 @@ function md5_hh(b,a,c,d,e,f,g){return md5_cmn(a^c^d,b,a,e,f,g)}function md5_ii(b
  */
 GJAPI.BETTER_THAN = true;
 GJAPI.WORSE_THAN = false;
+GJAPI.SESSION_OPEN = true;
+GJAPI.SESSION_CLOSE = false;
+GJAPI.FETCH_USERNAME = true;
+GJAPI.FETCH_ID = false;
 
 GJAPI.TimeFetch = function (pCallback) {
     GJAPI.SendRequest('/time/?game_id=' + GJAPI.iGameID, GJAPI.SEND_GENERAL, pCallback);
@@ -69,7 +73,47 @@ GJAPI.SessionCheck = function (pCallback) {
     GJAPI.SendRequest('/sessions/check/?game_id=' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken, GJAPI.SEND_GENERAL, pCallback);
 };
 
+/* SessionOpen and SessionClose combined
+ * Use GJAPI.SESSION_OPEN and GJAPI.SESSION_CLOSE for better code readability
+ */
+GJAPI.SessionSetStatus = function (iStatus) {
+    if (!GJAPI.bLoggedIn) { GJAPI.LogTrace('SessionSetStatus(' + iStatus + ') failed: no user logged in'); return; }
+    GJAPI.bSessionActive = iStatus;
+    if (iStatus) {
+        if (GJAPI.iSessionHandle) {
+            return;
+        }
+        GJAPI.SendRequest("/sessions/open/", GJAPI.SEND_FOR_USER,
+        function (pResponse)
+        {
+            if (pResponse.success) {
+                GJAPI.iSessionHandle = window.setInterval(GJAPI.SessionPing, 30000);
+                window.addEventListener("beforeunload", GJAPI.SessionClose, false);
+            }
+            });
+        return;
+    }
+    if (GJAPI.iSessionHandle) {
+        window.clearInterval(GJAPI.iSessionHandle);
+        window.removeEventListener("beforeunload", GJAPI.SessionClose);
+        GJAPI.iSessionHandle = 0;
+    }
+    GJAPI.SendRequest("/sessions/close/", GJAPI.SEND_FOR_USER);
+};
+
+/* UserFetchName and UserFetchID combined
+ * Use GJAPI.FETCH_USERNAME and GJAPI.FETCH_ID for better code readability
+ */
+GJAPI.UserFetchComb = function (bUsername, bValue, pCallback) {
+    if (bUsername) {
+        GJAPI.SendRequest("/users/?username=" + bValue, GJAPI.SEND_GENERAL, pCallback);
+        return;
+    }
+    GJAPI.SendRequest("/users/?user_id=" + bValue, GJAPI.SEND_GENERAL, pCallback);
+};
+
 /* ScoreFetch but with better_than and worse_than parameters
+ * Use GJAPI.BETTER_THAN and GJAPI.WORSE_THAN for better code readability
  * If iValue is set to 0 it will work like riginal ScoreFetch
  */
 GJAPI.ScoreFetchEx = function (iScoreTableID, bOnlyUser, iLimit, iBetterOrWorse, iValue, pCallback) {
@@ -94,6 +138,7 @@ GJAPI.ScoreFetchGuest = function (iScoreTableID, bName, iLimit, pCallback) {
 };
 
 /* ScoreFetchGuest but with better_than and worse_than parameters
+ * Use GJAPI.BETTER_THAN and GJAPI.WORSE_THAN for better code readability
  * If iValue is set to 0 it will work like original ScoreFetchGuest
  */
 GJAPI.ScoreFetchGuestEx = function (iScoreTableID, bName, iLimit, iBetterOrWorse, iValue, pCallback) {
@@ -172,7 +217,7 @@ const f = 'false';
  * It's a constant so you have to refresh the page to update the upToDate field
  */
 const version = {
-    current: '1.30.61\n',
+    current: '1.30.62\n',
     upToDate: fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''))
 };
 
@@ -255,7 +300,12 @@ class GameJoltAPI {
                         openOrClose: {
                             type: Scratch.ArgumentType.STRING,
                             menu: 'openOrClose',
-                            defaultValue: 'Open'
+
+                            /* Default value also has to be a string
+                             * Or else it wouldn't display the menu item correctly
+                             * Even if values match
+                             */
+                            defaultValue: String(GJAPI.SESSION_OPEN)
                         }
                     }
                 },
@@ -322,7 +372,7 @@ class GameJoltAPI {
                         fetchType: {
                             type: Scratch.ArgumentType.STRING,
                             menu: 'fetchTypes',
-                            defaultValue: 'username'
+                            defaultValue: GJAPI.FETCH_USERNAME
                         }
                     }
                 },
@@ -468,12 +518,12 @@ class GameJoltAPI {
                         globalOrPerUser: {
                             type: Scratch.ArgumentType.STRING,
                             menu: 'globalOrPerUser',
-                            defaultValue: 'global'
+                            defaultValue: GJAPI.DATA_STORE_GLOBAL
                         },
                         betterOrWorse: {
                             type: Scratch.ArgumentType.STRING,
                             menu: 'betterOrWorse',
-                            defaultValue: 'better'
+                            defaultValue: String(GJAPI.BETTER_THAN)
                         },
                         value: {
                             type: Scratch.ArgumentType.NUMBER,
@@ -502,7 +552,7 @@ class GameJoltAPI {
                         betterOrWorse: {
                             type: Scratch.ArgumentType.STRING,
                             menu: 'betterOrWorse',
-                            defaultValue: 'better'
+                            defaultValue: String(GJAPI.BETTER_THAN)
                         },
                         value: {
                             type: Scratch.ArgumentType.NUMBER,
@@ -573,7 +623,7 @@ class GameJoltAPI {
                         globalOrPerUser: {
                             type: Scratch.ArgumentType.STRING,
                             menu: 'globalOrPerUser',
-                            defaultValue: 'global'
+                            defaultValue: GJAPI.DATA_STORE_GLOBAL
                         },
                         key: {
                             type: Scratch.ArgumentType.STRING,
@@ -594,7 +644,7 @@ class GameJoltAPI {
                         globalOrPerUser: {
                             type: Scratch.ArgumentType.STRING,
                             menu: 'globalOrPerUser',
-                            defaultValue: 'global'
+                            defaultValue: GJAPI.DATA_STORE_GLOBAL
                         },
                         key: {
                             type: Scratch.ArgumentType.STRING,
@@ -611,7 +661,7 @@ class GameJoltAPI {
                         globalOrPerUser: {
                             type: Scratch.ArgumentType.STRING,
                             menu: 'globalOrPerUser',
-                            defaultValue: 'global'
+                            defaultValue: GJAPI.DATA_STORE_GLOBAL
                         },
                         key: {
                             type: Scratch.ArgumentType.STRING,
@@ -637,7 +687,7 @@ class GameJoltAPI {
                         globalOrPerUser: {
                             type: Scratch.ArgumentType.STRING,
                             menu: 'globalOrPerUser',
-                            defaultValue: 'global'
+                            defaultValue: GJAPI.DATA_STORE_GLOBAL
                         },
                         key: {
                             type: Scratch.ArgumentType.STRING,
@@ -654,7 +704,7 @@ class GameJoltAPI {
                         globalOrPerUser: {
                             type: Scratch.ArgumentType.STRING,
                             menu: 'globalOrPerUser',
-                            defaultValue: 'global'
+                            defaultValue: GJAPI.DATA_STORE_GLOBAL
                         },
                         index: {
                             type: Scratch.ArgumentType.NUMBER,
@@ -689,7 +739,10 @@ class GameJoltAPI {
                     ]
                 },
                 fetchTypes: {
-                    items: ['username', 'ID']
+                    items: [
+                        { text: 'username', value: GJAPI.FETCH_USERNAME },
+                        { text: 'ID', value: GJAPI.FETCH_ID }
+                    ]
                 },
                 userDataTypes: {
                     items: [
@@ -743,16 +796,25 @@ class GameJoltAPI {
                     ]
                 },
                 openOrClose: {
-                    items: ['Open', 'Close']
+                    items: [
+                        { text: 'Open', value: String(GJAPI.SESSION_OPEN) },
+                        { text: 'Close', value: String(GJAPI.SESSION_CLOSE) }
+                    ]
                 },
                 globalOrPerUser: {
-                    items: ['global', 'user']
+                    items: [
+                        { text: 'global', value: GJAPI.DATA_STORE_GLOBAL },
+                        { text: 'user', value: GJAPI.DATA_STORE_USER }
+                    ]
                 },
                 indexOrID: {
                     items: ['index', 'ID']
                 },
                 betterOrWorse: {
-                    items: ['better', 'worse']
+                    items: [
+                        { text: 'better', value: String(GJAPI.BETTER_THAN) },
+                        { text: 'worse', value: String(GJAPI.WORSE_THAN) }
+                    ]
                 }
             }
         };
@@ -767,17 +829,7 @@ class GameJoltAPI {
         GJAPI.iGameID = args.ID; GJAPI.sGameKey = args.key;
     }
     session(args) {
-        switch (args.openOrClose) {
-            case 'Open':
-                GJAPI.SessionOpen();
-                break;
-            case 'Close':
-                GJAPI.SessionClose();
-                break;
-            default:
-                return err;
-        }
-        GJAPI.bSessionActive = (args.openOrClose == 'Open') ? true : false;
+        GJAPI.SessionSetStatus(args.openOrClose != f);
     }
     sessionPing() {
         GJAPI.SessionPing();
@@ -800,34 +852,11 @@ class GameJoltAPI {
     loginBool() {
         return GJAPI.bLoggedIn;
     }
-    loginUserInfo(args) {
-        switch (args.infoType) {
-            case 'username':
-                return GJAPI.sUserName;
-            case 'token':
-                return GJAPI.sUserToken;
-            default:
-                return err;
-        }
-    }
     userFetch(args) {
-        switch (args.fetchType) {
-            case 'username':
-                GJAPI.UserFetchName(args.usernameOrID, function (pResponse) {
-                    if (!pResponse.users) { data.user = err; return; }
-                    data.user = pResponse.users[0];
-                });
-                break;
-            case 'ID':
-                GJAPI.UserFetchID(args.usernameOrID, function (pResponse) {
-                    if (!pResponse.users) { data.user = err; return; }
-                    data.user = pResponse.users[0];
-                });
-                break;
-            default:
-                data.user = err;
-                return err;
-        }
+        GJAPI.UserFetchComb(args.fetchType, args.usernameOrID, function (pResponse) {
+            if (!pResponse.users) { data.user = err; return; }
+            data.user = pResponse.users[0];
+        });
     }
     userFetchCurrent() {
         GJAPI.UserFetchCurrent( function (pResponse) {
@@ -866,7 +895,7 @@ class GameJoltAPI {
                 if (typeof data.trophies != 'object') { return err; }
                 if (typeof data.trophies[args.value] != 'object') { return err; }
                 data.trophies[args.value][args.trophyDataType] = data.trophies[args.value][args.trophyDataType] ?? err;
-                data.trophies[args.value][args.trophyDataType];
+                return data.trophies[args.value][args.trophyDataType];
             case 'ID':
                 GJAPI.TrophyFetchSingle(args.value, function (pResponse) {
                     if (!pResponse.trophies) { data.trophies = err; return; }
@@ -874,7 +903,7 @@ class GameJoltAPI {
                 });
                 if (typeof data.trophies != 'object') { return err; }
                 data.trophies[args.trophyDataType] = data.trophies[args.trophyDataType] ?? err;
-                data.trophies[args.trophyDataType];
+                return data.trophies[args.trophyDataType];
             default:
                 data.trophies = err;
                 return err;
@@ -888,9 +917,9 @@ class GameJoltAPI {
     }
     scoreFetch(args) {
         GJAPI.ScoreFetchEx(args.ID,
-        args.globalOrPerUser == 'global' ? GJAPI.SCORE_ALL : GJAPI.SCORE_ONLY_USER,
+        args.globalOrPerUser ? GJAPI.SCORE_ALL : GJAPI.SCORE_ONLY_USER,
         args.amount,
-        args.betterOrWorse == 'better' ? GJAPI.BETTER_THAN : GJAPI.WORSE_THAN,
+        args.betterOrWorse != f,
         args.value, function (pResponse) {
             if (!pResponse.scores) { data.scores = err; return; }
             data.scores = pResponse.scores;
@@ -899,7 +928,7 @@ class GameJoltAPI {
     scoreFetchGuest(args) {
         GJAPI.ScoreFetchGuestEx(args.ID,
         args.username, args.amount,
-        args.betterOrWorse == 'better' ? GJAPI.BETTER_THAN : GJAPI.WORSE_THAN,
+        args.betterOrWorse != f,
         args.value, function (pResponse) {
             if (!pResponse.scores) { data.scores = err; return; }
             data.scores = pResponse.scores;
@@ -936,10 +965,10 @@ class GameJoltAPI {
         return data.tables[args.index][args.tableDataType];
     }
     dataStoreSet(args) {
-        GJAPI.DataStoreSet(args.globalOrPerUser == 'global' ? GJAPI.DATA_STORE_GLOBAL : GJAPI.DATA_STORE_USER, args.key, args.data);
+        GJAPI.DataStoreSet(args.globalOrPerUser, args.key, args.data);
     }
     dataStoreFetch(args) {
-        GJAPI.DataStoreFetch(args.globalOrPerUser == 'global' ? GJAPI.DATA_STORE_GLOBAL : GJAPI.DATA_STORE_USER, args.key, function (pResponse) {
+        GJAPI.DataStoreFetch(args.globalOrPerUser, args.key, function (pResponse) {
             if (pResponse.success == f) { data.store = err; return; }
             data.store = pResponse.data;
         });
@@ -947,13 +976,13 @@ class GameJoltAPI {
         return data.store;
     }
     dataStoreUpdate(args) {
-        GJAPI.DataStoreUpdate(args.globalOrPerUser == 'global' ? GJAPI.DATA_STORE_GLOBAL : GJAPI.DATA_STORE_USER, args.key, args.operationType, args.value);
+        GJAPI.DataStoreUpdate(args.globalOrPerUser, args.key, args.operationType, args.value);
     }
     dataStoreRemove(args) {
-        GJAPI.DataStoreRemove(args.globalOrPerUser == 'global' ? GJAPI.DATA_STORE_GLOBAL : GJAPI.DATA_STORE_USER, args.key);
+        GJAPI.DataStoreRemove(args.globalOrPerUser, args.key);
     }
     dataStoreGetKey(args) {
-        GJAPI.DataStoreGetKeys(args.globalOrPerUser == 'global' ? GJAPI.DATA_STORE_GLOBAL : GJAPI.DATA_STORE_USER, function (pResponse) {
+        GJAPI.DataStoreGetKeys(args.globalOrPerUser, function (pResponse) {
             if (!pResponse.keys) { data.keys = err; return; }
             data.keys = pResponse.keys;
         });
@@ -967,7 +996,7 @@ class GameJoltAPI {
             if (pResponse.success == f) { data.time = err; return; }
             data.time = pResponse;
         });
-        if (typeof timeData != 'object') { return err; }
+        if (typeof data.time != 'object') { return err; }
         data.time[args.timeType] = data.time[args.timeType] ?? err;
         return data.time[args.timeType];
     }
