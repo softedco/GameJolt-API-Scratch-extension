@@ -54,7 +54,7 @@ GJAPI.TrophyRemove = function (iTrophyID, pCallback) {
     if (!GJAPI.abTrophyCache[iTrophyID]) { return; }
     GJAPI.SendRequest('/trophies/remove-achieved/?game_id=' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken + '&trophy_id=' + iTrophyID, GJAPI.SEND_FOR_USER,
         function (pResponse) {
-        /* Update trophy status if succeded */
+        /* Update trophy status if the response succeded */
         if (pResponse.success == 'true') { GJAPI.abTrophyCache[iTrophyID] = false; }
         if (typeof pCallback == 'function') { pCallback(pResponse); }
     });
@@ -70,7 +70,7 @@ GJAPI.SessionCheck = function (pCallback) {
 };
 
 /* ScoreFetch but with better_than and worse_than parameters
- * If iValue is set to 0 it will work like original ScoreFetch
+ * If iValue is set to 0 it will work like riginal ScoreFetch
  */
 GJAPI.ScoreFetchEx = function (iScoreTableID, bOnlyUser, iLimit, iBetterOrWorse, iValue, pCallback) {
     if (!GJAPI.bLoggedIn && bOnlyUser) { GJAPI.LogTrace("ScoreFetch(" + iScoreTableID + ", " + bOnlyUser + ", " + iLimit + ", " + iBetterOrWorse + ", " + iValue + ") failed: no user logged in"); return; }
@@ -111,21 +111,31 @@ GJAPI.ScoreFetchGuestEx = function (iScoreTableID, bName, iLimit, iBetterOrWorse
 const sandboxed = typeof window == 'undefined' || !window.vm;
 
 /* Unsandboxing script by softed
- * Can be used outside of this extension with extensionInstance changed to your extension class
+ * Can be used outside of this extension
  */
 if (!sandboxed) {
     var Scratch = {
-        /* Overwriting the fields */
+
+        /* Overwriting the fields
+         * Add unused ArgumentType fields
+         */
         BlockType: {
             COMMAND: 'command',
             REPORTER: 'reporter',
+
+            /* It's Boolean
+             * If you set it to boolean it would display as a terminal hat block
+             */
             BOOLEAN: 'Boolean'
         },
         ArgumentType: {
             STRING: 'string',
             NUMBER: 'number'
         },
-        /* Overwriting the extension registering method */
+
+        /* Overwriting the extension registering method
+         * Change the extensionInstance to your extension class
+         */
         extensions: {
             register(args) {
                 (
@@ -238,7 +248,7 @@ class GameJoltAPI {
                 },
 
                 /* Not necessary since the library handles pinging for you
-                 * Can be used for debugging
+                 * Still useful for debugging purposes
                  */
                 {
                     opcode: 'sessionPing',
@@ -402,10 +412,6 @@ class GameJoltAPI {
                         }
                     }
                 },
-
-                /* Might get merged with scoreAdd
-                 * Merging will break backwards compatibility
-                 */
                 {
                     opcode: 'scoreAddGuest',
                     blockIconURI: scoreIcon,
@@ -655,6 +661,10 @@ class GameJoltAPI {
                     }
                 }
             ],
+
+            /* TODO: Add values to eliminate switch-case madness 
+             * This shouldn't break backwards compatibility
+             */
             menus: {
                 versionTypes: {
                     items: ['current', 'up-to-date']
@@ -872,6 +882,7 @@ class GameJoltAPI {
                 if (typeof trophyData != 'object') { return err; }
                 switch(args.trophyDataType) {
                     case 'ID':
+
                         /* Say hello to Scratch's architecture
                          * Even dynamic menus can't fix this
                          */
