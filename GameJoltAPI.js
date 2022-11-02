@@ -152,8 +152,8 @@ if (!sandboxed) {
 }
 
 /* Scratch extension by softed
- * Works on Turbowarp by GarboMuffin (Sandboxed and unsandboxed)
- * SheepTester's Epicques (Unsandboxed)
+ * Works on Turbowarp by GarboMuffin (Sandboxed and unsandboxed),
+ * SheepTester's Epicques (Unsandboxed),
  * Ogadaki's Adacraft (Unsandboxed)
  */
 
