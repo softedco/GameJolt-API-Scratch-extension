@@ -726,11 +726,6 @@ class GameJoltAPI {
                     }
                 }
             ],
-
-            /* TODO: Merge some similar API library methods
-             * So the values could be passed as an argument representing their type
-             * Eliminating the switch-case madness almost completely
-             */
             menus: {
                 versionTypes: {
                     items: [
