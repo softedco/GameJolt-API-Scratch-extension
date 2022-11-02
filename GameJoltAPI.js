@@ -209,7 +209,8 @@ class GameJoltAPI {
                     arguments: {
                         versionType: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'versionTypes'
+                            menu: 'versionTypes',
+                            default: 'current'
                         }
                     }
                 },
@@ -325,7 +326,8 @@ class GameJoltAPI {
                     arguments: {
                         userDataType: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'userDataTypes'
+                            menu: 'userDataTypes',
+                            default: 'ID'
                         }
                     }
                 },
@@ -641,7 +643,8 @@ class GameJoltAPI {
                     arguments: {
                         timeType: {
                             type: Scratch.ArgumentType.STRING,
-                            menu: 'timeTypes'
+                            menu: 'timeTypes',
+                            default: 'timestamp'
                         }
                     }
                 }
