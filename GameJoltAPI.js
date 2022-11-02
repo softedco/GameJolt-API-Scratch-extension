@@ -115,6 +115,7 @@ const sandboxed = typeof window == 'undefined' || !window.vm;
  */
 if (!sandboxed) {
     var Scratch = {
+        /* Overwriting the fields */
         BlockType: {
             COMMAND: 'command',
             REPORTER: 'reporter',
@@ -124,6 +125,7 @@ if (!sandboxed) {
             STRING: 'string',
             NUMBER: 'number'
         },
+        /* Overwriting the extension registering method */
         extensions: {
             register(args) {
                 (
