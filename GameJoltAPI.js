@@ -118,7 +118,7 @@ if (!sandboxed) {
         BlockType: {
             COMMAND: 'command',
             REPORTER: 'reporter',
-            BOOLEAN: 'boolean'
+            BOOLEAN: 'Boolean'
         },
         ArgumentType: {
             STRING: 'string',
@@ -141,7 +141,7 @@ if (!sandboxed) {
 
 /* Scratch extension by softed
  * Works on Turbowarp by GarboMuffin
- * Partially works on SheepTester's Epicques
+ * Also works on SheepTester's Epicques
  */
 const err = 'error';
 const f = 'false'; /* Apparently API response object's success property is a string and not a boolean */
