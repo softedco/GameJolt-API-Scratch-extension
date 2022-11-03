@@ -169,7 +169,8 @@ GJAPI.ScoreFetchGuestEx = function (iScoreTableID, bName, iLimit, iBetterOrWorse
 /* Sandbox detection by MikeDev101
  * Can be used outside of this extension with the unsandboxing script
  */
-const sandboxed = (typeof window == 'undefined' || !window.vm);
+const sandboxed = true;
+    /* (typeof window == 'undefined' || !window.vm); */
 
 /* Unsandboxing script by softed
  * Can be used outside of this extension
