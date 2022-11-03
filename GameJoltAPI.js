@@ -224,7 +224,7 @@ if (!sandboxed) {
  * Useful for debugging purposes
  */
 let err = {
-    return(code) {
+    get(code) {
         if (err[code] == undefined) {
         return 'Error.';
         }
@@ -867,7 +867,7 @@ class GameJoltAPI {
             if (pResponse.success == bool.f) { data.session = false; return; }
             data.session = true;
         });
-        if (data.session == undefined) { return err.return('session'); }
+        if (data.session == undefined) { return err.get('session'); }
         return data.session;
     }
     loginManual(args) {
@@ -892,8 +892,8 @@ class GameJoltAPI {
         });
     }
     returnUserData(args) {
-        if (typeof data.user != 'object') { return err.return('user'); }
-        data.user[args.userDataType] = data.user[args.userDataType] ?? err.return('user');
+        if (typeof data.user != 'object') { return err.get('user'); }
+        data.user[args.userDataType] = data.user[args.userDataType] ?? err.get('user');
         return data.user[args.userDataType];
     }
     friendsFetch(args) {
@@ -901,9 +901,9 @@ class GameJoltAPI {
             if (pResponse.success == bool.f) { err.friends = pResponse.message; return; }
             data.friends = pResponse.friends;
         });
-        if (typeof data.friends != 'object') { return err.return('friends'); }
-        if (typeof data.friends[args.index] != 'object') { return err.return('friends'); }
-        data.friends[args.index].friend_id = data.friends[args.index].friend_id ?? err.return('friends');
+        if (typeof data.friends != 'object') { return err.get('friends'); }
+        if (typeof data.friends[args.index] != 'object') { return err.get('friends'); }
+        data.friends[args.index].friend_id = data.friends[args.index].friend_id ?? err.get('friends');
         return data.friends[args.index].friend_id;
     }
     trophyAchieve(args) {
@@ -917,13 +917,13 @@ class GameJoltAPI {
             if (!pResponse.trophies) { err.trophies = pResponse.message; return; }
             data.trophies = pResponse.trophies;
         });
-        if (typeof data.trophies != 'object') { return err.return('trophies'); }
+        if (typeof data.trophies != 'object') { return err.get('trophies'); }
         if (args.indexOrId == bool.t) {
-            data.trophies[0][args.trophyDataType] = data.trophies[0][args.trophyDataType] ?? err.return('trophies');
+            data.trophies[0][args.trophyDataType] = data.trophies[0][args.trophyDataType] ?? err.get('trophies');
             return data.trophies[0][args.trophyDataType];
         }
-        if (typeof data.trophies[args.value] != 'object') { return err.return('trophies'); }
-        data.trophies[args.value][args.trophyDataType] = data.trophies[args.value][args.trophyDataType] ?? err.return('trophies');
+        if (typeof data.trophies[args.value] != 'object') { return err.get('trophies'); }
+        data.trophies[args.value][args.trophyDataType] = data.trophies[args.value][args.trophyDataType] ?? err.get('trophies');
         return data.trophies[args.value][args.trophyDataType];
     }
     scoreAdd(args) {
@@ -952,15 +952,15 @@ class GameJoltAPI {
         });
     }
     returnScoreData(args) {
-        if (typeof data.scores != 'object') { return err.return('scores'); }
-        if (typeof data.scores[args.index] != 'object') { return err.return('scores'); }
+        if (typeof data.scores != 'object') { return err.get('scores'); }
+        if (typeof data.scores[args.index] != 'object') { return err.get('scores'); }
         if (args.scoreDataType == 'user') {
             if (data.scores[args.index].user == '') {
-                data.scores[args.index].guest = data.scores[args.index].guest ?? err.return('scores');
+                data.scores[args.index].guest = data.scores[args.index].guest ?? err.get('scores');
                 return data.scores[args.index].guest;
             }
         }
-        data.scores[args.index][args.scoreDataType] = data.scores[args.index][args.scoreDataType] ?? err.return('scores');
+        data.scores[args.index][args.scoreDataType] = data.scores[args.index][args.scoreDataType] ?? err.get('scores');
         return data.scores[args.index][args.scoreDataType];
     }
     scoreGetRank(args) {
@@ -968,7 +968,7 @@ class GameJoltAPI {
             if (pResponse.success == bool.f) { err.rank = pResponse.message; return; }
             data.rank = pResponse.rank;
         });
-        data.rank = data.rank ?? err.return('rank');
+        data.rank = data.rank ?? err.get('rank');
         return data.rank;
     }
     scoreGetTables(args) {
@@ -976,9 +976,9 @@ class GameJoltAPI {
             if (pResponse.success == bool.f) { err.tables = pResponse.message; return; }
             data.tables = pResponse.tables;
         });
-        if (typeof data.tables != 'object') { return err.return('tables'); }
-        if (typeof data.tables[args.index] != 'object') { return err.return('tables'); }
-        data.tables[args.index][args.tableDataType] = data.tables[args.index][args.tableDataType] ?? err.return('tables');
+        if (typeof data.tables != 'object') { return err.get('tables'); }
+        if (typeof data.tables[args.index] != 'object') { return err.get('tables'); }
+        data.tables[args.index][args.tableDataType] = data.tables[args.index][args.tableDataType] ?? err.get('tables');
         return data.tables[args.index][args.tableDataType];
     }
     dataStoreSet(args) {
@@ -989,7 +989,7 @@ class GameJoltAPI {
             if (pResponse.success == bool.f) { err.store = pResponse.message; return; }
             data.store = pResponse.data;
         });
-        data.store = data.store ?? err.return('store');
+        data.store = data.store ?? err.get('store');
         return data.store;
     }
     dataStoreUpdate(args) {
@@ -1003,9 +1003,9 @@ class GameJoltAPI {
             if (!pResponse.keys) { err.keys = pResponse.message; return; }
             data.keys = pResponse.keys;
         });
-        if (typeof data.keys != 'object') { return err.return('keys'); }
-        if (typeof data.keys[args.index] != 'object') { return err.return('keys'); }
-        data.keys[args.index].key = data.keys[args.index].key ?? err.return('keys');
+        if (typeof data.keys != 'object') { return err.get('keys'); }
+        if (typeof data.keys[args.index] != 'object') { return err.get('keys'); }
+        data.keys[args.index].key = data.keys[args.index].key ?? err.get('keys');
         return data.keys[args.index].key;
     }
     timeFetch(args) {
@@ -1013,8 +1013,8 @@ class GameJoltAPI {
             if (pResponse.success == bool.f) { err.time = pResponse.message; return; }
             data.time = pResponse;
         });
-        if (typeof data.time != 'object') { return err.return('time'); }
-        data.time[args.timeType] = data.time[args.timeType] ?? err.return('time');
+        if (typeof data.time != 'object') { return err.get('time'); }
+        data.time[args.timeType] = data.time[args.timeType] ?? err.get('time');
         return data.time[args.timeType];
     }
 }
