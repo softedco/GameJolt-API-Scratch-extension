@@ -218,23 +218,34 @@ if (!sandboxed) {
  * Ogadaki's Adacraft (Unsandboxed)
  */
 
-/* Some constants to replace repetitive literals
- * TODO: Make err an object with different error messages
+/* Some constants to replace repetitive literals */
+
+/* Err object
+ * Useful for debugging purposes
  */
-const err = 'error';
+let err = {
+    return(code) {
+        if (err[code] == undefined) {
+        return 'Error.';
+        }
+        return 'Error: ' + err[code];
+    }
+};
 
 /* Apparently API response object's success property is a string and not a boolean
- * That's why there is stuff like 'pResponse.success == f'
+ * That's why there is stuff like 'pResponse.success == bool.f'
  */
-const tru = 'true';
-const fals = 'false';
+const bool = {
+    t: 'true',
+    f: 'false'
+};
 
 /* Version object
  * Useful for checking if the code is outdated or not
  * It's a constant so you have to refresh the page to update the upToDate field
  */
 const version = {
-    current: '1.30.63\n',
+    current: '1.31.63\n',
     upToDate: fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''))
 };
 
@@ -844,18 +855,19 @@ class GameJoltAPI {
         GJAPI.iGameID = args.ID; GJAPI.sGameKey = args.key;
     }
     session(args) {
-        GJAPI.SessionSetStatus(args.openOrClose != f);
+        GJAPI.SessionSetStatus(args.openOrClose == bool.t);
     }
     sessionPing() {
         GJAPI.SessionPing();
     }
     sessionBool() {
         GJAPI.SessionCheck(function (pResponse) {
+            if (pResponse.message) { err.session = pResponse.message; return; }
             /* Jesus Christ */
-            if (pResponse.success == fals) { data.session = false; return; }
+            if (pResponse.success == bool.f) { data.session = false; return; }
             data.session = true;
         });
-        if (data.session == undefined) { return err; }
+        if (data.session == undefined) { return err.return('session'); }
         return data.session;
     }
     loginManual(args) {
@@ -868,30 +880,30 @@ class GameJoltAPI {
         return GJAPI.bLoggedIn;
     }
     userFetch(args) {
-        GJAPI.UserFetchComb(args.fetchType == t, args.usernameOrID, function (pResponse) {
-            if (!pResponse.users) { data.user = err; return; }
+        GJAPI.UserFetchComb(args.fetchType == bool.t, args.usernameOrID, function (pResponse) {
+            if (!pResponse.users) { err.user = pResponse.message; return; }
             data.user = pResponse.users[0];
         });
     }
     userFetchCurrent() {
         GJAPI.UserFetchCurrent( function (pResponse) {
-            if (!pResponse.users) { data.user = err; return; }
+            if (!pResponse.users) { err.user = pResponse.message; return; }
             data.user = pResponse.users[0];
         });
     }
     returnUserData(args) {
-        if (typeof data.user != 'object') { return err; }
-        data.user[args.userDataType] = data.user[args.userDataType] ?? err;
+        if (typeof data.user != 'object') { return err.return('user'); }
+        data.user[args.userDataType] = data.user[args.userDataType] ?? err.return('user');
         return data.user[args.userDataType];
     }
     friendsFetch(args) {
         GJAPI.FriendsFetch( function (pResponse) {
-            if (pResponse.success == fals) { data.friends = err; return; }
+            if (pResponse.success == bool.f) { err.friends = pResponse.message; return; }
             data.friends = pResponse.friends;
         });
-        if (typeof data.friends != 'object') { return err; }
-        if (typeof data.friends[args.index] != 'object') { return err; }
-        data.friends[args.index].friend_id = data.friends[args.index].friend_id ?? err;
+        if (typeof data.friends != 'object') { return err.return('friends'); }
+        if (typeof data.friends[args.index] != 'object') { return err.return('friends'); }
+        data.friends[args.index].friend_id = data.friends[args.index].friend_id ?? err.return('friends');
         return data.friends[args.index].friend_id;
     }
     trophyAchieve(args) {
@@ -901,17 +913,17 @@ class GameJoltAPI {
         GJAPI.TrophyRemove(args.ID);
     }
     trophyFetch(args) {
-        GJAPI.TrophyFetchComb(args.indexOrID == tru, (args.indexOrID == tru) ? args.value : GJAPI.TROPHY_ALL, function (pResponse) {
-            if (!pResponse.trophies) { data.trophies = err; return; }
+        GJAPI.TrophyFetchComb(args.indexOrID == bool.t, (args.indexOrID == bool.t) ? args.value : GJAPI.TROPHY_ALL, function (pResponse) {
+            if (!pResponse.trophies) { err.trophies = pResponse.message; return; }
             data.trophies = pResponse.trophies;
         });
-        if (typeof data.trophies != 'object') { return err; }
-        if (args.indexOrId == tru) {
-            data.trophies[0][args.trophyDataType] = data.trophies[0][args.trophyDataType] ?? err;
+        if (typeof data.trophies != 'object') { return err.return('trophies'); }
+        if (args.indexOrId == bool.t) {
+            data.trophies[0][args.trophyDataType] = data.trophies[0][args.trophyDataType] ?? err.return('trophies');
             return data.trophies[0][args.trophyDataType];
         }
-        if (typeof data.trophies[args.value] != 'object') { return err; }
-        data.trophies[args.value][args.trophyDataType] = data.trophies[args.value][args.trophyDataType] ?? err;
+        if (typeof data.trophies[args.value] != 'object') { return err.return('trophies'); }
+        data.trophies[args.value][args.trophyDataType] = data.trophies[args.value][args.trophyDataType] ?? err.return('trophies');
         return data.trophies[args.value][args.trophyDataType];
     }
     scoreAdd(args) {
@@ -924,49 +936,49 @@ class GameJoltAPI {
         GJAPI.ScoreFetchEx(args.ID,
         args.globalOrPerUser ? GJAPI.SCORE_ALL : GJAPI.SCORE_ONLY_USER,
         args.amount,
-        args.betterOrWorse == tru,
+        args.betterOrWorse == bool.t,
         args.value, function (pResponse) {
-            if (!pResponse.scores) { data.scores = err; return; }
+            if (!pResponse.scores) { err.scores = pResponse.message; return; }
             data.scores = pResponse.scores;
         });
     }
     scoreFetchGuest(args) {
         GJAPI.ScoreFetchGuestEx(args.ID,
         args.username, args.amount,
-        args.betterOrWorse == tru,
+        args.betterOrWorse == bool.t,
         args.value, function (pResponse) {
-            if (!pResponse.scores) { data.scores = err; return; }
+            if (!pResponse.scores) { err.scores = pResponse.message; return; }
             data.scores = pResponse.scores;
         });
     }
     returnScoreData(args) {
-        if (typeof data.scores != 'object') { return err; }
-        if (typeof data.scores[args.index] != 'object') { return err; }
+        if (typeof data.scores != 'object') { return err.return('scores'); }
+        if (typeof data.scores[args.index] != 'object') { return err.return('scores'); }
         if (args.scoreDataType == 'user') {
             if (data.scores[args.index].user == '') {
-                data.scores[args.index].guest = data.scores[args.index].guest ?? err;
+                data.scores[args.index].guest = data.scores[args.index].guest ?? err.return('scores');
                 return data.scores[args.index].guest;
             }
         }
-        data.scores[args.index][args.scoreDataType] = data.scores[args.index][args.scoreDataType] ?? err;
+        data.scores[args.index][args.scoreDataType] = data.scores[args.index][args.scoreDataType] ?? err.return('scores');
         return data.scores[args.index][args.scoreDataType];
     }
     scoreGetRank(args) {
         GJAPI.ScoreGetRank(args.ID, args.value, function (pResponse) {
-            if (pResponse.success == fals) { data.rank = err; return; }
+            if (pResponse.success == bool.f) { err.rank = pResponse.message; return; }
             data.rank = pResponse.rank;
         });
-        data.rank = data.rank ?? err;
+        data.rank = data.rank ?? err.return('rank');
         return data.rank;
     }
     scoreGetTables(args) {
         GJAPI.ScoreGetTables( function (pResponse) {
-            if (pResponse.success == fals) { data.tables = err; return; }
+            if (pResponse.success == bool.f) { err.tables = pResponse.message; return; }
             data.tables = pResponse.tables;
         });
-        if (typeof data.tables != 'object') { return err; }
-        if (typeof data.tables[args.index] != 'object') { return err; }
-        data.tables[args.index][args.tableDataType] = data.tables[args.index][args.tableDataType] ?? err;
+        if (typeof data.tables != 'object') { return err.return('tables'); }
+        if (typeof data.tables[args.index] != 'object') { return err.return('tables'); }
+        data.tables[args.index][args.tableDataType] = data.tables[args.index][args.tableDataType] ?? err.return('tables');
         return data.tables[args.index][args.tableDataType];
     }
     dataStoreSet(args) {
@@ -974,10 +986,10 @@ class GameJoltAPI {
     }
     dataStoreFetch(args) {
         GJAPI.DataStoreFetch(args.globalOrPerUser, args.key, function (pResponse) {
-            if (pResponse.success == fals) { data.store = err; return; }
+            if (pResponse.success == bool.f) { err.store = pResponse.message; return; }
             data.store = pResponse.data;
         });
-        data.store = data.store ?? err;
+        data.store = data.store ?? err.return('store');
         return data.store;
     }
     dataStoreUpdate(args) {
@@ -988,21 +1000,21 @@ class GameJoltAPI {
     }
     dataStoreGetKey(args) {
         GJAPI.DataStoreGetKeys(args.globalOrPerUser, function (pResponse) {
-            if (!pResponse.keys) { data.keys = err; return; }
+            if (!pResponse.keys) { err.keys = pResponse.message; return; }
             data.keys = pResponse.keys;
         });
-        if (typeof data.keys != 'object') { return err; }
-        if (typeof data.keys[args.index] != 'object') { return err; }
-        data.keys[args.index].key = data.keys[args.index].key ?? err;
+        if (typeof data.keys != 'object') { return err.return('keys'); }
+        if (typeof data.keys[args.index] != 'object') { return err.return('keys'); }
+        data.keys[args.index].key = data.keys[args.index].key ?? err.return('keys');
         return data.keys[args.index].key;
     }
     timeFetch(args) {
         GJAPI.TimeFetch(function (pResponse) {
-            if (pResponse.success == fals) { data.time = err; return; }
+            if (pResponse.success == bool.f) { err.time = pResponse.message; return; }
             data.time = pResponse;
         });
-        if (typeof data.time != 'object') { return err; }
-        data.time[args.timeType] = data.time[args.timeType] ?? err;
+        if (typeof data.time != 'object') { return err.return('time'); }
+        data.time[args.timeType] = data.time[args.timeType] ?? err.return('time');
         return data.time[args.timeType];
     }
 }
