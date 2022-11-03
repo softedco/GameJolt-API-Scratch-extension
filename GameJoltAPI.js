@@ -208,34 +208,13 @@ if (!sandboxed) {
  * Useful for debugging purposes
  */
 let err = {
-    session: undefined,
-    user: undefined,
-    friends: undefined,
-    trophy: undefined,
-    score: undefined,
-    rank: undefined,
-    tables: undefined,
-    data: undefined,
-    keys: undefined,
-    time: undefined,
     get(code) {
         return (err[code] == undefined) ? 'Error.' : 'Error: ' + err[code];
     }
 };
 
 /* Data object for storing API response objects */
-let data = {
-    session: undefined,
-    user: undefined,
-    friends: undefined,
-    trophy: undefined,
-    score: undefined,
-    rank: undefined,
-    tables: undefined,
-    data: undefined,
-    keys: undefined,
-    time: undefined
-};
+let data = {};
 
 /* Apparently API response object's success property is a string and not a boolean
  * That's why there is stuff like 'pResponse.success == bool.f'
