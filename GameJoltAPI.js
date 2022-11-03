@@ -225,7 +225,7 @@ if (!sandboxed) {
  */
 let err = {
     get(code) {
-        if (err[code] == undefined) {
+        if (err[code] ?? true) {
         return 'Error.';
         }
         return 'Error: ' + err[code];
