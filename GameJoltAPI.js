@@ -19,7 +19,7 @@ GJAPI.abTrophyCache={};GJAPI.TROPHY_ONLY_ACHIEVED=1;GJAPI.TROPHY_ONLY_NOTACHIEVE
 GJAPI.TrophyFetch=function(b,a){GJAPI.bLoggedIn?GJAPI.SendRequest("/trophies/"+(b===GJAPI.TROPHY_ALL?"":"?achieved="+(b>=GJAPI.TROPHY_ONLY_ACHIEVED?"true":"false")),GJAPI.SEND_FOR_USER,a):GJAPI.LogTrace("TrophyFetch("+b+") failed: no user logged in")};GJAPI.TrophyFetchSingle=function(b,a){GJAPI.bLoggedIn?GJAPI.SendRequest("/trophies/?trophy_id="+b,GJAPI.SEND_FOR_USER,a):GJAPI.LogTrace("TrophyFetchSingle("+b+") failed: no user logged in")};GJAPI.SCORE_ONLY_USER=!0;GJAPI.SCORE_ALL=!1;
 GJAPI.ScoreAdd=function(b,a,c,d,e){GJAPI.bLoggedIn?GJAPI.ScoreAddGuest(b,a,c,"",d,e):GJAPI.LogTrace("ScoreAdd("+b+", "+a+", "+c+") failed: no user logged in")};GJAPI.ScoreAddGuest=function(b,a,c,d,e,f){var g=d&&d.length?!0:!1;GJAPI.SendRequest("/scores/add/?sort="+a+"&score="+c+(g?"&guest="+d:"")+(b?"&table_id="+b:"")+(e?"&extra_data="+e:""),g?GJAPI.SEND_GENERAL:GJAPI.SEND_FOR_USER,f)};
 GJAPI.ScoreFetch=function(b,a,c,d){!GJAPI.bLoggedIn&&a?GJAPI.LogTrace("ScoreFetch("+b+", "+a+", "+c+") failed: no user logged in"):GJAPI.SendRequest("/scores/?limit="+c+(b?"&table_id="+b:""),a!==GJAPI.SCORE_ONLY_USER?GJAPI.SEND_GENERAL:GJAPI.SEND_FOR_USER,d)};GJAPI.DATA_STORE_USER=0;GJAPI.DATA_STORE_GLOBAL=1;GJAPI.DataStoreSet=function(b,a,c,d){GJAPI.SendRequestEx("/data-store/set/?key="+a,b===GJAPI.DATA_STORE_USER,"json","data="+c,d)};
-GJAPI.DataStoreFetch = function (b, a, c) { GJAPI.SendRequestEx("/data-store/?key=" + a, b === GJAPI.DATA_STORE_USER, "dump", "", c) }; GJAPI.DataStoreUpdate = function (b, a, c, d, e) { GJAPI.SendRequest("/data-store/update/?key=" + a + "&operation=" + c + "&value=" + d, b === GJAPI.DATA_STORE_USER, e) }; GJAPI.DataStoreRemove = function (b, a, c) { GJAPI.SendRequest("/data-store/remove/?key=" + a, b === GJAPI.DATA_STORE_USER, c) }; GJAPI.DataStoreGetKeys = function (b, a) { GJAPI.SendRequest("/data-store/get-keys/", b === GJAPI.DATA_STORE_USER, a) };
+GJAPI.DataStoreFetch = function (b, a, c) { GJAPI.SendRequestEx("/data-store/?key=" + a, b === GJAPI.DATA_STORE_USER, "json", "", c) }; GJAPI.DataStoreUpdate = function (b, a, c, d, e) { GJAPI.SendRequest("/data-store/update/?key=" + a + "&operation=" + c + "&value=" + d, b === GJAPI.DATA_STORE_USER, e) }; GJAPI.DataStoreRemove = function (b, a, c) { GJAPI.SendRequest("/data-store/remove/?key=" + a, b === GJAPI.DATA_STORE_USER, c) }; GJAPI.DataStoreGetKeys = function (b, a) { GJAPI.SendRequest("/data-store/get-keys/", b === GJAPI.DATA_STORE_USER, a) };
 function __CreateAjax(b,a,c){"string"!==typeof a&&(a="");if(window.XMLHttpRequest){var d=new XMLHttpRequest;d.onreadystatechange=function(){4===d.readyState&&c(d.responseText)};""!==a?(d.open("POST",b),d.setRequestHeader("Content-Type","application/x-www-form-urlencoded"),d.send(a)):(d.open("GET",b),d.send())}else console.error(GJAPI.sLogName+" XMLHttpRequest not supported")}var hexcase=0;function hex_md5(b){return rstr2hex(rstr_md5(str2rstr_utf8(b)))}
 function hex_hmac_md5(b,a){return rstr2hex(rstr_hmac_md5(str2rstr_utf8(b),str2rstr_utf8(a)))}function md5_vm_test(){return"900150983cd24fb0d6963f7d28e17f72"==hex_md5("abc").toLowerCase()}function rstr_md5(b){return binl2rstr(binl_md5(rstr2binl(b),8*b.length))}
 function rstr_hmac_md5(b,a){var c=rstr2binl(b);16<c.length&&(c=binl_md5(c,8*b.length));var d=Array(16);b=Array(16);for(var e=0;16>e;e++)d[e]=c[e]^909522486,b[e]=c[e]^1549556828;a=binl_md5(d.concat(rstr2binl(a)),512+8*a.length);return binl2rstr(binl_md5(b.concat(a),640))}function rstr2hex(b){try{hexcase}catch(f){hexcase=0}for(var a=hexcase?"0123456789ABCDEF":"0123456789abcdef",c="",d,e=0;e<b.length;e++)d=b.charCodeAt(e),c+=a.charAt(d>>>4&15)+a.charAt(d&15);return c}
@@ -44,8 +44,6 @@ GJAPI.SESSION_OPEN = true;
 GJAPI.SESSION_CLOSE = false;
 GJAPI.FETCH_USERNAME = true;
 GJAPI.FETCH_ID = false;
-GJAPI.FETCH_ALL = true;
-GJAPI.FETCH_SINGLE = false;
 
 GJAPI.TimeFetch = function (pCallback) {
     GJAPI.SendRequest('/time/?game_id=' + GJAPI.iGameID, GJAPI.SEND_GENERAL, pCallback);
@@ -112,20 +110,6 @@ GJAPI.UserFetchComb = function (bUsername, bValue, pCallback) {
         return;
     }
     GJAPI.SendRequest("/users/?user_id=" + bValue, GJAPI.SEND_GENERAL, pCallback);
-};
-
-/* TrophyFetch and TrophyFetchSingle combined
- * Use GJAPI.FETCH_ALL and GJAPI.FETCH_SINGLE for better code readability
- */
-GJAPI.TrophyFetchComb = function (iSingle, iValue, pCallback) {
-    if (!GJAPI.bLoggedIn) { GJAPI.LogTrace('TrophyFetchComb(' + iSingle + ', ' + iValue + ') failed: no user logged in'); return; }
-    if (iSingle) {
-        GJAPI.SendRequest("/trophies/?trophy_id=" + iValue, GJAPI.SEND_FOR_USER, pCallback);
-        return;
-    }
-    var sTrophyData = (iValue == GJAPI.TROPHY_ALL) ? "" :
-        "?achieved=" + ((iValue >= GJAPI.TROPHY_ONLY_ACHIEVED) ? "true" : "false");
-    GJAPI.SendRequest("/trophies/" + sTrophyData, GJAPI.SEND_FOR_USER, pCallback);
 };
 
 /* ScoreFetch but with better_than and worse_than parameters
@@ -225,7 +209,7 @@ if (!sandboxed) {
  */
 let err = {
     get(code) {
-        return (this.err?.[code] ?? true) ? 'Error.' : 'Error: ' + this.err[code];
+        return (err?.[code] == undefined) ? 'Error.' : 'Error: ' + err[code];
     }
 };
 
@@ -242,7 +226,7 @@ const bool = {
  * It's a constant so you have to refresh the page to update the upToDate field
  */
 const version = {
-    current: '1.31.63\n',
+    current: '1.31.64\n',
     upToDate: fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''))
 };
 
@@ -828,10 +812,7 @@ class GameJoltAPI {
                     ]
                 },
                 indexOrID: {
-                    items: [
-                        { text: 'index', value: String(GJAPI.FETCH_ALL) },
-                        { text: 'ID', value: String(GJAPI.FETCH_SINGLE) }
-                    ]
+                    items: ['index', 'ID']
                 },
                 betterOrWorse: {
                     items: [
@@ -864,7 +845,7 @@ class GameJoltAPI {
             if (pResponse.success == bool.f) { data.session = false; return; }
             data.session = true;
         });
-        if (data?.session == undefined) { return err.get('session'); }
+        if (data.session == undefined) { return err.get('session'); }
         return data.session;
     }
     loginManual(args) {
@@ -890,7 +871,7 @@ class GameJoltAPI {
     }
     returnUserData(args) {
         if (typeof data.user != 'object') { return err.get('user'); }
-        data.user[args.userDataType] = data?.user[args.userDataType] ?? err.get('user');
+        data.user[args.userDataType] = data.user[args.userDataType] ?? err.get('user');
         return data.user[args.userDataType];
     }
     friendsFetch(args) {
@@ -898,9 +879,9 @@ class GameJoltAPI {
             if (pResponse.success == bool.f) { err.friends = pResponse.message; return; }
             data.friends = pResponse.friends;
         });
-        if (typeof data?.friends != 'object') { return err.get('friends'); }
-        if (typeof data?.friends[args.index] != 'object') { return err.get('friends'); }
-        data.friends[args.index].friend_id = data?.friends[args.index]?.friend_id ?? err.get('friends');
+        if (typeof data.friends != 'object') { return err.get('friends'); }
+        if (typeof data.friends[args.index] != 'object') { return err.get('friends'); }
+        data.friends[args.index].friend_id = data.friends[args.index].friend_id ?? err.get('friends');
         return data.friends[args.index].friend_id;
     }
     trophyAchieve(args) {
@@ -910,18 +891,27 @@ class GameJoltAPI {
         GJAPI.TrophyRemove(args.ID);
     }
     trophyFetch(args) {
-        GJAPI.TrophyFetchComb(args.indexOrID == bool.t, (args.indexOrID == bool.t) ? args.value : GJAPI.TROPHY_ALL, function (pResponse) {
-            if (!pResponse.trophies) { err.trophies = pResponse.message; return; }
-            data.trophies = pResponse.trophies;
-        });
-        if (typeof data?.trophies != 'object') { return err.get('trophies'); }
-        if (args.indexOrId == bool.t) {
-            data.trophies[0][args.trophyDataType] = data?.trophies[0][args.trophyDataType] ?? err.get('trophies');
-            return data.trophies[0][args.trophyDataType];
+        switch (args.indexOrID) {
+            case 'index':
+                GJAPI.TrophyFetch(GJAPI.TROPHY_ALL, function (pResponse) {
+                    if (!pResponse.trophies) { err.trophies = pResponse.message; return; }
+                    data.trophies = pResponse.trophies;
+                });
+                if (typeof data.trophies != 'object') { return err.get('trophies'); }
+                if (typeof data.trophies[args.value] != 'object') { return err.get('trophies'); }
+                data.trophies[args.value][args.trophyDataType] = data.trophies[args.value][args.trophyDataType] ?? err.get('trophies');
+                return data.trophies[args.value][args.trophyDataType];
+            case 'ID':
+                GJAPI.TrophyFetchSingle(args.value, function (pResponse) {
+                    if (!pResponse.trophies) { err.trophies = pResponse.message; return; }
+                    data.trophies = pResponse.trophies[0];
+                });
+                if (typeof data.trophies != 'object') { return err.get('trophies'); }
+                data.trophies[args.trophyDataType] = data.trophies[args.trophyDataType] ?? err.get('trophies');
+                return data.trophies[args.trophyDataType];
+            default:
+                return err.get('trophies');
         }
-        if (typeof data?.trophies[args.value] != 'object') { return err.get('trophies'); }
-        data.trophies[args.value][args.trophyDataType] = data?.trophies[args.value]?.[args.trophyDataType] ?? err.get('trophies');
-        return data.trophies[args.value][args.trophyDataType];
     }
     scoreAdd(args) {
         GJAPI.ScoreAdd(args.ID, args.value, args.text, args.extraData);
@@ -949,15 +939,15 @@ class GameJoltAPI {
         });
     }
     returnScoreData(args) {
-        if (typeof data?.scores != 'object') { return err.get('scores'); }
-        if (typeof data?.scores[args.index] != 'object') { return err.get('scores'); }
+        if (typeof data.scores != 'object') { return err.get('scores'); }
+        if (typeof data.scores[args.index] != 'object') { return err.get('scores'); }
         if (args.scoreDataType == 'user') {
             if (data.scores[args.index].user == '') {
-                data.scores[args.index].guest = data?.scores[args.index]?.guest ?? err.get('scores');
+                data.scores[args.index].guest = data.scores[args.index]?.guest ?? err.get('scores');
                 return data.scores[args.index].guest;
             }
         }
-        data.scores[args.index][args.scoreDataType] = data?.scores[args.index]?.[args.scoreDataType] ?? err.get('scores');
+        data.scores[args.index][args.scoreDataType] = data.scores[args.index][args.scoreDataType] ?? err.get('scores');
         return data.scores[args.index][args.scoreDataType];
     }
     scoreGetRank(args) {
@@ -965,7 +955,7 @@ class GameJoltAPI {
             if (pResponse.success == bool.f) { err.rank = pResponse.message; return; }
             data.rank = pResponse.rank;
         });
-        data.rank = data?.rank ?? err.get('rank');
+        data.rank = data.rank ?? err.get('rank');
         return data.rank;
     }
     scoreGetTables(args) {
@@ -986,7 +976,7 @@ class GameJoltAPI {
             if (pResponse.success == bool.f) { err.store = pResponse.message; return; }
             data.store = pResponse.data;
         });
-        data.store = data?.store ?? err.get('store');
+        data.store = data.store ?? err.get('store');
         return data.store;
     }
     dataStoreUpdate(args) {
@@ -1000,9 +990,9 @@ class GameJoltAPI {
             if (!pResponse.keys) { err.keys = pResponse.message; return; }
             data.keys = pResponse.keys;
         });
-        if (typeof data?.keys != 'object') { return err.get('keys'); }
-        if (typeof data?.keys[args.index] != 'object') { return err.get('keys'); }
-        data.keys[args.index].key = data?.keys[args.index]?.key ?? err.get('keys');
+        if (typeof data.keys != 'object') { return err.get('keys'); }
+        if (typeof data.keys[args.index] != 'object') { return err.get('keys'); }
+        data.keys[args.index].key = data.keys[args.index].key ?? err.get('keys');
         return data.keys[args.index].key;
     }
     timeFetch(args) {
@@ -1010,8 +1000,8 @@ class GameJoltAPI {
             if (pResponse.success == bool.f) { err.time = pResponse.message; return; }
             data.time = pResponse;
         });
-        if (typeof data?.time != 'object') { return err.get('time'); }
-        data.time[args.timeType] = data?.time[args.timeType] ?? err.get('time');
+        if (typeof data.time != 'object') { return err.get('time'); }
+        data.time[args.timeType] = data.time[args.timeType] ?? err.get('time');
         return data.time[args.timeType];
     }
 }
