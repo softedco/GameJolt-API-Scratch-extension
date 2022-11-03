@@ -224,7 +224,7 @@ if (!sandboxed) {
  * Useful for debugging purposes
  */
 let err = {
-    get: function (code) {
+    get(code) {
         if (err[code] == undefined) {
         return 'Error.';
         }
