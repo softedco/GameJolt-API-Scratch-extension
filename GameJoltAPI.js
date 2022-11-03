@@ -224,11 +224,11 @@ if (!sandboxed) {
  * Useful for debugging purposes
  */
 let err = {
-    get(code) {
-        if (err[code] == undefined) {
+    get: function (code) {
+        if (this.err[code] == undefined) {
         return 'Error.';
         }
-        return 'Error: ' + err[code];
+        return 'Error: ' + this.err[code];
     }
 };
 
