@@ -903,7 +903,7 @@ class GameJoltAPI {
         });
         if (typeof data?.friends != 'object') { return err.get('friends'); }
         if (typeof data?.friends[args.index] != 'object') { return err.get('friends'); }
-        data.friends[args.index].friend_id = data?.friends[args.index].friend_id ?? err.get('friends');
+        data.friends[args.index].friend_id = data?.friends[args.index]?.friend_id ?? err.get('friends');
         return data.friends[args.index].friend_id;
     }
     trophyAchieve(args) {
@@ -923,7 +923,7 @@ class GameJoltAPI {
             return data.trophies[0][args.trophyDataType];
         }
         if (typeof data?.trophies[args.value] != 'object') { return err.get('trophies'); }
-        data.trophies[args.value][args.trophyDataType] = data?.trophies[args.value][args.trophyDataType] ?? err.get('trophies');
+        data.trophies[args.value][args.trophyDataType] = data?.trophies[args.value]?.[args.trophyDataType] ?? err.get('trophies');
         return data.trophies[args.value][args.trophyDataType];
     }
     scoreAdd(args) {
