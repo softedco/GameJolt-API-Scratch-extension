@@ -225,10 +225,10 @@ if (!sandboxed) {
  */
 let err = {
     get: function (code) {
-        if (this.err[code] == undefined) {
+        if (err[code] == undefined) {
         return 'Error.';
         }
-        return 'Error: ' + this.err[code];
+        return 'Error: ' + err[code];
     }
 };
 
