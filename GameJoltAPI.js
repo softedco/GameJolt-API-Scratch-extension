@@ -103,20 +103,20 @@ GJAPI.SessionSetStatus = function (isOpen) {
 /* UserFetchName and UserFetchID combined
  * Use GJAPI.FETCH_USERNAME and GJAPI.FETCH_ID for better code readability
  */
-GJAPI.UserFetchComb = function (bUsername, bValue, pCallback) {
-    if (bUsername) {
-        GJAPI.SendRequest("/users/?username=" + bValue, GJAPI.SEND_GENERAL, pCallback);
+GJAPI.UserFetchComb = function (isUsername, value, pCallback) {
+    if (isUsername) {
+        GJAPI.SendRequest("/users/?username=" + value, GJAPI.SEND_GENERAL, pCallback);
         return;
     }
-    GJAPI.SendRequest("/users/?user_id=" + bValue, GJAPI.SEND_GENERAL, pCallback);
+    GJAPI.SendRequest("/users/?user_id=" + value, GJAPI.SEND_GENERAL, pCallback);
 };
 
 /* ScoreFetch but with better_than and worse_than parameters
  * Use GJAPI.BETTER_THAN and GJAPI.WORSE_THAN for better code readability
- * If iValue is set to 0 it will work like riginal ScoreFetch
+ * If value is set to 0 it will work like riginal ScoreFetch
  */
-GJAPI.ScoreFetchEx = function (iScoreTableID, bOnlyUser, iLimit, iBetterOrWorse, iValue, pCallback) {
-    if (!GJAPI.bLoggedIn && bOnlyUser) { GJAPI.LogTrace("ScoreFetch(" + iScoreTableID + ", " + bOnlyUser + ", " + iLimit + ", " + iBetterOrWorse + ", " + iValue + ") failed: no user logged in"); return; }
+GJAPI.ScoreFetchEx = function (iScoreTableID, bOnlyUser, iLimit, betterOrWorse, value, pCallback) {
+    if (!GJAPI.bLoggedIn && bOnlyUser) { GJAPI.LogTrace("ScoreFetch(" + iScoreTableID + ", " + bOnlyUser + ", " + iLimit + ", " + betterOrWorse + ", " + value + ") failed: no user logged in"); return; }
     var bFetchAll = (bOnlyUser == GJAPI.SCORE_ONLY_USER) ? false : true;
     GJAPI.SendRequest("/scores/"         +
                       "?limit=" + iLimit +
@@ -126,24 +126,24 @@ GJAPI.ScoreFetchEx = function (iScoreTableID, bOnlyUser, iLimit, iBetterOrWorse,
 };
 
 // Unused in the extension because of ScoreFetchGuestEx
-GJAPI.ScoreFetchGuest = function (iScoreTableID, bName, iLimit, pCallback) {
+GJAPI.ScoreFetchGuest = function (iScoreTableID, name, iLimit, pCallback) {
     GJAPI.SendRequest("/scores/" +
                       "?limit=" + iLimit +
                       (iScoreTableID ? ("&table_id=" + iScoreTableID) : "") +
-                      "&guest=" + bName,
+                      "&guest=" + name,
                       GJAPI.SEND_GENERAL, pCallback);
 };
 
 /* ScoreFetchGuest but with better_than and worse_than parameters
  * Use GJAPI.BETTER_THAN and GJAPI.WORSE_THAN for better code readability
- * If iValue is set to 0 it will work like original ScoreFetchGuest
+ * If value is set to 0 it will work like original ScoreFetchGuest
  */
-GJAPI.ScoreFetchGuestEx = function (iScoreTableID, bName, iLimit, iBetterOrWorse, iValue, pCallback) {
+GJAPI.ScoreFetchGuestEx = function (iScoreTableID, name, iLimit, betterOrVorse, value, pCallback) {
     GJAPI.SendRequest("/scores/" +
                       "?limit=" + iLimit +
                       (iScoreTableID ? ("&table_id=" + iScoreTableID) : "") +
-                      "&guest=" + bName +
-                      (iBetterOrWorse ? '&better_than=' : '&worse_than=') + iValue,
+                      "&guest=" + name +
+                      (betterOrWorse ? '&better_than=' : '&worse_than=') + value,
                       GJAPI.SEND_GENERAL, pCallback);
 };
 
