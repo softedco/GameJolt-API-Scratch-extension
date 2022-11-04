@@ -919,7 +919,7 @@ class GameJoltAPI {
     }
     scoreFetch(args) {
         GJAPI.ScoreFetchEx(args.ID,
-        args.globalOrPerUser ? GJAPI.SCORE_ALL : GJAPI.SCORE_ONLY_USER,
+        args.globalOrPerUser == GJAPI.DATA_STORE_GLOBAL ? GJAPI.SCORE_ALL : GJAPI.SCORE_ONLY_USER,
         args.amount,
         args.betterOrWorse == bool.t,
         args.value, pResponse => {
