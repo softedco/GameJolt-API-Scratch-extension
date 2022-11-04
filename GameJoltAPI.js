@@ -1,4 +1,4 @@
-/* Extension made by softed
+/* Made by softed
  * Special thanks to:
  * Martin Mauersics or MausGames, Bruno Assarisse, MikeDev101, LukasStudioTV
  */
@@ -125,9 +125,7 @@ GJAPI.ScoreFetchEx = function (iScoreTableID, bOnlyUser, iLimit, iBetterOrWorse,
                       (bFetchAll ? GJAPI.SEND_GENERAL : GJAPI.SEND_FOR_USER), pCallback);
 };
 
-/* Unused in the extension because of ScoreFetchGuestEx
- * Call when you don't need better_than or worse_than parameters
- */
+// Unused in the extension because of ScoreFetchGuestEx
 GJAPI.ScoreFetchGuest = function (iScoreTableID, bName, iLimit, pCallback) {
     GJAPI.SendRequest("/scores/" +
                       "?limit=" + iLimit +
@@ -176,11 +174,11 @@ if (!sandboxed) {
             STRING: 'string',
             NUMBER: 'number'
         },
-
-        /* Overwriting the extension registering method
-         * Change the extensionInstance to your extension class
-         */
         extensions: {
+
+            /* Overwriting extension's registering method
+             * Change extensionInstance to your extension class
+             */
             register(args) {
                 (
                     function ()
@@ -204,7 +202,7 @@ if (!sandboxed) {
 /* Some constants to replace repetitive literals */
 
 /* Err object
- * Useful for debugging purposes
+ * Used for storing API error messages
  */
 let err = {
     get(code) {
