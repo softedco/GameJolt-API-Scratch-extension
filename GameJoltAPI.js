@@ -55,11 +55,11 @@ GJAPI.FriendsFetch = function (pCallback) {
 };
 GJAPI.TrophyRemove = function (iTrophyID, pCallback) {
     if (!GJAPI.bLoggedIn) { GJAPI.LogTrace('TrophyRemove(' + iTrophyID + ') failed: no user logged in'); return; }
-    /* Check if the trophy is not achieved */
+    // Check if the trophy is not achieved
     if (!GJAPI.abTrophyCache[iTrophyID]) { return; }
     GJAPI.SendRequest('/trophies/remove-achieved/?game_id=' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken + '&trophy_id=' + iTrophyID, GJAPI.SEND_FOR_USER,
         function (pResponse) {
-        /* Update trophy status if the response succeded */
+        // Update trophy status if the response succeded
         if (pResponse.success == 'true') { GJAPI.abTrophyCache[iTrophyID] = false; }
         if (typeof pCallback == 'function') { pCallback(pResponse); }
     });
@@ -74,10 +74,10 @@ GJAPI.SessionCheck = function (pCallback) {
     GJAPI.SendRequest('/sessions/check/?game_id=' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken, GJAPI.SEND_GENERAL, pCallback);
 };
 
-/* SessionOpen and SessionClose combined */
+// SessionOpen and SessionClose combined
 GJAPI.SessionSetStatus = function (isOpen) {
     if (!GJAPI.bLoggedIn) { GJAPI.LogTrace('SessionSetStatus(' + isOpen + ') failed: no user logged in'); return; }
-    GJAPI.bSessionActive = isOpen; /* Remove this line if not needed */
+    GJAPI.bSessionActive = isOpen; // Remove this line if not needed
     if (isOpen) {
         if (GJAPI.iSessionHandle) {
             return;
@@ -212,7 +212,9 @@ let err = {
     }
 };
 
-/* Data object for storing API response objects */
+/* Data object
+ * Used for storing API response objects
+ */
 let data = {};
 
 /* Apparently API response object's success property is a string and not a boolean
