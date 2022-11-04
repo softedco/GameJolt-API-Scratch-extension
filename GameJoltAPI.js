@@ -46,14 +46,14 @@ GJAPI.WORSE_THAN = false;
 GJAPI.FETCH_USERNAME = true;
 GJAPI.FETCH_ID = false;
 
-GJAPI.TimeFetch = function (pCallback) {
+GJAPI.TimeFetch = pCallback => {
     GJAPI.SendRequest('/time/?game_id=' + GJAPI.iGameID, GJAPI.SEND_GENERAL, pCallback);
 };
-GJAPI.FriendsFetch = function (pCallback) {
+GJAPI.FriendsFetch = pCallback => {
     if (!GJAPI.bLoggedIn) { GJAPI.LogTrace('FriendsFetch() failed: no user logged in'); return; }
     GJAPI.SendRequest('/friends/?game_id=' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken, GJAPI.SEND_FOR_USER, pCallback);
 };
-GJAPI.TrophyRemove = function (iTrophyID, pCallback) {
+GJAPI.TrophyRemove = (iTrophyID, pCallback) => {
     if (!GJAPI.bLoggedIn) { GJAPI.LogTrace('TrophyRemove(' + iTrophyID + ') failed: no user logged in'); return; }
     // Check if the trophy is not achieved
     if (!GJAPI.abTrophyCache[iTrophyID]) { return; }
@@ -64,18 +64,18 @@ GJAPI.TrophyRemove = function (iTrophyID, pCallback) {
         if (typeof pCallback == 'function') { pCallback(pResponse); }
     });
 };
-GJAPI.ScoreGetRank = function (iScoreTableID, iScoreValue, pCallback) {
+GJAPI.ScoreGetRank = (iScoreTableID, iScoreValue, pCallback) => {
     GJAPI.SendRequest('/scores/get-rank/?game_id=' + GJAPI.iGameID + '&sort=' + iScoreValue + '&table_id=' + iScoreTableID, GJAPI.SEND_GENERAL, pCallback);
 };
-GJAPI.ScoreGetTables = function (pCallback) {
+GJAPI.ScoreGetTables = pCallback => {
     GJAPI.SendRequest('/scores/tables/?game_id=' + GJAPI.iGameID, GJAPI.SEND_GENERAL, pCallback);
 }
-GJAPI.SessionCheck = function (pCallback) {
+GJAPI.SessionCheck = pCallback => {
     GJAPI.SendRequest('/sessions/check/?game_id=' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken, GJAPI.SEND_GENERAL, pCallback);
 };
 
 // SessionOpen and SessionClose combined
-GJAPI.SessionSetStatus = function (isOpen) {
+GJAPI.SessionSetStatus = isOpen => {
     if (!GJAPI.bLoggedIn) { GJAPI.LogTrace('SessionSetStatus(' + isOpen + ') failed: no user logged in'); return; }
     GJAPI.bSessionActive = isOpen; // Remove this line if it isn't needed
     if (isOpen) {
@@ -103,7 +103,7 @@ GJAPI.SessionSetStatus = function (isOpen) {
 /* UserFetchName and UserFetchID combined
  * Use GJAPI.FETCH_USERNAME and GJAPI.FETCH_ID for better code readability
  */
-GJAPI.UserFetchComb = function (isUsername, value, pCallback) {
+GJAPI.UserFetchComb = (isUsername, value, pCallback) => {
     if (isUsername) {
         GJAPI.SendRequest("/users/?username=" + value, GJAPI.SEND_GENERAL, pCallback);
         return;
@@ -115,7 +115,7 @@ GJAPI.UserFetchComb = function (isUsername, value, pCallback) {
  * Use GJAPI.BETTER_THAN and GJAPI.WORSE_THAN for better code readability
  * If value is set to 0 it will work like riginal ScoreFetch
  */
-GJAPI.ScoreFetchEx = function (iScoreTableID, bOnlyUser, iLimit, betterOrWorse, value, pCallback) {
+GJAPI.ScoreFetchEx = (iScoreTableID, bOnlyUser, iLimit, betterOrWorse, value, pCallback) => {
     if (!GJAPI.bLoggedIn && bOnlyUser) { GJAPI.LogTrace("ScoreFetch(" + iScoreTableID + ", " + bOnlyUser + ", " + iLimit + ", " + betterOrWorse + ", " + value + ") failed: no user logged in"); return; }
     var bFetchAll = (bOnlyUser == GJAPI.SCORE_ONLY_USER) ? false : true;
     GJAPI.SendRequest("/scores/"         +
@@ -126,7 +126,7 @@ GJAPI.ScoreFetchEx = function (iScoreTableID, bOnlyUser, iLimit, betterOrWorse, 
 };
 
 // Unused in the extension because of ScoreFetchGuestEx
-GJAPI.ScoreFetchGuest = function (iScoreTableID, name, iLimit, pCallback) {
+GJAPI.ScoreFetchGuest = (iScoreTableID, name, iLimit, pCallback) => {
     GJAPI.SendRequest("/scores/" +
                       "?limit=" + iLimit +
                       (iScoreTableID ? ("&table_id=" + iScoreTableID) : "") +
@@ -138,7 +138,7 @@ GJAPI.ScoreFetchGuest = function (iScoreTableID, name, iLimit, pCallback) {
  * Use GJAPI.BETTER_THAN and GJAPI.WORSE_THAN for better code readability
  * If value is set to 0 it will work like original ScoreFetchGuest
  */
-GJAPI.ScoreFetchGuestEx = function (iScoreTableID, name, iLimit, betterOrVorse, value, pCallback) {
+GJAPI.ScoreFetchGuestEx = (iScoreTableID, name, iLimit, betterOrVorse, value, pCallback) => {
     GJAPI.SendRequest("/scores/" +
                       "?limit=" + iLimit +
                       (iScoreTableID ? ("&table_id=" + iScoreTableID) : "") +
