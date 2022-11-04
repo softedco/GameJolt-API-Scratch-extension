@@ -842,7 +842,7 @@ class GameJoltAPI {
     sessionBool() {
         GJAPI.SessionCheck(function (pResponse) {
             if (pResponse.message) { err.session = pResponse.message; return; }
-            /* Jesus Christ */
+            // Jesus Christ
             if (pResponse.success == bool.f) { data.session = false; return; }
             data.session = true;
         });
