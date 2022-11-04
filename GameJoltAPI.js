@@ -829,7 +829,6 @@ class GameJoltAPI {
 
     /* Session pinging
      * Not necessary since the library handles pinging for you
-     * Still useful for debugging purposes
      */
     sessionPing() {
         GJAPI.SessionPing();
@@ -846,7 +845,6 @@ class GameJoltAPI {
 
     /* Manual login
      * Not necessary since the library handles logging in for you
-     * Still useful due to the fact that automatically logged in users might struggle with submitting scores
      */
     loginManual(args) {
         GJAPI.UserLoginManual(args.username, args.token);
