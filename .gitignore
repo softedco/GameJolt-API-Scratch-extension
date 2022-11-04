@@ -1,2 +1,10 @@
 
 *.vsidx
+*.lock
+*.db
+*.db-wal
+*.opendb
+*.json
+*.sqlite
+*.db-shm
+*.suo
