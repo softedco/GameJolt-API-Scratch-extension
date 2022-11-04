@@ -203,7 +203,7 @@ if (!sandboxed) {
  * Used for storing API error messages
  */
 let err = {
-    get(code) {
+    get = code => {
         return (err[code] == undefined) ? 'Error.' : 'Error: ' + err[code];
     }
 };
