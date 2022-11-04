@@ -121,7 +121,7 @@ GJAPI.ScoreFetchEx = (iScoreTableID, bOnlyUser, iLimit, betterOrWorse, value, pC
     GJAPI.SendRequest("/scores/"         +
                       "?limit=" + iLimit +
                       (iScoreTableID ? ("&table_id=" + iScoreTableID) : "") +
-                      (iBetterOrWorse ? '&better_than=' : '&worse_than=') + iValue,
+                      (betterOrWorse ? '&better_than=' : '&worse_than=') + iValue,
                       (bFetchAll ? GJAPI.SEND_GENERAL : GJAPI.SEND_FOR_USER), pCallback);
 };
 
@@ -138,7 +138,7 @@ GJAPI.ScoreFetchGuest = (iScoreTableID, name, iLimit, pCallback) => {
  * Use GJAPI.BETTER_THAN and GJAPI.WORSE_THAN for better code readability
  * If value is set to 0 it will work like original ScoreFetchGuest
  */
-GJAPI.ScoreFetchGuestEx = (iScoreTableID, name, iLimit, betterOrVorse, value, pCallback) => {
+GJAPI.ScoreFetchGuestEx = (iScoreTableID, name, iLimit, betterOrWorse, value, pCallback) => {
     GJAPI.SendRequest("/scores/" +
                       "?limit=" + iLimit +
                       (iScoreTableID ? ("&table_id=" + iScoreTableID) : "") +
