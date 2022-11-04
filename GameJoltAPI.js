@@ -89,7 +89,7 @@ GJAPI.SessionSetStatus = isOpen => {
                 GJAPI.iSessionHandle = window.setInterval(GJAPI.SessionPing, 30000);
                 window.addEventListener("beforeunload", GJAPI.SessionClose, false);
             }
-            });
+        });
         return;
     }
     if (GJAPI.iSessionHandle) {
