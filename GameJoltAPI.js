@@ -37,6 +37,9 @@ function md5_hh(b,a,c,d,e,f,g){return md5_cmn(a^c^d,b,a,e,f,g)}function md5_ii(b
  * Can be used outside of this extension as a part of the library
  * Has namespaces implemented in the 1.2 version of the API
  * They won't work unless you change GJAPI.sAPI to 'https://api.gamejolt.com/api/game/v1_2'
+ * This will break the DataStoreFetch method
+ * For it to work again you should change the SendRequestEx method
+ * So the sUrl argument uses the old URL if the sBodyData argument is not empty
  */
 GJAPI.BETTER_THAN = true;
 GJAPI.WORSE_THAN = false;
