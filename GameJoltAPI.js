@@ -1,9 +1,9 @@
 /* Extension made by softed
  * Special thanks to:
- * Martin Mauersics or MausGames, MikeDev101, LukasStudioTV
+ * Martin Mauersics or MausGames, Bruno Assarisse, MikeDev101, LukasStudioTV
  */
 
-/* API library by Martin Mauersics or MausGames
+/* API library by Martin Mauersics or MausGames (minified)
  * Modified by softed
  */
 let GJAPI = {};GJAPI.iGameID;GJAPI.sGameKey;GJAPI.bAutoLogin = true;GJAPI.sAPIO="https://gamejolt.com/api/game/v1";GJAPI.sAPI="https://api.gamejolt.com/api/game/v1_2";GJAPI.sLogName="[Game Jolt API]";GJAPI.iLogStack=20;GJAPI.asQueryParam=function(){for(var b={},a=window.location.search.substring(1).split("&"),c=0;c<a.length;++c){var d=a[c].split("=");"undefined"===typeof b[d[0]]?b[d[0]]=d[1]:"string"===typeof b[d[0]]?b[d[0]]=[b[d[0]],d[1]]:b[d[0]].push(d[1])}return b}();
@@ -43,8 +43,6 @@ function md5_hh(b,a,c,d,e,f,g){return md5_cmn(a^c^d,b,a,e,f,g)}function md5_ii(b
  */
 GJAPI.BETTER_THAN = true;
 GJAPI.WORSE_THAN = false;
-GJAPI.SESSION_OPEN = true;
-GJAPI.SESSION_CLOSE = false;
 GJAPI.FETCH_USERNAME = true;
 GJAPI.FETCH_ID = false;
 
@@ -76,13 +74,11 @@ GJAPI.SessionCheck = function (pCallback) {
     GJAPI.SendRequest('/sessions/check/?game_id=' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken, GJAPI.SEND_GENERAL, pCallback);
 };
 
-/* SessionOpen and SessionClose combined
- * Use GJAPI.SESSION_OPEN and GJAPI.SESSION_CLOSE for better code readability
- */
-GJAPI.SessionSetStatus = function (iStatus) {
-    if (!GJAPI.bLoggedIn) { GJAPI.LogTrace('SessionSetStatus(' + iStatus + ') failed: no user logged in'); return; }
-    GJAPI.bSessionActive = iStatus;
-    if (iStatus) {
+/* SessionOpen and SessionClose combined */
+GJAPI.SessionSetStatus = function (isOpen) {
+    if (!GJAPI.bLoggedIn) { GJAPI.LogTrace('SessionSetStatus(' + isOpen + ') failed: no user logged in'); return; }
+    GJAPI.bSessionActive = isOpen; /* Remove this line if not needed */
+    if (isOpen) {
         if (GJAPI.iSessionHandle) {
             return;
         }
@@ -317,7 +313,7 @@ class GameJoltAPI {
                              * Or else it wouldn't display the menu item correctly
                              * Even if values match
                              */
-                            defaultValue: String(GJAPI.SESSION_OPEN)
+                            defaultValue: 'true'
                         }
                     }
                 },
@@ -804,8 +800,8 @@ class GameJoltAPI {
                 },
                 openOrClose: {
                     items: [
-                        { text: 'Open', value: String(GJAPI.SESSION_OPEN) },
-                        { text: 'Close', value: String(GJAPI.SESSION_CLOSE) }
+                        { text: 'Open', value: 'true' },
+                        { text: 'Close', value: '' }
                     ]
                 },
                 globalOrPerUser: {
@@ -836,7 +832,7 @@ class GameJoltAPI {
         GJAPI.iGameID = args.ID; GJAPI.sGameKey = args.key;
     }
     session(args) {
-        GJAPI.SessionSetStatus(args.openOrClose == bool.t);
+        GJAPI.SessionSetStatus(args.openOrClose);
     }
     sessionPing() {
         GJAPI.SessionPing();
