@@ -121,7 +121,7 @@ GJAPI.ScoreFetchEx = (iScoreTableID, bOnlyUser, iLimit, betterOrWorse, value, pC
     GJAPI.SendRequest("/scores/"         +
                       "?limit=" + iLimit +
                       (iScoreTableID ? ("&table_id=" + iScoreTableID) : "") +
-                      (betterOrWorse ? '&better_than=' : '&worse_than=') + iValue,
+                      (betterOrWorse ? '&better_than=' : '&worse_than=') + value,
                       (bFetchAll ? GJAPI.SEND_GENERAL : GJAPI.SEND_FOR_USER), pCallback);
 };
 
