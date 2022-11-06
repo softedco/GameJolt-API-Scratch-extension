@@ -3,7 +3,8 @@
  * Martin Mauersics or MausGames, Bruno Assarisse, MikeDev101, LukasStudioTV
  */
 
-/* API library by Martin Mauersics or MausGames (minified)
+/**
+ * API library by Martin Mauersics or MausGames (minified)
  * Modified by softed
  */
 let GJAPI = {};GJAPI.iGameID;GJAPI.sGameKey;GJAPI.bAutoLogin = true;GJAPI.sAPIO="https://gamejolt.com/api/game/v1";GJAPI.sAPI="https://api.gamejolt.com/api/game/v1_2";GJAPI.sLogName="[Game Jolt API]";GJAPI.iLogStack=20;GJAPI.asQueryParam=function(){for(var b={},a=window.location.search.substring(1).split("&"),c=0;c<a.length;++c){var d=a[c].split("=");"undefined"===typeof b[d[0]]?b[d[0]]=d[1]:"string"===typeof b[d[0]]?b[d[0]]=[b[d[0]],d[1]]:b[d[0]].push(d[1])}return b}();
@@ -76,7 +77,9 @@ GJAPI.SessionCheck = pCallback => {
     GJAPI.SendRequest('/sessions/check/?game_id=' + GJAPI.iGameID + '&username=' + GJAPI.sUserName + '&user_token=' + GJAPI.sUserToken, GJAPI.SEND_GENERAL, pCallback);
 };
 
-// SessionOpen and SessionClose combined
+/**
+ * SessionOpen and SessionClose combined
+ */
 GJAPI.SessionSetStatus = isOpen => {
     if (!GJAPI.bLoggedIn) { GJAPI.LogTrace('SessionSetStatus(' + isOpen + ') failed: no user logged in'); return; }
     GJAPI.bSessionActive = isOpen; // Remove this line if it isn't needed
@@ -102,7 +105,8 @@ GJAPI.SessionSetStatus = isOpen => {
     GJAPI.SendRequest("/sessions/close/", GJAPI.SEND_FOR_USER);
 };
 
-/* UserFetchName and UserFetchID combined
+/**
+ * UserFetchName and UserFetchID combined
  * Use GJAPI.FETCH_USERNAME and GJAPI.FETCH_ID for better code readability
  */
 GJAPI.UserFetchComb = (isUsername, value, pCallback) => {
@@ -113,7 +117,8 @@ GJAPI.UserFetchComb = (isUsername, value, pCallback) => {
     GJAPI.SendRequest("/users/?user_id=" + value, GJAPI.SEND_GENERAL, pCallback);
 };
 
-/* ScoreFetch but with better_than and worse_than parameters
+/**
+ * ScoreFetch but with better_than and worse_than parameters
  * Use GJAPI.BETTER_THAN and GJAPI.WORSE_THAN for better code readability
  * If value is set to 0 it will work like riginal ScoreFetch
  */
@@ -127,7 +132,9 @@ GJAPI.ScoreFetchEx = (iScoreTableID, bOnlyUser, iLimit, betterOrWorse, value, pC
                       (bFetchAll ? GJAPI.SEND_GENERAL : GJAPI.SEND_FOR_USER), pCallback);
 };
 
-// Unused in the extension because of ScoreFetchGuestEx
+/**
+ * Unused in the extension because of ScoreFetchGuestEx
+ */
 GJAPI.ScoreFetchGuest = (iScoreTableID, name, iLimit, pCallback) => {
     GJAPI.SendRequest("/scores/" +
                       "?limit=" + iLimit +
@@ -136,7 +143,8 @@ GJAPI.ScoreFetchGuest = (iScoreTableID, name, iLimit, pCallback) => {
                       GJAPI.SEND_GENERAL, pCallback);
 };
 
-/* ScoreFetchGuest but with better_than and worse_than parameters
+/**
+ * ScoreFetchGuest but with better_than and worse_than parameters
  * Use GJAPI.BETTER_THAN and GJAPI.WORSE_THAN for better code readability
  * If value is set to 0 it will work like original ScoreFetchGuest
  */
@@ -149,7 +157,8 @@ GJAPI.ScoreFetchGuestEx = (iScoreTableID, name, iLimit, betterOrWorse, value, pC
                       GJAPI.SEND_GENERAL, pCallback);
 };
 
-/* TrophyFetch and TrophyFetchSingle combined
+/**
+ * TrophyFetch and TrophyFetchSingle combined
  * Use GJAPI.FETCH_ALL and GJAPI.FETCH_SINGLE for better code readability
  */
 GJAPI.TrophyFetchComb = (isAll, value, pCallback) => {
@@ -168,25 +177,29 @@ GJAPI.TrophyFetchComb = (isAll, value, pCallback) => {
  * Ogadaki's Adacraft (Unsandboxed)
  */
 
-/* Sandbox detection by MikeDev101
+/**
+ * Sandbox detection by MikeDev101
  * Can be used outside of this extension with the unsandboxing script
  */
 const sandboxed = (typeof window == 'undefined' || !window.vm);
 
-/* Unsandboxing script by softed
+/**
+ * Unsandboxing script by softed
  * Can be used outside of this extension
  */
 if (!sandboxed) {
     var Scratch = {
 
-        /* Overwriting the fields
+        /**
+         * Overwriting the fields
          * Add unused ArgumentType fields
          */
         BlockType: {
             COMMAND: 'command',
             REPORTER: 'reporter',
 
-            /* It's Boolean
+            /**
+             * It's Boolean
              * If you set it to boolean it would display as a terminal hat block
              */
             BOOLEAN: 'Boolean'
@@ -197,7 +210,8 @@ if (!sandboxed) {
         },
         extensions: {
 
-            /* Overwriting extension's registering method
+            /**
+             * Overwriting extension's registering method
              * Change extensionInstance to your extension class
              */
             register(args) {
@@ -214,7 +228,8 @@ if (!sandboxed) {
     };
 }
 
-/* Err object
+/**
+ * err object
  * Used for storing API error messages
  */
 let err = {
@@ -223,12 +238,14 @@ let err = {
     }
 };
 
-/* Data object
+/**
+ * data object
  * Used for storing API response objects
  */
 let data = {};
 
-/* Apparently API response object's success property is a string and not a boolean
+/**
+ * Apparently API response object's success property is a string and not a boolean
  * That's why there is stuff like 'pResponse.success == bool.f'
  */
 const bool = {
@@ -236,7 +253,8 @@ const bool = {
     f: 'false'
 };
 
-/* Version object
+/**
+ * version object
  * Useful for checking if the code is outdated or not
  * It's a constant so you have to refresh the page to update the upToDate field
  */
@@ -245,7 +263,8 @@ const version = {
     upToDate: fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''))
 };
 
-/* Icons object
+/**
+ * icons object
  * GameJolt icon by GameJolt
  * Other icons by softed
  * Can be used outside of this extension if proper credit is given
@@ -260,13 +279,15 @@ const icons = {
     time: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAAAXNSR0IArs4c6QAABk5JREFUeF7t3eFtJEUUhVE7IyRCIgAIYUOAAAgJiYyMdn/b6Fn3dr927eF3v6rpr88Mo6219/XFfwocVOD1oHtxKwq8AA3BUQWAPupxuhmgGTiqANBHPU43AzQDRxUA+qjH6WaAZuCoAkAf9TjdzBj029vbm1wKbBV4fX0dWR1d9P0mgN56lPb9XgBoDo4qAPRRj9PNAM3AUQWAPupxuhmgGTiqANBHPU43AzQDRxUA+qjH6WbWQP/y7Q/1FRgX+Pfbn6NrgR5lctF2AaC3n4D9qwWArua02HYBoLefgP2rBYCu5rTYdgGgt5+A/asFgK7mtNh2AaC3n4D9qwWArua02HaBx4OeBnKiOC31Na+bQp3e3dpJ4fQFAj0t9TWvA/prPjev+oMCQKNxVAGgj3qcbgZoBo4qAPRRj9PNAM3AUQWAPupxuhmgGTiqwONBT2u3f6mjA5hp+Xuu24I6vbvxbx+dLgj0tNTXvA7o8Ln5hA4DlseBDoMCHQYsjwMdBgU6DFgeBzoMCnQYsDwOdBgU6DBgeRzoMCjQYcDyONBhUKDDgOVxoMOgQIcBy+M/HehpPwcw01L3XPd0qNMK9ZPC6cZAT0vdcx3QYWegw4DlcaDDoECHAcvjQIdBgQ4DlseBDoMCHQYsjwMdBgU6DFgeBzoMCnQYsDwOdBgU6DBgeRzoMCjQYcDyONDloB8tB34W+hSo0wprJ4XTFwj0tNT71wGd9atPA50lBTrrV58GOksKdNavPg10lhTorF99GugsKdBZv/o00FlSoLN+9Wmgs6RAZ/3q00BnSYHO+tWngc6SAp31W5v+2eD/bFCnsB5/Uji9EaCnpd6/bvoPW2a7XD8N9AeNn/7rE3xCf/DGvP49c88OPqGzzj6hs371aaCzpEBn/erTQGdJgc761aeBzpICnfWrTwOdJQU661efBjpLCnTWrz4NdJYU6Kzf2vQU/vTPof/+9tfoXn779vvouul6v768jdY7BeroZl9eXo45WJneMNDTUl/zOqDDk8LpJ6pP6HveIEADfY+0m3YBGuibqN2zDdBA3yPtpl2ABvomavdsAzTQ90i7aReggb6J2j3bAA30PdJu2gXoD0L/Mzxzav/58nS96U+sOCm86Z20tc30pBDorSeU7esT2id0Juhh00AD/TCS2csBGuhM0MOmgQb6YSSzlwM00Jmgh00DDfTDSGYvB2igM0EPmwYa6IeRzF7OMaCnBybTXNODlel67eumP1M43feUE0Wgw0/oKZj2dUC/XxRooH8U8And/sgJ1/OVIwsIdNavPg10lhTorF99GugsKdBZv/o00FlSoLN+9Wmgs6RAZ/3q00BnSYHO+tWngc6SAp31G0//bFCnYdo/ezjd9+nwH3+wAvT71ID+oieFQAM9/b/HjxPPz1y8cS3QQH/GHdCfqfWga33l8JXjR4Gn/7XQ6XsGaKCBnr5b/uc6f8oRRvQd2nfozxDyHfoztR50ra8cvnL4ylF4Q/rK8UHE9leJ9r8rWHj2X2qJU36ka+0rB9DP8g50+DyADgOWx4EOgwIdBiyPAx0GBToMWB4HOgwKdBiwPA50GBToMGB5HOgwKNBhwPI40GFQoMOA5XGgw6BAhwHL40DfdAJ4yl/3LPtbW+7p8Osnhe1PXqDX7L67MdDh8wA6DFgeBzoMCnQYsDwOdBgU6DBgeRzoMCjQYcDyONBhUKDDgOVxoMOgQIcBy+NAh0GBDgOWx4EOgwIdBiyPHwPagUlZxuHLbcEfnxQCfbjA8u0BXQ5qud0CQO/2t3u5ANDloJbbLQD0bn+7lwsAXQ5qud0CQO/2t3u5ANDloJbbLQD0bn+7lwscA9pRdVnG4ctN4U9/jW/9pBDowwWWbw/oclDL7RYAere/3csFgC4HtdxuAaB3+9u9XADoclDL7RYAere/3csFgC4HtdxuAaB3+9u9XODxoMv3azkFfhRYOynUX4ErCgB9RVVrrhUAei29ja8oAPQVVa25VgDotfQ2vqIA0FdUteZaAaDX0tv4igJAX1HVmmsFgF5Lb+MrCtRBX/EiralAu8D4ZwrbG1tPgSsKAH1FVWuuFQB6Lb2NrygA9BVVrblWAOi19Da+ogDQV1S15loBoNfS2/iKAkBfUdWaawWAXktv4ysK/AdZX2DxTCYQ4gAAAABJRU5ErkJggg==',
 };
 
-/* Extension class
+/**
+ * Extension class
  * Mostly visual stuff for Scratch GUI
  * The extensionManager only uses getInfo().id and other methods
  */
 class GameJoltAPI {
 
-    /* Runtime constructor
+    /**
+     * Runtime constructor
      * Not necessary since the extension doesn't interact with runtime
      */
     constructor(runtime) {
@@ -326,7 +347,8 @@ class GameJoltAPI {
                             type: Scratch.ArgumentType.STRING,
                             menu: 'openOrClose',
 
-                            /* Default value also has to be a string
+                            /**
+                             * Default value also has to be a string
                              * Or else it wouldn't display the menu item correctly
                              * Even if values match
                              */
@@ -845,7 +867,7 @@ class GameJoltAPI {
         GJAPI.SessionSetStatus(args.openOrClose);
     }
 
-    /* Session pinging
+    /**
      * Not necessary since the library handles pinging for you
      */
     sessionPing() {
@@ -861,7 +883,7 @@ class GameJoltAPI {
         return data.session;
     }
 
-    /* Manual login
+    /**
      * Not necessary since the library handles logging in for you
      */
     loginManual(args) {
