@@ -852,7 +852,7 @@ class GameJoltAPI {
         GJAPI.SessionPing();
     }
     sessionBool() {
-        GJAPI.SessionCheck( pResponse => {
+        GJAPI.SessionCheck(pResponse => {
             if (pResponse.message) { err.session = pResponse.message; return; }
             if (pResponse.success == bool.f) { data.session = false; return; } // Jesus Christ
             data.session = true;
@@ -891,7 +891,7 @@ class GameJoltAPI {
         return data.user[args.userDataType];
     }
     friendsFetch(args) {
-        GJAPI.FriendsFetch( pResponse => {
+        GJAPI.FriendsFetch(pResponse => {
             if (pResponse.success == bool.f) { err.friends = pResponse.message; return; }
             data.friends = pResponse.friends;
         });
@@ -966,7 +966,7 @@ class GameJoltAPI {
         return data.rank;
     }
     scoreGetTables(args) {
-        GJAPI.ScoreGetTables( pResponse => {
+        GJAPI.ScoreGetTables(pResponse => {
             if (pResponse.success == bool.f) { err.tables = pResponse.message; return; }
             data.tables = pResponse.tables;
         });
