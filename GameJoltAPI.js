@@ -229,7 +229,6 @@ if (!sandboxed) {
 }
 
 /**
- * err object
  * Used for storing API error messages
  */
 let err = {
@@ -239,7 +238,6 @@ let err = {
 };
 
 /**
- * data object
  * Used for storing API response objects
  */
 let data = {};
@@ -254,7 +252,6 @@ const bool = {
 };
 
 /**
- * version object
  * Useful for checking if the code is outdated or not
  * It's a constant so you have to refresh the page to update the upToDate field
  */
@@ -264,7 +261,6 @@ const version = {
 };
 
 /**
- * icons object
  * GameJolt icon by GameJolt
  * Other icons by softed
  * Can be used outside of this extension if proper credit is given
@@ -280,14 +276,12 @@ const icons = {
 };
 
 /**
- * Extension class
  * Mostly visual stuff for Scratch GUI
  * The extensionManager only uses getInfo().id and other methods
  */
 class GameJoltAPI {
 
     /**
-     * Runtime constructor
      * Not necessary since the extension doesn't interact with runtime
      */
     constructor(runtime) {
