@@ -45,6 +45,8 @@ GJAPI.BETTER_THAN = true;
 GJAPI.WORSE_THAN = false;
 GJAPI.FETCH_USERNAME = true;
 GJAPI.FETCH_ID = false;
+GJAPI.FETCH_ALL = true;
+GJAPI.FETCH_SINGLE = false;
 
 GJAPI.TimeFetch = pCallback => {
     GJAPI.SendRequest('/time/?game_id=' + GJAPI.iGameID, GJAPI.SEND_GENERAL, pCallback);
@@ -147,6 +149,19 @@ GJAPI.ScoreFetchGuestEx = (iScoreTableID, name, iLimit, betterOrWorse, value, pC
                       GJAPI.SEND_GENERAL, pCallback);
 };
 
+/* TrophyFetch and TrophyFetchSingle combined
+ * Use GJAPI.FETCH_ALL and GJAPI.FETCH_SINGLE for better code readability
+ */
+GJAPI.TrophyFetchComb = (isAll, value, pCallback) => {
+    if (!GJAPI.bLoggedIn) {GJAPI.LogTrace("TrophyFetchComb(" + isAll + ', ' + value + ") failed: no user logged in"); return;}
+    if (isAll) {
+        var sTrophyData = (value === GJAPI.TROPHY_ALL) ? "" : "?achieved=" + ((value >= GJAPI.TROPHY_ONLY_ACHIEVED) ? "true" : "false");
+        GJAPI.SendRequest("/trophies/" + sTrophyData, GJAPI.SEND_FOR_USER, pCallback);
+        return;
+    }
+    GJAPI.SendRequest("/trophies/?trophy_id=" + value, GJAPI.SEND_FOR_USER, pCallback);
+};
+
 /* Scratch extension by softed
  * Works on Turbowarp by GarboMuffin (Sandboxed and unsandboxed),
  * SheepTester's Epicques (Unsandboxed),
@@ -156,7 +171,7 @@ GJAPI.ScoreFetchGuestEx = (iScoreTableID, name, iLimit, betterOrWorse, value, pC
 /* Sandbox detection by MikeDev101
  * Can be used outside of this extension with the unsandboxing script
  */
-const sandboxed = typeof window == 'undefined' || !window.vm;
+const sandboxed = (typeof window == 'undefined' || !window.vm);
 
 /* Unsandboxing script by softed
  * Can be used outside of this extension
@@ -226,7 +241,7 @@ const bool = {
  * It's a constant so you have to refresh the page to update the upToDate field
  */
 const version = {
-    current: '1.31.64\n',
+    current: '1.31.65\n',
     upToDate: fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''))
 };
 
@@ -445,7 +460,7 @@ class GameJoltAPI {
                         indexOrID: {
                             type: Scratch.ArgumentType.STRING,
                             menu: 'indexOrID',
-                            defaultValue: 'index'
+                            defaultValue: String(GJAPI.FETCH_ALL)
                         },
                         value: {
                             type: Scratch.ArgumentType.NUMBER,
@@ -735,8 +750,8 @@ class GameJoltAPI {
                 },
                 fetchTypes: {
                     items: [
-                        { text: 'username', value: String(GJAPI.FETCH_USERNAME) },
-                        { text: 'ID', value: String(GJAPI.FETCH_ID) }
+                        { text: 'username', value: 'true' },
+                        { text: 'ID', value: '' }
                     ]
                 },
                 userDataTypes: {
@@ -803,12 +818,15 @@ class GameJoltAPI {
                     ]
                 },
                 indexOrID: {
-                    items: ['index', 'ID']
+                    items: [
+                        { text: 'index', value: 'true' },
+                        { text: 'ID', value: '' }
+                    ]
                 },
                 betterOrWorse: {
                     items: [
-                        { text: 'better', value: String(GJAPI.BETTER_THAN) },
-                        { text: 'worse', value: String(GJAPI.WORSE_THAN) }
+                        { text: 'better', value: 'true' },
+                        { text: 'worse', value: '' }
                     ]
                 }
             }
@@ -856,7 +874,7 @@ class GameJoltAPI {
         return GJAPI.bLoggedIn;
     }
     userFetch(args) {
-        GJAPI.UserFetchComb(args.fetchType == bool.t, args.usernameOrID, pResponse => {
+        GJAPI.UserFetchComb(args.fetchType, args.usernameOrID, pResponse => {
             if (!pResponse.users) { err.user = pResponse.message; return; }
             data.user = pResponse.users[0];
         });
@@ -889,27 +907,18 @@ class GameJoltAPI {
         GJAPI.TrophyRemove(args.ID);
     }
     trophyFetch(args) {
-        switch (args.indexOrID) {
-            case 'index':
-                GJAPI.TrophyFetch(GJAPI.TROPHY_ALL, pResponse => {
-                    if (!pResponse.trophies) { err.trophies = pResponse.message; return; }
-                    data.trophies = pResponse.trophies;
-                });
-                if (typeof data.trophies != 'object') { return err.get('trophies'); }
-                if (typeof data.trophies[args.value] != 'object') { return err.get('trophies'); }
-                data.trophies[args.value][args.trophyDataType] = data.trophies[args.value][args.trophyDataType] ?? err.get('trophies');
-                return data.trophies[args.value][args.trophyDataType];
-            case 'ID':
-                GJAPI.TrophyFetchSingle(args.value, pResponse => {
-                    if (!pResponse.trophies) { err.trophies = pResponse.message; return; }
-                    data.trophies = pResponse.trophies[0];
-                });
-                if (typeof data.trophies != 'object') { return err.get('trophies'); }
-                data.trophies[args.trophyDataType] = data.trophies[args.trophyDataType] ?? err.get('trophies');
-                return data.trophies[args.trophyDataType];
-            default:
-                return err.get('trophies');
+        GJAPI.TrophyFetchComb(args.indexOrID, args.indexOrID ? GJAPI.TROPHY_ALL : args.value, pResponse => {
+            if (!pResponse.trophies) { err.trophies = pResponse.message; return; }
+            data.trophies = args.indexOrID ? pResponse.trophies : pResponse.trophies[0];
+        });
+        if (typeof data.trophies != 'object') { return err.get('trophies'); }
+        if (args.indexOrID) {
+            if (typeof data.trophies[args.value] != 'object') { return err.get('trophies'); }
+            data.trophies[args.value][args.trophyDataType] = data.trophies[args.value][args.trophyDataType] ?? err.get('trophies');
+            return data.trophies[args.value][args.trophyDataType];
         }
+        data.trophies[args.trophyDataType] = data.trophies[args.trophyDataType] ?? err.get('trophies');
+        return data.trophies[args.trophyDataType];
     }
     scoreAdd(args) {
         GJAPI.ScoreAdd(args.ID, args.value, args.text, args.extraData);
@@ -921,7 +930,7 @@ class GameJoltAPI {
         GJAPI.ScoreFetchEx(args.ID,
         args.globalOrPerUser == GJAPI.DATA_STORE_GLOBAL ? GJAPI.SCORE_ALL : GJAPI.SCORE_ONLY_USER,
         args.amount,
-        args.betterOrWorse == bool.t,
+        args.betterOrWorse,
         args.value, pResponse => {
             if (!pResponse.scores) { err.scores = pResponse.message; return; }
             data.scores = pResponse.scores;
@@ -930,7 +939,7 @@ class GameJoltAPI {
     scoreFetchGuest(args) {
         GJAPI.ScoreFetchGuestEx(args.ID,
         args.username, args.amount,
-        args.betterOrWorse == bool.t,
+        args.betterOrWorse,
         args.value, pResponse => {
             if (!pResponse.scores) { err.scores = pResponse.message; return; }
             data.scores = pResponse.scores;
