@@ -856,6 +856,165 @@
 			return data.session;
 		}
 
+        /**
+         * Not necessary since the library handles logging in for you
+         */
+        loginManual(args) {
+            GJAPI.UserLoginManual(args.username, args.token);
+        }
+
+        /**
+         * Not necessary since the library handles logging in for you
+         */
+        loginAuto() {
+            GJAPI.UserLoginAuto();
+        }
+        logout() {
+            GJAPI.UserLogout();
+        }
+        loginBool() {
+            return GJAPI.bLoggedIn;
+        }
+        userFetch(args) {
+            GJAPI.UserFetchComb(args.fetchType, args.usernameOrID, pResponse => {
+                if (!pResponse.users) { err.user = pResponse.message; return; }
+                data.user = pResponse.users[0];
+            });
+        }
+        userFetchCurrent() {
+            GJAPI.UserFetchCurrent( pResponse => {
+                if (!pResponse.users) { err.user = pResponse.message; return; }
+                data.user = pResponse.users[0];
+            });
+        }
+        returnUserData(args) {
+            if (typeof data.user != 'object') { return err.get('user'); }
+            data.user[args.userDataType] = data.user[args.userDataType] ?? err.get('user');
+            return data.user[args.userDataType];
+        }
+        friendsFetch(args) {
+            GJAPI.FriendsFetch(pResponse => {
+                if (pResponse.success == bool.f) { err.friends = pResponse.message; return; }
+                data.friends = pResponse.friends;
+            });
+            if (typeof data.friends != 'object') { return err.get('friends'); }
+            if (typeof data.friends[args.index] != 'object') { return err.get('friends'); }
+            data.friends[args.index].friend_id = data.friends[args.index].friend_id ?? err.get('friends');
+            return data.friends[args.index].friend_id;
+        }
+        trophyAchieve(args) {
+            GJAPI.TrophyAchieve(args.ID);
+        }
+        trophyRemove(args) {
+            GJAPI.TrophyRemove(args.ID);
+        }
+        trophyFetch(args) {
+            GJAPI.TrophyFetchComb(args.indexOrID, args.indexOrID ? GJAPI.TROPHY_ALL : args.value, pResponse => {
+                if (!pResponse.trophies) { err.trophies = pResponse.message; return; }
+                data.trophies = args.indexOrID ? pResponse.trophies : pResponse.trophies[0];
+            });
+            if (typeof data.trophies != 'object') { return err.get('trophies'); }
+            if (args.indexOrID) {
+                if (typeof data.trophies[args.value] != 'object') { return err.get('trophies'); }
+                data.trophies[args.value][args.trophyDataType] = data.trophies[args.value][args.trophyDataType] ?? err.get('trophies');
+                return data.trophies[args.value][args.trophyDataType];
+            }
+            data.trophies[args.trophyDataType] = data.trophies[args.trophyDataType] ?? err.get('trophies');
+            return data.trophies[args.trophyDataType];
+        }
+        scoreAdd(args) {
+            GJAPI.ScoreAdd(args.ID, args.value, args.text, args.extraData);
+        }
+        scoreAddGuest(args) {
+            GJAPI.ScoreAddGuest(args.ID, args.value, args.text, args.username, args.extraData);
+        }
+        scoreFetch(args) {
+            GJAPI.ScoreFetchEx(args.ID,
+            args.globalOrPerUser == GJAPI.DATA_STORE_GLOBAL ? GJAPI.SCORE_ALL : GJAPI.SCORE_ONLY_USER,
+            args.amount,
+            args.betterOrWorse,
+            args.value, pResponse => {
+                if (!pResponse.scores) { err.scores = pResponse.message; return; }
+                data.scores = pResponse.scores;
+            });
+        }
+        scoreFetchGuest(args) {
+            GJAPI.ScoreFetchGuestEx(args.ID,
+            args.username, args.amount,
+            args.betterOrWorse,
+            args.value, pResponse => {
+                if (!pResponse.scores) { err.scores = pResponse.message; return; }
+                data.scores = pResponse.scores;
+            });
+        }
+        returnScoreData(args) {
+            if (typeof data.scores != 'object') { return err.get('scores'); }
+            if (typeof data.scores[args.index] != 'object') { return err.get('scores'); }
+            if (args.scoreDataType == 'user') {
+                if (data.scores[args.index].user == '') {
+                    data.scores[args.index].guest = data.scores[args.index]?.guest ?? err.get('scores');
+                    return data.scores[args.index].guest;
+                }
+            }
+            data.scores[args.index][args.scoreDataType] = data.scores[args.index][args.scoreDataType] ?? err.get('scores');
+            return data.scores[args.index][args.scoreDataType];
+        }
+        scoreGetRank(args) {
+            GJAPI.ScoreGetRank(args.ID, args.value, pResponse => {
+                if (pResponse.success == bool.f) { err.rank = pResponse.message; return; }
+                data.rank = pResponse.rank;
+            });
+            data.rank = data.rank ?? err.get('rank');
+            return data.rank;
+        }
+        scoreGetTables(args) {
+            GJAPI.ScoreGetTables(pResponse => {
+                if (pResponse.success == bool.f) { err.tables = pResponse.message; return; }
+                data.tables = pResponse.tables;
+            });
+            if (typeof data.tables != 'object') { return err.get('tables'); }
+            if (typeof data.tables[args.index] != 'object') { return err.get('tables'); }
+            data.tables[args.index][args.tableDataType] = data.tables[args.index][args.tableDataType] ?? err.get('tables');
+            return data.tables[args.index][args.tableDataType];
+        }
+        dataStoreSet(args) {
+            GJAPI.DataStoreSet(args.globalOrPerUser, args.key, args.data);
+        }
+        dataStoreFetch(args) {
+            GJAPI.DataStoreFetch(args.globalOrPerUser, args.key, pResponse => {
+                if (pResponse.success == bool.f) { err.store = pResponse.message; return; }
+                data.store = pResponse.data;
+            });
+            data.store = data.store ?? err.get('store');
+            return data.store;
+        }
+        dataStoreUpdate(args) {
+            GJAPI.DataStoreUpdate(args.globalOrPerUser, args.key, args.operationType, args.value);
+        }
+        dataStoreRemove(args) {
+            GJAPI.DataStoreRemove(args.globalOrPerUser, args.key);
+        }
+        dataStoreGetKey(args) {
+            GJAPI.DataStoreGetKeys(args.globalOrPerUser, pResponse => {
+                if (!pResponse.keys) { err.keys = pResponse.message; return; }
+                data.keys = pResponse.keys;
+            });
+            if (typeof data.keys != 'object') { return err.get('keys'); }
+            if (typeof data.keys[args.index] != 'object') { return err.get('keys'); }
+            data.keys[args.index].key = data.keys[args.index].key ?? err.get('keys');
+            return data.keys[args.index].key;
+        }
+        timeFetch(args) {
+            GJAPI.TimeFetch(pResponse => {
+                if (pResponse.success == bool.f) { err.time = pResponse.message; return; }
+                data.time = pResponse;
+            });
+            if (typeof data.time != 'object') { return err.get('time'); }
+            data.time[args.timeType] = data.time[args.timeType] ?? err.get('time');
+            return data.time[args.timeType];
+        }
+    }
+    Scratch.extensions.register(new GameJoltAPI());
 		/**
 		 * Not necessary since the library handles logging in for you
 		 */
