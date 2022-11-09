@@ -171,6 +171,28 @@ GJAPI.TrophyFetchComb = (isAll, value, pCallback) => {
     GJAPI.SendRequest("/trophies/?trophy_id=" + value, GJAPI.SEND_FOR_USER, pCallback);
 };
 
+/**
+ * Modified UserLoginManual to login users automatically if their username and token are detected
+ */
+GJAPI.UserLoginAuto = pCallback => {
+    if (!GJAPI.bOnGJ) { GJAPI.LogTrace("UserLoginAuto() failed: No username or token detected"); return; }
+    if (GJAPI.bLoggedIn) {GJAPI.LogTrace("UserLoginAuto() failed: user " + GJAPI.sUserName + " already logged in"); return; }
+    GJAPI.SendRequest("/users/auth/" + "?username="   + GJAPI.asQueryParam["gjapi_username"] +
+                      "&user_token=" + GJAPI.asQueryParam["gjapi_token"],
+                      GJAPI.SEND_GENERAL,
+    function(pResponse) {
+        if(pResponse.success) {
+            GJAPI.bLoggedIn  = true;
+            GJAPI.sUserName  = sUserName;
+            GJAPI.sUserToken = sUserToken;
+            GJAPI.SessionOpen();
+        }
+        if (typeof pCallback === "function") {
+            pCallback(pResponse);
+        }
+    },false);
+};
+
 /* Scratch extension by softed
  * Works on Turbowarp by GarboMuffin (Sandboxed and unsandboxed),
  * SheepTester's Epicques (Unsandboxed),
@@ -256,7 +278,7 @@ const bool = {
  * It's a constant so you have to refresh the page to update the upToDate field
  */
 const version = {
-    current: '1.31.65\n',
+    current: '1.32.65\n',
     upToDate: fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''))
 };
 
@@ -377,6 +399,12 @@ class GameJoltAPI {
                             defaultValue: 'token'
                         }
                     }
+                },
+                {
+                    opcode: 'loginAuto',
+                    blockIconURI: icons.user,
+                    blockType: Scratch.BlockType.COMMAND,
+                    text: 'Login automatically'
                 },
                 {
                     opcode: 'logout',
@@ -882,6 +910,13 @@ class GameJoltAPI {
      */
     loginManual(args) {
         GJAPI.UserLoginManual(args.username, args.token);
+    }
+
+    /**
+     * Not necessary since the library handles logging in for you
+     */
+    loginAuto() {
+        GJAPI.UserLoginAuto();
     }
     logout() {
         GJAPI.UserLogout();
