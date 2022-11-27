@@ -196,6 +196,14 @@
 		},false);
 	};
 
+	/**
+	 * DataStoreGetKeys but with a pattern parameter
+	 * The placeholder character for patterns is *
+	 */
+	GJAPI.DataStoreGetKeysEx = (iStore, pattern, pCallback) => {
+		GJAPI.SendRequest('/data-store/get-keys/?pattern=' + pattern, (iStore == GJAPI.DATA_STORE_USER), pCallback);
+	};
+
 	/* Scratch extension by softed
 	 * Unsandboxed for Turbowarp by GarboMuffin by following the new unsandboxed extension format
 	 * More info at https://docs.turbowarp.org/development/unsandboxed-extensions
@@ -709,12 +717,16 @@
 						opcode: 'dataStoreGetKey',
 						blockIconURI: icons.store,
 						blockType: Scratch.BlockType.REPORTER,
-						text: 'Get [globalOrPerUser] key by index:[index]',
+						text: 'Get [globalOrPerUser] key with pattern [pattern] by index:[index]',
 						arguments: {
 							globalOrPerUser: {
 								type: Scratch.ArgumentType.STRING,
 								menu: 'globalOrPerUser',
 								defaultValue: GJAPI.DATA_STORE_GLOBAL
+							},
+							pattern: {
+								type: Scratch.ArgumentType.STRING,
+								defaultValue: '*'
 							},
 							index: {
 								type: Scratch.ArgumentType.NUMBER,
@@ -877,13 +889,13 @@
 		}
 		userFetch(args) {
 			GJAPI.UserFetchComb(args.fetchType, args.usernameOrID, pResponse => {
-				if (!pResponse.users) { err.user = pResponse.message; return; }
+				if (pResponse.success == bool.f) { err.user = pResponse.message; return; }
 				data.user = pResponse.users[0];
 			});
 		}
 		userFetchCurrent() {
 			GJAPI.UserFetchCurrent( pResponse => {
-				if (!pResponse.users) { err.user = pResponse.message; return; }
+				if (pResponse.success == bool.f) { err.user = pResponse.message; return; }
 				data.user = pResponse.users[0];
 			});
 		}
@@ -910,7 +922,7 @@
 		}
 		trophyFetch(args) {
 			GJAPI.TrophyFetchComb(args.indexOrID, args.indexOrID ? GJAPI.TROPHY_ALL : args.value, pResponse => {
-				if (!pResponse.trophies) { err.trophies = pResponse.message; return; }
+				if (pResponse.success == bool.f) { err.trophies = pResponse.message; return; }
 				data.trophies = args.indexOrID ? pResponse.trophies : pResponse.trophies[0];
 			});
 			if (typeof data.trophies != 'object') { return err.get('trophies'); }
@@ -943,7 +955,7 @@
 			args.username, args.amount,
 			args.betterOrWorse,
 			args.value, pResponse => {
-				if (!pResponse.scores) { err.scores = pResponse.message; return; }
+				if (pResponse.success == bool.f) { err.scores = pResponse.message; return; }
 				data.scores = pResponse.scores;
 			});
 		}
@@ -995,8 +1007,8 @@
 			GJAPI.DataStoreRemove(args.globalOrPerUser, args.key);
 		}
 		dataStoreGetKey(args) {
-			GJAPI.DataStoreGetKeys(args.globalOrPerUser, pResponse => {
-				if (!pResponse.keys) { err.keys = pResponse.message; return; }
+			GJAPI.DataStoreGetKeysEx(args.globalOrPerUser, args.pattern, pResponse => {
+				if (pResponse.success == bool.f) { err.keys = pResponse.message; return; }
 				data.keys = pResponse.keys;
 			});
 			if (typeof data.keys != 'object') { return err.get('keys'); }
