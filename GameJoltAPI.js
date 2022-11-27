@@ -193,6 +193,14 @@ GJAPI.UserLoginAuto = pCallback => {
 	},false);
 };
 
+/**
+ * DataStoreGetKeys but with a pattern parameter
+ * The placeholder character for patterns is *
+ */
+GJAPI.DataStoreGetKeysEx = (iStore, pattern, pCallback) => {
+	GJAPI.SendRequest('/data-store/get-keys/?pattern=' + pattern, (iStore == GJAPI.DATA_STORE_USER), pCallback);
+};
+
 /* Scratch extension by softed
  * Works on Turbowarp by GarboMuffin (Sandboxed and unsandboxed),
  * SheepTester's Epicques (Unsandboxed),
@@ -758,12 +766,16 @@ class GameJoltAPI {
 					opcode: 'dataStoreGetKey',
 					blockIconURI: icons.store,
 					blockType: Scratch.BlockType.REPORTER,
-					text: 'Get [globalOrPerUser] key by index:[index]',
+					text: 'Get [globalOrPerUser] key with pattern [pattern] by index:[index]',
 					arguments: {
 						globalOrPerUser: {
 							type: Scratch.ArgumentType.STRING,
 							menu: 'globalOrPerUser',
 							defaultValue: GJAPI.DATA_STORE_GLOBAL
+						},
+						pattern: {
+							type: Scratch.ArgumentType.STRING,
+							defaultValue: '*'
 						},
 						index: {
 							type: Scratch.ArgumentType.NUMBER,
@@ -926,13 +938,13 @@ class GameJoltAPI {
 	}
 	userFetch(args) {
 		GJAPI.UserFetchComb(args.fetchType, args.usernameOrID, pResponse => {
-			if (!pResponse.users) { err.user = pResponse.message; return; }
+			if (pResponse.success == bool.f) { err.user = pResponse.message; return; }
 			data.user = pResponse.users[0];
 		});
 	}
 	userFetchCurrent() {
 		GJAPI.UserFetchCurrent( pResponse => {
-			if (!pResponse.users) { err.user = pResponse.message; return; }
+			if (pResponse.success == bool.f) { err.user = pResponse.message; return; }
 			data.user = pResponse.users[0];
 		});
 	}
@@ -959,7 +971,7 @@ class GameJoltAPI {
 	}
 	trophyFetch(args) {
 		GJAPI.TrophyFetchComb(args.indexOrID, args.indexOrID ? GJAPI.TROPHY_ALL : args.value, pResponse => {
-			if (!pResponse.trophies) { err.trophies = pResponse.message; return; }
+			if (pResponse.success == bool.f) { err.trophies = pResponse.message; return; }
 			data.trophies = args.indexOrID ? pResponse.trophies : pResponse.trophies[0];
 		});
 		if (typeof data.trophies != 'object') { return err.get('trophies'); }
@@ -983,7 +995,7 @@ class GameJoltAPI {
 		args.amount,
 		args.betterOrWorse,
 		args.value, pResponse => {
-			if (!pResponse.scores) { err.scores = pResponse.message; return; }
+			if (pResponse.success == bool.f) { err.scores = pResponse.message; return; }
 			data.scores = pResponse.scores;
 		});
 	}
@@ -992,7 +1004,7 @@ class GameJoltAPI {
 		args.username, args.amount,
 		args.betterOrWorse,
 		args.value, pResponse => {
-			if (!pResponse.scores) { err.scores = pResponse.message; return; }
+			if (pResponse.success == bool.f) { err.scores = pResponse.message; return; }
 			data.scores = pResponse.scores;
 		});
 	}
@@ -1000,7 +1012,7 @@ class GameJoltAPI {
 		if (typeof data.scores != 'object') { return err.get('scores'); }
 		if (typeof data.scores[args.index] != 'object') { return err.get('scores'); }
 		if (args.scoreDataType == 'user') {
-			if (data.scores[args.index].user == '') {
+			if (!data.scores[args.index].user) {
 				data.scores[args.index].guest = data.scores[args.index]?.guest ?? err.get('scores');
 				return data.scores[args.index].guest;
 			}
@@ -1044,8 +1056,8 @@ class GameJoltAPI {
 		GJAPI.DataStoreRemove(args.globalOrPerUser, args.key);
 	}
 	dataStoreGetKey(args) {
-		GJAPI.DataStoreGetKeys(args.globalOrPerUser, pResponse => {
-			if (!pResponse.keys) { err.keys = pResponse.message; return; }
+		GJAPI.DataStoreGetKeysEx(args.globalOrPerUser, args.pattern, pResponse => {
+			if (pResponse.success == bool.f) { err.keys = pResponse.message; return; }
 			data.keys = pResponse.keys;
 		});
 		if (typeof data.keys != 'object') { return err.get('keys'); }
