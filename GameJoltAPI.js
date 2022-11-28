@@ -766,7 +766,7 @@ class GameJoltAPI {
 					opcode: 'dataStoreGetKey',
 					blockIconURI: icons.store,
 					blockType: Scratch.BlockType.REPORTER,
-					text: 'Get [globalOrPerUser] key with pattern [pattern] by index:[index]',
+					text: 'Fetch [globalOrPerUser] keys with pattern [pattern] by index:[index]',
 					arguments: {
 						globalOrPerUser: {
 							type: Scratch.ArgumentType.STRING,
