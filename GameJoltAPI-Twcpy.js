@@ -1788,11 +1788,11 @@
 		}
 		scoreFetchGuest(args) {
 			GameJolt.ScoreFetchGuestEx(
-			args.ID,
-			args.username, args.amount,
-			args.betterOrWorse,
-			args.value,
-			pResponse =>
+				args.ID,
+				args.username, args.amount,
+				args.betterOrWorse,
+				args.value,
+				pResponse =>
 			{
 				if (pResponse.success == bool.f) { err.scores = pResponse.message; return; }
 				data.scores = pResponse.scores;
