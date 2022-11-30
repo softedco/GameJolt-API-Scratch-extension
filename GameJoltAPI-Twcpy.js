@@ -1690,7 +1690,7 @@
 			GameJolt.UserLogout();
 		}
 		loginBool() {
-			return GJAPI.bLoggedIn;
+			return GameJolt.bLoggedIn;
 		}
 		userFetch(args) {
 			GameJolt.UserFetchComb(args.fetchType, args.usernameOrID, pResponse => {
@@ -1726,7 +1726,7 @@
 			GameJolt.TrophyRemove(args.ID);
 		}
 		trophyFetch(args) {
-			GameJolt.TrophyFetchComb(args.indexOrID, args.indexOrID ? GJAPI.TROPHY_ALL : args.value, pResponse => {
+			GameJolt.TrophyFetchComb(args.indexOrID, args.indexOrID ? GameJolt.TROPHY_ALL : args.value, pResponse => {
 				if (pResponse.success == bool.f) { err.trophies = pResponse.message; return; }
 				data.trophies = args.indexOrID ? pResponse.trophies : pResponse.trophies[0];
 			});
@@ -1740,14 +1740,14 @@
 			return data.trophies[args.trophyDataType];
 		}
 		scoreAdd(args) {
-			GameJolt.ScoreAdd(args.ID, args.value, args.text, args.extraData);
+			GJAPI.ScoreAdd(args.ID, args.value, args.text, args.extraData);
 		}
 		scoreAddGuest(args) {
 			GameJolt.ScoreAddGuest(args.ID, args.value, args.text, args.username, args.extraData);
 		}
 		scoreFetch(args) {
 			GameJolt.ScoreFetchEx(args.ID,
-			args.globalOrPerUser == GJAPI.DATA_STORE_GLOBAL ? GJAPI.SCORE_ALL : GJAPI.SCORE_ONLY_USER,
+			args.globalOrPerUser == GameJolt.DATA_STORE_GLOBAL ? GameJolt.SCORE_ALL : GameJolt.SCORE_ONLY_USER,
 			args.amount,
 			args.betterOrWorse,
 			args.value, pResponse => {
