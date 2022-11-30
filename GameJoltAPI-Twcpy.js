@@ -1651,7 +1651,7 @@
 			return GameJolt.bOnGJ;
 		}
 		setGame(args) {
-			GameJolt.iGameID = args.ID; GJAPI.sGameKey = args.key;
+			GameJolt.iGameID = args.ID; GameJolt.sGameKey = args.key;
 		}
 		session(args) {
 			GameJolt.SessionSetStatus(args.openOrClose);
