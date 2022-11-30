@@ -688,7 +688,7 @@
 			GJAPI.SendRequestEx(
 				"/data-store/?key=" + sKey,
 				iStore === GJAPI.DATA_STORE_USER,
-				"dump",
+				"json",
 				"",
 				pCallback
 			);
@@ -1757,7 +1757,7 @@
 			return data.trophies[args.trophyDataType];
 		}
 		scoreAdd(args) {
-			GJAPI.ScoreAdd(
+			GameJolt.ScoreAdd(
 				args.ID,
 				args.value,
 				args.text,
