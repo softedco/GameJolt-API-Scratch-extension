@@ -943,7 +943,7 @@ class GameJoltAPI {
 		});
 	}
 	userFetchCurrent() {
-		GJAPI.UserFetchCurrent( pResponse => {
+		GJAPI.UserFetchCurrent(pResponse => {
 			if (pResponse.success == bool.f) { err.user = pResponse.message; return; }
 			data.user = pResponse.users[0];
 		});
