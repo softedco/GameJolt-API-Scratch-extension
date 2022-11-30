@@ -913,7 +913,7 @@ class GameJoltAPI {
 			if (pResponse.success == bool.f) { data.session = false; return; } // Jesus Christ
 			data.session = true;
 		});
-		if (data.session == undefined) { return err.get('session'); }
+		if (!data.session) return err.get('session');
 		return data.session;
 	}
 
@@ -949,7 +949,7 @@ class GameJoltAPI {
 		});
 	}
 	returnUserData(args) {
-		if (typeof data.user != 'object') { return err.get('user'); }
+		if (!data.user) return err.get('user');
 		data.user[args.userDataType] = data.user[args.userDataType] ?? err.get('user');
 		return data.user[args.userDataType];
 	}
@@ -958,8 +958,8 @@ class GameJoltAPI {
 			if (pResponse.success == bool.f) { err.friends = pResponse.message; return; }
 			data.friends = pResponse.friends;
 		});
-		if (typeof data.friends != 'object') { return err.get('friends'); }
-		if (typeof data.friends[args.index] != 'object') { return err.get('friends'); }
+		if (!data.friends) return err.get('friends');
+		if (!data.friends[args.index]) return err.get('friends');
 		data.friends[args.index].friend_id = data.friends[args.index].friend_id ?? err.get('friends');
 		return data.friends[args.index].friend_id;
 	}
@@ -974,9 +974,9 @@ class GameJoltAPI {
 			if (pResponse.success == bool.f) { err.trophies = pResponse.message; return; }
 			data.trophies = args.indexOrID ? pResponse.trophies : pResponse.trophies[0];
 		});
-		if (typeof data.trophies != 'object') { return err.get('trophies'); }
+		if (!data.trophies) return err.get('trophies');
 		if (args.indexOrID) {
-			if (typeof data.trophies[args.value] != 'object') { return err.get('trophies'); }
+			if (!data.trophies[args.value]) return err.get('trophies');
 			data.trophies[args.value][args.trophyDataType] = data.trophies[args.value][args.trophyDataType] ?? err.get('trophies');
 			return data.trophies[args.value][args.trophyDataType];
 		}
@@ -1009,8 +1009,8 @@ class GameJoltAPI {
 		});
 	}
 	returnScoreData(args) {
-		if (typeof data.scores != 'object') { return err.get('scores'); }
-		if (typeof data.scores[args.index] != 'object') { return err.get('scores'); }
+		if (!data.scores) return err.get('scores');
+		if (!data.scores[args.index]) return err.get('scores');
 		if (args.scoreDataType == 'user') {
 			if (!data.scores[args.index].user) {
 				data.scores[args.index].guest = data.scores[args.index]?.guest ?? err.get('scores');
@@ -1033,8 +1033,8 @@ class GameJoltAPI {
 			if (pResponse.success == bool.f) { err.tables = pResponse.message; return; }
 			data.tables = pResponse.tables;
 		});
-		if (typeof data.tables != 'object') { return err.get('tables'); }
-		if (typeof data.tables[args.index] != 'object') { return err.get('tables'); }
+		if (!data.tables) return err.get('tables');
+		if (!data.tables[args.index]) return err.get('tables');
 		data.tables[args.index][args.tableDataType] = data.tables[args.index][args.tableDataType] ?? err.get('tables');
 		return data.tables[args.index][args.tableDataType];
 	}
@@ -1060,8 +1060,8 @@ class GameJoltAPI {
 			if (pResponse.success == bool.f) { err.keys = pResponse.message; return; }
 			data.keys = pResponse.keys;
 		});
-		if (typeof data.keys != 'object') { return err.get('keys'); }
-		if (typeof data.keys[args.index] != 'object') { return err.get('keys'); }
+		if (!data.keys) return err.get('keys');
+		if (!data.keys[args.index]) return err.get('keys');
 		data.keys[args.index].key = data.keys[args.index].key ?? err.get('keys');
 		return data.keys[args.index].key;
 	}
@@ -1070,7 +1070,7 @@ class GameJoltAPI {
 			if (pResponse.success == bool.f) { err.time = pResponse.message; return; }
 			data.time = pResponse;
 		});
-		if (typeof data.time != 'object') { return err.get('time'); }
+		if (!data.time) return err.get('time');
 		data.time[args.timeType] = data.time[args.timeType] ?? err.get('time');
 		return data.time[args.timeType];
 	}
