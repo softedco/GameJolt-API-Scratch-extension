@@ -1183,6 +1183,12 @@
 						text: "Login?",
 					},
 					{
+						opcode: "loginUser",
+						blockIconURI: icons.user,
+						blockType: Scratch.BlockType.REPORTER,
+						text: "User logged in as"
+					},
+					{
 						opcode: "userFetch",
 						blockIconURI: icons.user,
 						blockType: Scratch.BlockType.COMMAND,
@@ -1696,6 +1702,9 @@
 		}
 		loginBool() {
 			return GameJolt.bLoggedIn;
+		}
+		loginUser() {
+			return GameJolt.sUserName || err.get("");
 		}
 		userFetch(args) {
 			GameJolt.UserFetchComb(

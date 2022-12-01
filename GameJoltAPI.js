@@ -427,6 +427,12 @@ class GameJoltAPI {
 					text: 'Login?'
 				},
 				{
+					opcode: 'loginUser',
+					blockIconURI: icons.user,
+					blockType: Scratch.BlockType.REPORTER,
+					text: 'User logged in as'
+				},
+				{
 					opcode: 'userFetch',
 					blockIconURI: icons.user,
 					blockType: Scratch.BlockType.COMMAND,
@@ -935,6 +941,9 @@ class GameJoltAPI {
 	}
 	loginBool() {
 		return GJAPI.bLoggedIn;
+	}
+	loginUser() {
+		return GJAPI.sUserName || err.get('');
 	}
 	userFetch(args) {
 		GJAPI.UserFetchComb(args.fetchType, args.usernameOrID, pResponse => {
