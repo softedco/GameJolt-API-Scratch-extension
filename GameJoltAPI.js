@@ -286,7 +286,7 @@ const bool = {
  * It's a constant so you have to refresh the page to update the upToDate field
  */
 const version = {
-	current: '1.32.65\n',
+	current: '1.33.66\n',
 	upToDate: fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''))
 };
 
