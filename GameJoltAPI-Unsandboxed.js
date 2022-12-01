@@ -366,6 +366,12 @@
 						text: 'Login automatically'
 					},
 					{
+						opcode: 'loginAutoBool',
+						blockIconURI: icons.user,
+						blockType: Scratch.BlockType.BOOLEAN,
+						text: 'Autologin?'
+					},
+					{
 						opcode: 'logout',
 						blockIconURI: icons.user,
 						blockType: Scratch.BlockType.COMMAND,
@@ -886,6 +892,9 @@
 		 */
 		loginAuto() {
 			GJAPI.UserLoginAuto();
+		}
+		loginAutoBool() {
+			return Bool(GJAPI.asQueryParam["gjapi_username"]);
 		}
 		logout() {
 			GJAPI.UserLogout();

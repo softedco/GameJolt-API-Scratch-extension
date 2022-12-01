@@ -1165,10 +1165,16 @@
 						},
 					},
 					{
-						opcode: 'loginAuto',
+						opcode: "loginAuto",
 						blockIconURI: icons.user,
 						blockType: Scratch.BlockType.COMMAND,
-						text: 'Login automatically'
+						text: "Login automatically"
+					},
+					{
+						opcode: "loginAutoBool",
+						blockIconURI: icons.user,
+						blockType: Scratch.BlockType.BOOLEAN,
+						text: "Autologin?"
 					},
 					{
 						opcode: "logout",
@@ -1696,6 +1702,9 @@
 		 */
 		loginAuto() {
 			GameJolt.UserLoginAuto();
+		}
+		loginAutoBool() {
+			return Bool(GJAPI.asQueryParam["gjapi_username"]);
 		}
 		logout() {
 			GameJolt.UserLogout();
