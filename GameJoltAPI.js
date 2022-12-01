@@ -943,7 +943,7 @@ class GameJoltAPI {
 		GJAPI.UserLoginAuto();
 	}
 	loginAutoBool() {
-		return Bool(GJAPI.asQueryParam["gjapi_username"]);
+		return Boolean(GJAPI.asQueryParam["gjapi_username"]);
 	}
 	logout() {
 		GJAPI.UserLogout();
