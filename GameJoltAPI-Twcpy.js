@@ -1704,7 +1704,7 @@
 			return GameJolt.bLoggedIn;
 		}
 		loginUser() {
-			return GameJolt.sUserName || err.get("");
+			return GameJolt.sUserName;
 		}
 		userFetch(args) {
 			GameJolt.UserFetchComb(

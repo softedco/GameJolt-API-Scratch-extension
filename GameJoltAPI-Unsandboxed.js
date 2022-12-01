@@ -894,7 +894,7 @@
 			return GJAPI.bLoggedIn;
 		}
 		loginUser() {
-			return GJAPI.sUserName || err.get('');
+			return GJAPI.sUserName;
 		}
 		userFetch(args) {
 			GJAPI.UserFetchComb(args.fetchType, args.usernameOrID, pResponse => {
