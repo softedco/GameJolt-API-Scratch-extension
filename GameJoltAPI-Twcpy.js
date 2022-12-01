@@ -1704,7 +1704,7 @@
 			GameJolt.UserLoginAuto();
 		}
 		loginAutoBool() {
-			return Boolean(GJAPI.asQueryParam["gjapi_username"]);
+			return Boolean(GameJolt.asQueryParam["gjapi_username"]);
 		}
 		logout() {
 			GameJolt.UserLogout();
