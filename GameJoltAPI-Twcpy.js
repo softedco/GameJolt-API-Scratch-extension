@@ -547,6 +547,12 @@
 		GJAPI.TrophyFetch = function (iAchieved, pCallback) {
 			if (!GJAPI.bLoggedIn) {
 				GJAPI.LogTrace("TrophyFetch(" + iAchieved + ") failed: no user logged in");
+				pCallback = {
+					response: {
+						success: "false",
+						message: "No user logged in"
+					}
+				};
 				return;
 			}
 
@@ -563,9 +569,13 @@
 
 		GJAPI.TrophyFetchSingle = function (iTrophyID, pCallback) {
 			if (!GJAPI.bLoggedIn) {
-				GJAPI.LogTrace(
-					"TrophyFetchSingle(" + iTrophyID + ") failed: no user logged in"
-				);
+				GJAPI.LogTrace("TrophyFetchSingle(" + iTrophyID + ") failed: no user logged in");
+				pCallback = {
+					response: {
+						success: "false",
+						message: "No user logged in"
+					}
+				};
 				return;
 			}
 
@@ -599,6 +609,12 @@
 					sScoreText +
 					") failed: no user logged in"
 				);
+				pCallback = {
+					response: {
+						success: "false",
+						message: "No user logged in"
+					}
+				};
 				return;
 			}
 
@@ -650,6 +666,12 @@
 					iLimit +
 					") failed: no user logged in"
 				);
+				pCallback = {
+					response: {
+						success: "false",
+						message: "No user logged in"
+					}
+				};
 				return;
 			}
 
@@ -768,6 +790,12 @@
 		GJAPI.FriendsFetch = (pCallback) => {
 			if (!GJAPI.bLoggedIn) {
 				GJAPI.LogTrace("FriendsFetch() failed: no user logged in");
+				pCallback = {
+					response: {
+						success: "false",
+						message: "No user logged in"
+					}
+				};
 				return;
 			}
 			GJAPI.SendRequest(
@@ -784,6 +812,12 @@
 		GJAPI.TrophyRemove = (iTrophyID, pCallback) => {
 			if (!GJAPI.bLoggedIn) {
 				GJAPI.LogTrace("TrophyRemove(" + iTrophyID + ") failed: no user logged in");
+				pCallback = {
+					response: {
+						success: "false",
+						message: "No user logged in"
+					}
+				};
 				return;
 			}
 			// Check if the trophy is not achieved
@@ -919,6 +953,12 @@
 					value +
 					") failed: no user logged in"
 				);
+				pCallback = {
+					response: {
+						success: "false",
+						message: "No user logged in"
+					}
+				};
 				return;
 			}
 			var bFetchAll = bOnlyUser == GJAPI.SCORE_ONLY_USER ? false : true;
@@ -983,7 +1023,13 @@
 		 */
 		GJAPI.TrophyFetchComb = (isAll, value, pCallback) => {
 			if (!GJAPI.bLoggedIn) {
-				GJAPI.LogTrace( "TrophyFetchComb(" + isAll + ", " + value + ") failed: no user logged in" );
+				GJAPI.LogTrace("TrophyFetchComb(" + isAll + ", " + value + ") failed: no user logged in");
+				pCallback = {
+					response: {
+						success: "false",
+						message: "No user logged in"
+					}
+				};
 				return;
 			}
 			if (isAll) {
@@ -1010,7 +1056,16 @@
 		 * Modified UserLoginManual to login users automatically if their username and token are detected
 		 */
 		GJAPI.UserLoginAuto = pCallback => {
-			if (!GJAPI.bOnGJ) { GJAPI.LogTrace("UserLoginAuto() failed: No username or token detected"); return; }
+			if (!GJAPI.bOnGJ) {
+				GJAPI.LogTrace("UserLoginAuto() failed: No username or token detected");
+				pCallback = {
+					response: {
+						success: "false",
+						message: "No username or token detected"
+					}
+				};
+				return;
+			}
 			if (GJAPI.bLoggedIn) { GJAPI.LogTrace("UserLoginAuto() failed: user " + GJAPI.sUserName + " already logged in"); return; }
 			GJAPI.SendRequest("/users/auth/" + "?username=" + GJAPI.asQueryParam["gjapi_username"] +
 				"&user_token=" + GJAPI.asQueryParam["gjapi_token"],
@@ -1033,7 +1088,7 @@
 		 * The placeholder character for patterns is *
 		 */
 		GJAPI.DataStoreGetKeysEx = (iStore, pattern, pCallback) => {
-			GJAPI.SendRequest("/data-store/get-keys/?pattern=" + pattern, (iStore == GJAPI.DATA_STORE_USER), pCallback);
+			GJAPI.SendRequest("/data-store/get-keys/?pattern=" + pattern, iStore == GJAPI.DATA_STORE_USER, pCallback);
 		};
 
 		return GJAPI;
@@ -1044,7 +1099,7 @@
 	 */
 	let err = {
 		get(code) {
-			return (err[code] == undefined) ? 'Error.' : 'Error: ' + err[code];
+			return err[code] ? 'Error: ' + err[code] : 'Error.';
 		}
 	};
 
@@ -1435,7 +1490,7 @@
 						opcode: "scoreGetTables",
 						blockIconURI: icons.score,
 						blockType: Scratch.BlockType.REPORTER,
-						text: "Return table's [tableDataType] by index:[index]",
+						text: "Return table [tableDataType] by index:[index]",
 						arguments: {
 							tableDataType: {
 								type: Scratch.ArgumentType.STRING,
