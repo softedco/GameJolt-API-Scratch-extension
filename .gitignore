@@ -7,3 +7,4 @@
 *.sqlite
 *.db-shm
 *.suo
+*.wsuo
