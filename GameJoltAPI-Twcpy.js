@@ -547,12 +547,6 @@
 		GJAPI.TrophyFetch = function (iAchieved, pCallback) {
 			if (!GJAPI.bLoggedIn) {
 				GJAPI.LogTrace("TrophyFetch(" + iAchieved + ") failed: no user logged in");
-				pCallback = {
-					response: {
-						success: "false",
-						message: "No user logged in"
-					}
-				};
 				return;
 			}
 
@@ -570,12 +564,6 @@
 		GJAPI.TrophyFetchSingle = function (iTrophyID, pCallback) {
 			if (!GJAPI.bLoggedIn) {
 				GJAPI.LogTrace("TrophyFetchSingle(" + iTrophyID + ") failed: no user logged in");
-				pCallback = {
-					response: {
-						success: "false",
-						message: "No user logged in"
-					}
-				};
 				return;
 			}
 
@@ -609,12 +597,6 @@
 					sScoreText +
 					") failed: no user logged in"
 				);
-				pCallback = {
-					response: {
-						success: "false",
-						message: "No user logged in"
-					}
-				};
 				return;
 			}
 
@@ -666,12 +648,6 @@
 					iLimit +
 					") failed: no user logged in"
 				);
-				pCallback = {
-					response: {
-						success: "false",
-						message: "No user logged in"
-					}
-				};
 				return;
 			}
 
@@ -790,12 +766,6 @@
 		GJAPI.FriendsFetch = (pCallback) => {
 			if (!GJAPI.bLoggedIn) {
 				GJAPI.LogTrace("FriendsFetch() failed: no user logged in");
-				pCallback = {
-					response: {
-						success: "false",
-						message: "No user logged in"
-					}
-				};
 				return;
 			}
 			GJAPI.SendRequest(
@@ -812,12 +782,6 @@
 		GJAPI.TrophyRemove = (iTrophyID, pCallback) => {
 			if (!GJAPI.bLoggedIn) {
 				GJAPI.LogTrace("TrophyRemove(" + iTrophyID + ") failed: no user logged in");
-				pCallback = {
-					response: {
-						success: "false",
-						message: "No user logged in"
-					}
-				};
 				return;
 			}
 			// Check if the trophy is not achieved
@@ -953,12 +917,6 @@
 					value +
 					") failed: no user logged in"
 				);
-				pCallback = {
-					response: {
-						success: "false",
-						message: "No user logged in"
-					}
-				};
 				return;
 			}
 			var bFetchAll = bOnlyUser == GJAPI.SCORE_ONLY_USER ? false : true;
@@ -1024,12 +982,6 @@
 		GJAPI.TrophyFetchComb = (isAll, value, pCallback) => {
 			if (!GJAPI.bLoggedIn) {
 				GJAPI.LogTrace("TrophyFetchComb(" + isAll + ", " + value + ") failed: no user logged in");
-				pCallback = {
-					response: {
-						success: "false",
-						message: "No user logged in"
-					}
-				};
 				return;
 			}
 			if (isAll) {
@@ -1058,12 +1010,6 @@
 		GJAPI.UserLoginAuto = pCallback => {
 			if (!GJAPI.bOnGJ) {
 				GJAPI.LogTrace("UserLoginAuto() failed: No username or token detected");
-				pCallback = {
-					response: {
-						success: "false",
-						message: "No username or token detected"
-					}
-				};
 				return;
 			}
 			if (GJAPI.bLoggedIn) { GJAPI.LogTrace("UserLoginAuto() failed: user " + GJAPI.sUserName + " already logged in"); return; }
