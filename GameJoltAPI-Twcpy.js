@@ -674,22 +674,18 @@
 
 		GJAPI.DataStoreSet = function (iStore, sKey, sData, pCallback) {
 			// send set-data request
-			GJAPI.SendRequestEx(
-				"/data-store/set/?key=" + sKey,
+			GJAPI.SendRequest(
+				"/data-store/set/?key=" + sKey + "&data=" + sData,
 				iStore === GJAPI.DATA_STORE_USER,
-				"json",
-				"data=" + sData,
 				pCallback
 			);
 		};
 
 		GJAPI.DataStoreFetch = function (iStore, sKey, pCallback) {
 			// send fetch-data request
-			GJAPI.SendRequestEx(
+			GJAPI.SendRequest(
 				"/data-store/?key=" + sKey,
 				iStore === GJAPI.DATA_STORE_USER,
-				"json",
-				"",
 				pCallback
 			);
 		};
