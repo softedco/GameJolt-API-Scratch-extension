@@ -1,5 +1,5 @@
 # Documentation for the GameJolt API Scratch extension
-## 1. Installing the extension
+## 1. Installation
 ### 1.1 Setup
 Paste the following link into the custom extensions box.
 
