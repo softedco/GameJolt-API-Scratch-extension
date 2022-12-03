@@ -5,3 +5,5 @@
 #### ● [Direct link](https://softedco.github.io/GameJolt-API-Scratch-extension/GameJoltAPI-Unsandboxed.js), [Editor](https://turbowarp.org/editor?extension=https://softedco.github.io/GameJolt-API-Scratch-extension/GameJoltAPI-Unsandboxed.js)
 ### Latest version (Epicques, Adacraft)
 #### ● [Direct link](https://softedco.github.io/GameJolt-API-Scratch-extension/GameJoltAPI.js)
+### Documentation
+#### ● Not out yet
