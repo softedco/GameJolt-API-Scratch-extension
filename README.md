@@ -2,7 +2,7 @@
 ### Latest Turbowarp version (Official)
 #### ● [Direct link](https://extensions.turbowarp.org/gamejolt.js), [Editor](https://turbowarp.org/editor?extension=https://extensions.turbowarp.org/gamejolt.js)
 ### Latest Turbowarp version
-#### ● [Direct link](https://softedco.github.io/GameJolt-API-Scratch-extension/GameJoltAPI-Twcpy.js), [Editor](https://turbowarp.org/editor?extension=https://softedco.github.io/GameJolt-API-Scratch-extension/GameJoltAPI-Unsandboxed.js)
+#### ● [Direct link](https://softedco.github.io/GameJolt-API-Scratch-extension/GameJoltAPI-Twcpy.js), [Editor](https://turbowarp.org/editor?extension=https://softedco.github.io/GameJolt-API-Scratch-extension/GameJoltAPI-Twcpy.js)
 ### Latest version (Epicques, Adacraft)
 #### ● [Direct link](https://softedco.github.io/GameJolt-API-Scratch-extension/GameJoltAPI.js)
 ### [Documentation](https://softedco.github.io/GameJolt-API-Scratch-extension/DOCUMENTATION)
