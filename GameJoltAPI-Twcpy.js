@@ -229,7 +229,6 @@
 		GJAPI.bAutoLogin = true;
 
 		GJAPI.sAPI = "https://api.gamejolt.com/api/game/v1_2";
-		GJAPI.sAPIold = "https://gamejolt.com/api/game/v1"; // This is for fixing DataStoreFetch
 		GJAPI.sLogName = "[Game Jolt API]";
 		GJAPI.iLogStack = 20;
 
@@ -273,7 +272,10 @@
 
 		GJAPI.SendRequest = function (sURL, bSendUser, pCallback) {
 			// forward call to extended function
-			GJAPI.SendRequestEx(sURL, bSendUser, "json", "", pCallback);
+			let sendForUser = (!(sURL.includes('&username=') || sURL.includes('&user_token=') || sURL.includes('?username=') || sURL.includes('?user_token=')) && bSendUser) ?
+			(sURL.indexOf("/?") === -1 ? "?" : "&") + "username=" + GJAPI.sUserName + "&user_token=" + GJAPI.sUserToken : "";
+
+			GJAPI.SendRequestEx(sURL + sendForUser, bSendUser, "json", "", pCallback);
 		};
 
 		GJAPI.SendRequestEx = function (
@@ -285,7 +287,7 @@
 		) {
 			// add main URL, game ID and format type
 			sURL =
-				(sBodyData ? GJAPI.sAPIold : GJAPI.sAPI) +
+				GJAPI.sAPI +
 				encodeURI(sURL) +
 				(sURL.indexOf("/?") === -1 ? "?" : "&") +
 				"game_id=" +
