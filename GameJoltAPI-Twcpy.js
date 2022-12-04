@@ -1352,7 +1352,7 @@
 							globalOrPerUser: {
 								type: Scratch.ArgumentType.STRING,
 								menu: "globalOrPerUser",
-								defaultValue: GameJolt.DATA_STORE_GLOBAL,
+								defaultValue: "",
 							},
 							betterOrWorse: {
 								type: Scratch.ArgumentType.STRING,
@@ -1457,7 +1457,7 @@
 							globalOrPerUser: {
 								type: Scratch.ArgumentType.STRING,
 								menu: "globalOrPerUser",
-								defaultValue: GameJolt.DATA_STORE_GLOBAL,
+								defaultValue: "",
 							},
 							key: {
 								type: Scratch.ArgumentType.STRING,
@@ -1478,7 +1478,7 @@
 							globalOrPerUser: {
 								type: Scratch.ArgumentType.STRING,
 								menu: "globalOrPerUser",
-								defaultValue: GameJolt.DATA_STORE_GLOBAL,
+								defaultValue: "",
 							},
 							key: {
 								type: Scratch.ArgumentType.STRING,
@@ -1495,7 +1495,7 @@
 							globalOrPerUser: {
 								type: Scratch.ArgumentType.STRING,
 								menu: "globalOrPerUser",
-								defaultValue: GameJolt.DATA_STORE_GLOBAL,
+								defaultValue: "",
 							},
 							key: {
 								type: Scratch.ArgumentType.STRING,
