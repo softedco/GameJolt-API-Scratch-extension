@@ -272,10 +272,7 @@
 
 		GJAPI.SendRequest = function (sURL, bSendUser, pCallback) {
 			// forward call to extended function
-			let sendForUser = (!(sURL.includes('&username=') || sURL.includes('&user_token=') || sURL.includes('?username=') || sURL.includes('?user_token=')) && bSendUser) ?
-			(sURL.indexOf("/?") === -1 ? "?" : "&") + "username=" + GJAPI.sUserName + "&user_token=" + GJAPI.sUserToken : "";
-
-			GJAPI.SendRequestEx(sURL + sendForUser, bSendUser, "json", "", pCallback);
+			GJAPI.SendRequestEx(sURL, bSendUser, "json", "", pCallback);
 		};
 
 		GJAPI.SendRequestEx = function (
@@ -296,7 +293,7 @@
 				sFormat;
 
 			// add credentials of current user (for user-related operations)
-			if (GJAPI.bLoggedIn && bSendUser === GJAPI.SEND_FOR_USER) {
+			if (GJAPI.bLoggedIn && bSendUser == GJAPI.SEND_FOR_USER) {
 				sURL += "&username=" + GJAPI.sUserName + "&user_token=" + GJAPI.sUserToken;
 			}
 
