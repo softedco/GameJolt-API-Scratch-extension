@@ -293,7 +293,7 @@
 				sFormat;
 
 			// add credentials of current user (for user-related operations)
-			if (GJAPI.bLoggedIn && bSendUser == GJAPI.SEND_FOR_USER) {
+			if (GJAPI.bLoggedIn && bSendUser) {
 				sURL += "&username=" + GJAPI.sUserName + "&user_token=" + GJAPI.sUserToken;
 			}
 
@@ -673,7 +673,7 @@
 			// send set-data request
 			GJAPI.SendRequest(
 				"/data-store/set/?key=" + sKey + "&data=" + sData,
-				iStore == GJAPI.DATA_STORE_USER,
+				iStore,
 				pCallback
 			);
 		};
@@ -682,7 +682,7 @@
 			// send fetch-data request
 			GJAPI.SendRequest(
 				"/data-store/?key=" + sKey,
-				iStore == GJAPI.DATA_STORE_USER,
+				iStore,
 				pCallback
 			);
 		};
@@ -697,7 +697,7 @@
 				sOperation +
 				"&value=" +
 				sValue,
-				iStore == GJAPI.DATA_STORE_USER,
+				iStore,
 				pCallback
 			);
 		};
@@ -706,7 +706,7 @@
 			// send remove-data request
 			GJAPI.SendRequest(
 				"/data-store/remove/?key=" + sKey,
-				iStore == GJAPI.DATA_STORE_USER,
+				iStore,
 				pCallback
 			);
 		};
@@ -715,7 +715,7 @@
 			// send get-keys request
 			GJAPI.SendRequest(
 				"/data-store/get-keys/",
-				iStore == GJAPI.DATA_STORE_USER,
+				iStore,
 				pCallback
 			);
 		};
@@ -1033,7 +1033,7 @@
 		 * The placeholder character for patterns is *
 		 */
 		GJAPI.DataStoreGetKeysEx = (iStore, pattern, pCallback) => {
-			GJAPI.SendRequest("/data-store/get-keys/?pattern=" + pattern, iStore == GJAPI.DATA_STORE_USER, pCallback);
+			GJAPI.SendRequest("/data-store/get-keys/?pattern=" + pattern, iStore, pCallback);
 		};
 
 		return GJAPI;
@@ -1357,7 +1357,7 @@
 							betterOrWorse: {
 								type: Scratch.ArgumentType.STRING,
 								menu: "betterOrWorse",
-								defaultValue: String(GameJolt.BETTER_THAN),
+								defaultValue: "true",
 							},
 							value: {
 								type: Scratch.ArgumentType.NUMBER,
@@ -1386,7 +1386,7 @@
 							betterOrWorse: {
 								type: Scratch.ArgumentType.STRING,
 								menu: "betterOrWorse",
-								defaultValue: String(GameJolt.BETTER_THAN),
+								defaultValue: "true",
 							},
 							value: {
 								type: Scratch.ArgumentType.NUMBER,
@@ -1521,7 +1521,7 @@
 							globalOrPerUser: {
 								type: Scratch.ArgumentType.STRING,
 								menu: "globalOrPerUser",
-								defaultValue: GameJolt.DATA_STORE_GLOBAL,
+								defaultValue: "",
 							},
 							key: {
 								type: Scratch.ArgumentType.STRING,
@@ -1538,7 +1538,7 @@
 							globalOrPerUser: {
 								type: Scratch.ArgumentType.STRING,
 								menu: "globalOrPerUser",
-								defaultValue: GameJolt.DATA_STORE_GLOBAL,
+								defaultValue: "",
 							},
 							pattern: {
 								type: Scratch.ArgumentType.STRING,
@@ -1793,7 +1793,7 @@
 		scoreFetch(args) {
 			GameJolt.ScoreFetchEx(
 				args.ID,
-				args.globalOrPerUser == GameJolt.DATA_STORE_GLOBAL ? GameJolt.SCORE_ALL : GameJolt.SCORE_ONLY_USER,
+				args.globalOrPerUser ? GameJolt.SCORE_ONLY_USER : GameJolt.SCORE_ALL,
 				args.amount,
 				args.betterOrWorse,
 				args.value,
