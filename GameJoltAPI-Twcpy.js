@@ -666,14 +666,14 @@
 
 		// ****************************************************************
 		// data store functions
-		GJAPI.DATA_STORE_USER = 0;
-		GJAPI.DATA_STORE_GLOBAL = 1;
+		GJAPI.DATA_STORE_USER = true;
+		GJAPI.DATA_STORE_GLOBAL = false;
 
 		GJAPI.DataStoreSet = function (iStore, sKey, sData, pCallback) {
 			// send set-data request
 			GJAPI.SendRequest(
 				"/data-store/set/?key=" + sKey + "&data=" + sData,
-				iStore === GJAPI.DATA_STORE_USER,
+				iStore == GJAPI.DATA_STORE_USER,
 				pCallback
 			);
 		};
@@ -682,7 +682,7 @@
 			// send fetch-data request
 			GJAPI.SendRequest(
 				"/data-store/?key=" + sKey,
-				iStore === GJAPI.DATA_STORE_USER,
+				iStore == GJAPI.DATA_STORE_USER,
 				pCallback
 			);
 		};
@@ -697,7 +697,7 @@
 				sOperation +
 				"&value=" +
 				sValue,
-				iStore === GJAPI.DATA_STORE_USER,
+				iStore == GJAPI.DATA_STORE_USER,
 				pCallback
 			);
 		};
@@ -706,7 +706,7 @@
 			// send remove-data request
 			GJAPI.SendRequest(
 				"/data-store/remove/?key=" + sKey,
-				iStore === GJAPI.DATA_STORE_USER,
+				iStore == GJAPI.DATA_STORE_USER,
 				pCallback
 			);
 		};
@@ -715,7 +715,7 @@
 			// send get-keys request
 			GJAPI.SendRequest(
 				"/data-store/get-keys/",
-				iStore === GJAPI.DATA_STORE_USER,
+				iStore == GJAPI.DATA_STORE_USER,
 				pCallback
 			);
 		};
@@ -1639,8 +1639,8 @@
 					},
 					globalOrPerUser: {
 						items: [
-							{ text: "global", value: GameJolt.DATA_STORE_GLOBAL },
-							{ text: "user", value: GameJolt.DATA_STORE_USER },
+							{ text: "global", value: "" },
+							{ text: "user", value: "true" },
 						],
 					},
 					indexOrID: {
