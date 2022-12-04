@@ -1352,7 +1352,7 @@
 							globalOrPerUser: {
 								type: Scratch.ArgumentType.STRING,
 								menu: "globalOrPerUser",
-								defaultValue: "",
+								defaultValue: "false",
 							},
 							betterOrWorse: {
 								type: Scratch.ArgumentType.STRING,
@@ -1457,7 +1457,7 @@
 							globalOrPerUser: {
 								type: Scratch.ArgumentType.STRING,
 								menu: "globalOrPerUser",
-								defaultValue: "",
+								defaultValue: "false",
 							},
 							key: {
 								type: Scratch.ArgumentType.STRING,
@@ -1478,7 +1478,7 @@
 							globalOrPerUser: {
 								type: Scratch.ArgumentType.STRING,
 								menu: "globalOrPerUser",
-								defaultValue: "",
+								defaultValue: "false",
 							},
 							key: {
 								type: Scratch.ArgumentType.STRING,
@@ -1495,7 +1495,7 @@
 							globalOrPerUser: {
 								type: Scratch.ArgumentType.STRING,
 								menu: "globalOrPerUser",
-								defaultValue: "",
+								defaultValue: "false",
 							},
 							key: {
 								type: Scratch.ArgumentType.STRING,
@@ -1521,7 +1521,7 @@
 							globalOrPerUser: {
 								type: Scratch.ArgumentType.STRING,
 								menu: "globalOrPerUser",
-								defaultValue: "",
+								defaultValue: "false",
 							},
 							key: {
 								type: Scratch.ArgumentType.STRING,
@@ -1538,7 +1538,7 @@
 							globalOrPerUser: {
 								type: Scratch.ArgumentType.STRING,
 								menu: "globalOrPerUser",
-								defaultValue: "",
+								defaultValue: "false",
 							},
 							pattern: {
 								type: Scratch.ArgumentType.STRING,
@@ -1639,7 +1639,7 @@
 					},
 					globalOrPerUser: {
 						items: [
-							{ text: "global", value: "" },
+							{ text: "global", value: "false" },
 							{ text: "user", value: "true" },
 						],
 					},
@@ -1793,7 +1793,7 @@
 		scoreFetch(args) {
 			GameJolt.ScoreFetchEx(
 				args.ID,
-				args.globalOrPerUser ? GameJolt.SCORE_ONLY_USER : GameJolt.SCORE_ALL,
+				args.globalOrPerUser == bool.t ? GameJolt.SCORE_ONLY_USER : GameJolt.SCORE_ALL,
 				args.amount,
 				args.betterOrWorse,
 				args.value,
@@ -1853,14 +1853,14 @@
 		}
 		dataStoreSet(args) {
 			GameJolt.DataStoreSet(
-				args.globalOrPerUser,
+				args.globalOrPerUser == bool.t,
 				args.key,
 				args.data
 			);
 		}
 		dataStoreFetch(args) {
 			GameJolt.DataStoreFetch(
-				args.globalOrPerUser,
+				args.globalOrPerUser == bool.t,
 				args.key,
 				pResponse =>
 			{
@@ -1872,7 +1872,7 @@
 		}
 		dataStoreUpdate(args) {
 			GameJolt.DataStoreUpdate(
-				args.globalOrPerUser,
+				args.globalOrPerUser == bool.t,
 				args.key,
 				args.operationType,
 				args.value
@@ -1880,13 +1880,13 @@
 		}
 		dataStoreRemove(args) {
 			GameJolt.DataStoreRemove(
-				args.globalOrPerUser,
+				args.globalOrPerUser == bool.t,
 				args.key
 			);
 		}
 		dataStoreGetKey(args) {
 			GameJolt.DataStoreGetKeysEx(
-				args.globalOrPerUser,
+				args.globalOrPerUser == bool.t,
 				args.pattern,
 				pResponse =>
 			{
