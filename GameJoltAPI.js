@@ -283,7 +283,7 @@ const bool = {
  * It's a constant so you have to refresh the page to update the upToDate field
  */
 const version = {
-	current: '1.33.66\n',
+	current: '1.34.66\n',
 	upToDate: fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''))
 };
 
@@ -680,7 +680,7 @@ class GameJoltAPI {
 					opcode: 'scoreGetTables',
 					blockIconURI: icons.score,
 					blockType: Scratch.BlockType.REPORTER,
-					text: "Return table's [tableDataType] by index:[index]",
+					text: 'Return table [tableDataType] by index:[index]',
 					arguments: {
 						tableDataType: {
 							type: Scratch.ArgumentType.STRING,
