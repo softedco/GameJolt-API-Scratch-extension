@@ -7,9 +7,9 @@
  * API library by Martin Mauersics or MausGames (minified)
  * Modified by softed
  */
-let GJAPI = {};GJAPI.iGameID;GJAPI.sGameKey;GJAPI.bAutoLogin = true;GJAPI.sAPIO="https://gamejolt.com/api/game/v1";GJAPI.sAPI="https://api.gamejolt.com/api/game/v1_2";GJAPI.sLogName="[Game Jolt API]";GJAPI.iLogStack=20;GJAPI.asQueryParam=function(){for(var b={},a=window.location.search.substring(1).split("&"),c=0;c<a.length;++c){var d=a[c].split("=");"undefined"===typeof b[d[0]]?b[d[0]]=d[1]:"string"===typeof b[d[0]]?b[d[0]]=[b[d[0]],d[1]]:b[d[0]].push(d[1])}return b}();
+let GJAPI = {};GJAPI.iGameID;GJAPI.sGameKey;GJAPI.bAutoLogin = true;GJAPI.sAPI="https://api.gamejolt.com/api/game/v1_2";GJAPI.sLogName="[Game Jolt API]";GJAPI.iLogStack=20;GJAPI.asQueryParam=function(){for(var b={},a=window.location.search.substring(1).split("&"),c=0;c<a.length;++c){var d=a[c].split("=");"undefined"===typeof b[d[0]]?b[d[0]]=d[1]:"string"===typeof b[d[0]]?b[d[0]]=[b[d[0]],d[1]]:b[d[0]].push(d[1])}return b}();
 GJAPI.bOnGJ=window.location.hostname.match(/gamejolt/)?!0:!1;GJAPI.LogTrace=function(b){GJAPI.iLogStack&&(--GJAPI.iLogStack||(b="(\u256f\u00b0\u25a1\u00b0\uff09\u256f\ufe35 \u253b\u2501\u253b"),console.warn(GJAPI.sLogName+" "+b),console.trace())};GJAPI.SEND_FOR_USER=!0;GJAPI.SEND_GENERAL=!1;GJAPI.SendRequest=function(b,a,c){GJAPI.SendRequestEx(b,a,"json","",c)};
-GJAPI.SendRequestEx=function(b,a,c,d,e){b=(d?GJAPI.sAPIO:GJAPI.sAPI)+encodeURI(b)+(-1===b.indexOf("/?")?"?":"&")+"game_id="+GJAPI.iGameID+"&format="+c;GJAPI.bLoggedIn&&a===GJAPI.SEND_FOR_USER&&(b+="&username="+GJAPI.sUserName+"&user_token="+GJAPI.sUserToken);b+="&signature="+hex_md5(b+GJAPI.sGameKey);__CreateAjax(b,d,function(f){console.info(GJAPI.sLogName+" <"+b+"> "+f);if(""!==f&&"function"===typeof e)switch(c){case "json":e(eval("("+f+")").response);break;case "dump":var g=f.indexOf("\n"),h=f.substr(0,g-1);f=
+GJAPI.SendRequestEx=function(b,a,c,d,e){b=GJAPI.sAPI+encodeURI(b)+(-1===b.indexOf("/?")?"?":"&")+"game_id="+GJAPI.iGameID+"&format="+c;GJAPI.bLoggedIn&&a&&(b+="&username="+GJAPI.sUserName+"&user_token="+GJAPI.sUserToken);b+="&signature="+hex_md5(b+GJAPI.sGameKey);__CreateAjax(b,d,function(f){console.info(GJAPI.sLogName+" <"+b+"> "+f);if(""!==f&&"function"===typeof e)switch(c){case "json":e(eval("("+f+")").response);break;case "dump":var g=f.indexOf("\n"),h=f.substr(0,g-1);f=
 f.substr(g+1);e({success:"SUCCESS"==h,data:f});break;default:e(f)}})};GJAPI.bLoggedIn=GJAPI.bAutoLogin&&GJAPI.asQueryParam.gjapi_username&&GJAPI.asQueryParam.gjapi_token?!0:!1;GJAPI.sUserName=GJAPI.bLoggedIn?GJAPI.asQueryParam.gjapi_username:"";GJAPI.sUserToken=GJAPI.bLoggedIn?GJAPI.asQueryParam.gjapi_token:"";console.info(GJAPI.asQueryParam);console.info(GJAPI.sLogName+(GJAPI.bOnGJ?" E":" Not e")+"mbedded on Game Jolt <"+window.location.origin+window.location.pathname+">");
 console.info(GJAPI.sLogName+(GJAPI.bLoggedIn?" U":" No u")+"ser recognized <"+GJAPI.sUserName+">");window.location.hostname||console.warn(GJAPI.sLogName+" XMLHttpRequest may not work properly on a local environment");GJAPI.bSessionActive=!0;
 GJAPI.SessionOpen=function(){GJAPI.bLoggedIn?GJAPI.iSessionHandle||GJAPI.SendRequest("/sessions/open/",GJAPI.SEND_FOR_USER,function(b){b.success=='true'&&(GJAPI.iSessionHandle=window.setInterval(GJAPI.SessionPing,3E4),window.addEventListener("beforeunload",GJAPI.SessionClose,!1))}):GJAPI.LogTrace("SessionOpen() failed: no user logged in")};GJAPI.SessionPing=function(){GJAPI.bLoggedIn?GJAPI.SendRequest("/sessions/ping/?status="+(GJAPI.bSessionActive?"active":"idle"),GJAPI.SEND_FOR_USER):GJAPI.LogTrace("SessionPing() failed: no user logged in")};
@@ -19,8 +19,8 @@ GJAPI.UserLogout=function(){GJAPI.bLoggedIn?(GJAPI.SessionClose(),GJAPI.bLoggedI
 GJAPI.abTrophyCache={};GJAPI.TROPHY_ONLY_ACHIEVED=1;GJAPI.TROPHY_ONLY_NOTACHIEVED=-1;GJAPI.TROPHY_ALL=0;GJAPI.TrophyAchieve=function(b,a){GJAPI.bLoggedIn?GJAPI.abTrophyCache[b]||GJAPI.SendRequest('/trophies/add-achieved/?game_id='+GJAPI.iGameID+'&username='+GJAPI.sUserName+'&user_token='+GJAPI.sUserToken+'&trophy_id='+b,GJAPI.SEND_FOR_USER,function(c){c.success=='true'&&(GJAPI.abTrophyCache[b]=!0);"function"===typeof a&&a(c)}):GJAPI.LogTrace("TrophyAchieve("+b+") failed: no user logged in")};
 GJAPI.TrophyFetch=function(b,a){GJAPI.bLoggedIn?GJAPI.SendRequest("/trophies/"+(b===GJAPI.TROPHY_ALL?"":"?achieved="+(b>=GJAPI.TROPHY_ONLY_ACHIEVED?"true":"false")),GJAPI.SEND_FOR_USER,a):GJAPI.LogTrace("TrophyFetch("+b+") failed: no user logged in")};GJAPI.TrophyFetchSingle=function(b,a){GJAPI.bLoggedIn?GJAPI.SendRequest("/trophies/?trophy_id="+b,GJAPI.SEND_FOR_USER,a):GJAPI.LogTrace("TrophyFetchSingle("+b+") failed: no user logged in")};GJAPI.SCORE_ONLY_USER=!0;GJAPI.SCORE_ALL=!1;
 GJAPI.ScoreAdd=function(b,a,c,d,e){GJAPI.bLoggedIn?GJAPI.ScoreAddGuest(b,a,c,"",d,e):GJAPI.LogTrace("ScoreAdd("+b+", "+a+", "+c+") failed: no user logged in")};GJAPI.ScoreAddGuest=function(b,a,c,d,e,f){var g=d&&d.length?!0:!1;GJAPI.SendRequest("/scores/add/?sort="+a+"&score="+c+(g?"&guest="+d:"")+(b?"&table_id="+b:"")+(e?"&extra_data="+e:""),g?GJAPI.SEND_GENERAL:GJAPI.SEND_FOR_USER,f)};
-GJAPI.ScoreFetch=function(b,a,c,d){!GJAPI.bLoggedIn&&a?GJAPI.LogTrace("ScoreFetch("+b+", "+a+", "+c+") failed: no user logged in"):GJAPI.SendRequest("/scores/?limit="+c+(b?"&table_id="+b:""),a!==GJAPI.SCORE_ONLY_USER?GJAPI.SEND_GENERAL:GJAPI.SEND_FOR_USER,d)};GJAPI.DATA_STORE_USER=0;GJAPI.DATA_STORE_GLOBAL=1;GJAPI.DataStoreSet=function(b,a,c,d){GJAPI.SendRequestEx("/data-store/set/?key="+a,b===GJAPI.DATA_STORE_USER,"json","data="+c,d)};
-GJAPI.DataStoreFetch = function (b, a, c) { GJAPI.SendRequestEx("/data-store/?key=" + a, b === GJAPI.DATA_STORE_USER, "json", "", c) }; GJAPI.DataStoreUpdate = function (b, a, c, d, e) { GJAPI.SendRequest("/data-store/update/?key=" + a + "&operation=" + c + "&value=" + d, b === GJAPI.DATA_STORE_USER, e) }; GJAPI.DataStoreRemove = function (b, a, c) { GJAPI.SendRequest("/data-store/remove/?key=" + a, b === GJAPI.DATA_STORE_USER, c) }; GJAPI.DataStoreGetKeys = function (b, a) { GJAPI.SendRequest("/data-store/get-keys/", b === GJAPI.DATA_STORE_USER, a) };
+GJAPI.ScoreFetch=function(b,a,c,d){!GJAPI.bLoggedIn&&a?GJAPI.LogTrace("ScoreFetch("+b+", "+a+", "+c+") failed: no user logged in"):GJAPI.SendRequest("/scores/?limit="+c+(b?"&table_id="+b:""),a!==GJAPI.SCORE_ONLY_USER?GJAPI.SEND_GENERAL:GJAPI.SEND_FOR_USER,d)};GJAPI.DATA_STORE_USER=true;GJAPI.DATA_STORE_GLOBAL=false;GJAPI.DataStoreSet=function(b,a,c,d){GJAPI.SendRequest("/data-store/set/?key="+a+"&data="+c,b,d)};
+GJAPI.DataStoreFetch = function (b, a, c) { GJAPI.SendRequest("/data-store/?key=" + a, b, c) }; GJAPI.DataStoreUpdate = function (b, a, c, d, e) { GJAPI.SendRequest("/data-store/update/?key=" + a + "&operation=" + c + "&value=" + d, b, e) }; GJAPI.DataStoreRemove = function (b, a, c) { GJAPI.SendRequest("/data-store/remove/?key=" + a, b, c) }; GJAPI.DataStoreGetKeys = function (b, a) { GJAPI.SendRequest("/data-store/get-keys/", b, a) };
 function __CreateAjax(b,a,c){"string"!==typeof a&&(a="");if(window.XMLHttpRequest){var d=new XMLHttpRequest;d.onreadystatechange=function(){4===d.readyState&&c(d.responseText)};""!==a?(d.open("POST",b),d.setRequestHeader("Content-Type","application/x-www-form-urlencoded"),d.send(a)):(d.open("GET",b),d.send())}else console.error(GJAPI.sLogName+" XMLHttpRequest not supported")}var hexcase=0;function hex_md5(b){return rstr2hex(rstr_md5(str2rstr_utf8(b)))}
 function hex_hmac_md5(b,a){return rstr2hex(rstr_hmac_md5(str2rstr_utf8(b),str2rstr_utf8(a)))}function md5_vm_test(){return"900150983cd24fb0d6963f7d28e17f72"==hex_md5("abc").toLowerCase()}function rstr_md5(b){return binl2rstr(binl_md5(rstr2binl(b),8*b.length))}
 function rstr_hmac_md5(b,a){var c=rstr2binl(b);16<c.length&&(c=binl_md5(c,8*b.length));var d=Array(16);b=Array(16);for(var e=0;16>e;e++)d[e]=c[e]^909522486,b[e]=c[e]^1549556828;a=binl_md5(d.concat(rstr2binl(a)),512+8*a.length);return binl2rstr(binl_md5(b.concat(a),640))}function rstr2hex(b){try{hexcase}catch(f){hexcase=0}for(var a=hexcase?"0123456789ABCDEF":"0123456789abcdef",c="",d,e=0;e<b.length;e++)d=b.charCodeAt(e),c+=a.charAt(d>>>4&15)+a.charAt(d&15);return c}
@@ -198,7 +198,7 @@ GJAPI.UserLoginAuto = pCallback => {
  * The placeholder character for patterns is *
  */
 GJAPI.DataStoreGetKeysEx = (iStore, pattern, pCallback) => {
-	GJAPI.SendRequest('/data-store/get-keys/?pattern=' + pattern, (iStore == GJAPI.DATA_STORE_USER), pCallback);
+	GJAPI.SendRequest('/data-store/get-keys/?pattern=' + pattern, iStore, pCallback);
 };
 
 /* Scratch extension by softed
@@ -244,15 +244,12 @@ if (!sandboxed) {
 			 * Overwriting extension's registering method
 			 * Change extensionInstance to your extension class
 			 */
-			register(args) {
-				(
-					function ()
-					{
-						let extensionInstance = new GameJoltAPI(window.vm.extensionManager.runtime);
-						let serviceName = window.vm.extensionManager._registerInternalExtension(extensionInstance);
-						window.vm.extensionManager._loadedExtensions.set(extensionInstance.getInfo().id, serviceName);
-					}
-				)()
+			register: args => {
+				(() => {
+					let extensionInstance = new GameJoltAPI(window.vm.extensionManager.runtime);
+					let serviceName = window.vm.extensionManager._registerInternalExtension(extensionInstance);
+					window.vm.extensionManager._loadedExtensions.set(extensionInstance.getInfo().id, serviceName);
+				})()
 			}
 		}
 	};
@@ -600,12 +597,12 @@ class GameJoltAPI {
 						globalOrPerUser: {
 							type: Scratch.ArgumentType.STRING,
 							menu: 'globalOrPerUser',
-							defaultValue: GJAPI.DATA_STORE_GLOBAL
+							defaultValue: "false"
 						},
 						betterOrWorse: {
 							type: Scratch.ArgumentType.STRING,
 							menu: 'betterOrWorse',
-							defaultValue: String(GJAPI.BETTER_THAN)
+							defaultValue: "true"
 						},
 						value: {
 							type: Scratch.ArgumentType.NUMBER,
@@ -634,7 +631,7 @@ class GameJoltAPI {
 						betterOrWorse: {
 							type: Scratch.ArgumentType.STRING,
 							menu: 'betterOrWorse',
-							defaultValue: String(GJAPI.BETTER_THAN)
+							defaultValue: "true"
 						},
 						value: {
 							type: Scratch.ArgumentType.NUMBER,
@@ -705,7 +702,7 @@ class GameJoltAPI {
 						globalOrPerUser: {
 							type: Scratch.ArgumentType.STRING,
 							menu: 'globalOrPerUser',
-							defaultValue: GJAPI.DATA_STORE_GLOBAL
+							defaultValue: "false"
 						},
 						key: {
 							type: Scratch.ArgumentType.STRING,
@@ -726,7 +723,7 @@ class GameJoltAPI {
 						globalOrPerUser: {
 							type: Scratch.ArgumentType.STRING,
 							menu: 'globalOrPerUser',
-							defaultValue: GJAPI.DATA_STORE_GLOBAL
+							defaultValue: "false"
 						},
 						key: {
 							type: Scratch.ArgumentType.STRING,
@@ -743,7 +740,7 @@ class GameJoltAPI {
 						globalOrPerUser: {
 							type: Scratch.ArgumentType.STRING,
 							menu: 'globalOrPerUser',
-							defaultValue: GJAPI.DATA_STORE_GLOBAL
+							defaultValue: "false"
 						},
 						key: {
 							type: Scratch.ArgumentType.STRING,
@@ -769,7 +766,7 @@ class GameJoltAPI {
 						globalOrPerUser: {
 							type: Scratch.ArgumentType.STRING,
 							menu: 'globalOrPerUser',
-							defaultValue: GJAPI.DATA_STORE_GLOBAL
+							defaultValue: "false"
 						},
 						key: {
 							type: Scratch.ArgumentType.STRING,
@@ -786,7 +783,7 @@ class GameJoltAPI {
 						globalOrPerUser: {
 							type: Scratch.ArgumentType.STRING,
 							menu: 'globalOrPerUser',
-							defaultValue: GJAPI.DATA_STORE_GLOBAL
+							defaultValue: "false"
 						},
 						pattern: {
 							type: Scratch.ArgumentType.STRING,
@@ -884,8 +881,8 @@ class GameJoltAPI {
 				},
 				globalOrPerUser: {
 					items: [
-						{ text: 'global', value: GJAPI.DATA_STORE_GLOBAL },
-						{ text: 'user', value: GJAPI.DATA_STORE_USER }
+						{ text: 'global', value: "false" },
+						{ text: 'user', value: "true" }
 					]
 				},
 				indexOrID: {
@@ -1012,7 +1009,7 @@ class GameJoltAPI {
 	}
 	scoreFetch(args) {
 		GJAPI.ScoreFetchEx(args.ID,
-		args.globalOrPerUser == GJAPI.DATA_STORE_GLOBAL ? GJAPI.SCORE_ALL : GJAPI.SCORE_ONLY_USER,
+		args.globalOrPerUser == bool.t ? GJAPI.SCORE_ONLY_USER : GJAPI.SCORE_ALL,
 		args.amount,
 		args.betterOrWorse,
 		args.value, pResponse => {
@@ -1063,7 +1060,7 @@ class GameJoltAPI {
 		GJAPI.DataStoreSet(args.globalOrPerUser, args.key, args.data);
 	}
 	dataStoreFetch(args) {
-		GJAPI.DataStoreFetch(args.globalOrPerUser, args.key, pResponse => {
+		GJAPI.DataStoreFetch(args.globalOrPerUser == bool.t, args.key, pResponse => {
 			if (pResponse.success == bool.f) { err.store = pResponse.message; return; }
 			data.store = pResponse.data;
 		});
@@ -1071,13 +1068,13 @@ class GameJoltAPI {
 		return data.store;
 	}
 	dataStoreUpdate(args) {
-		GJAPI.DataStoreUpdate(args.globalOrPerUser, args.key, args.operationType, args.value);
+		GJAPI.DataStoreUpdate(args.globalOrPerUser == bool.t, args.key, args.operationType, args.value);
 	}
 	dataStoreRemove(args) {
-		GJAPI.DataStoreRemove(args.globalOrPerUser, args.key);
+		GJAPI.DataStoreRemove(args.globalOrPerUser == bool.t, args.key);
 	}
 	dataStoreGetKey(args) {
-		GJAPI.DataStoreGetKeysEx(args.globalOrPerUser, args.pattern, pResponse => {
+		GJAPI.DataStoreGetKeysEx(args.globalOrPerUser == bool.t, args.pattern, pResponse => {
 			if (pResponse.success == bool.f) { err.keys = pResponse.message; return; }
 			data.keys = pResponse.keys;
 		});
