@@ -299,6 +299,7 @@
 						blockType: Scratch.BlockType.BOOLEAN,
 						text: 'GameJolt?'
 					},
+					'---',
 					{
 						opcode: 'setGame',
 						blockIconURI: icons.main,
@@ -346,6 +347,7 @@
 						blockType: Scratch.BlockType.BOOLEAN,
 						text: 'Session?'
 					},
+					'---',
 					{
 						opcode: 'loginManual',
 						blockIconURI: icons.user,
@@ -440,6 +442,7 @@
 							}
 						}
 					},
+					'---',
 					{
 						opcode: 'trophyAchieve',
 						blockIconURI: icons.trophy,
@@ -486,6 +489,7 @@
 							}
 						}
 					},
+					'---',
 					{
 						opcode: 'scoreAdd',
 						blockIconURI: icons.score,
@@ -647,6 +651,7 @@
 							}
 						}
 					},
+					'---',
 					{
 						opcode: 'dataStoreSet',
 						blockIconURI: icons.store,
@@ -749,6 +754,7 @@
 							}
 						}
 					},
+					'---',
 					{
 						opcode: 'timeFetch',
 						blockIconURI: icons.time,

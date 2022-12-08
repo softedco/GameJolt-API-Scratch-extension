@@ -345,6 +345,7 @@ class GameJoltAPI {
 					blockType: Scratch.BlockType.BOOLEAN,
 					text: 'GameJolt?'
 				},
+				'---',
 				{
 					opcode: 'setGame',
 					blockIconURI: icons.main,
@@ -392,6 +393,7 @@ class GameJoltAPI {
 					blockType: Scratch.BlockType.BOOLEAN,
 					text: 'Session?'
 				},
+				'---',
 				{
 					opcode: 'loginManual',
 					blockIconURI: icons.user,
@@ -486,6 +488,7 @@ class GameJoltAPI {
 						}
 					}
 				},
+				'---',
 				{
 					opcode: 'trophyAchieve',
 					blockIconURI: icons.trophy,
@@ -532,6 +535,7 @@ class GameJoltAPI {
 						}
 					}
 				},
+				'---',
 				{
 					opcode: 'scoreAdd',
 					blockIconURI: icons.score,
@@ -693,6 +697,7 @@ class GameJoltAPI {
 						}
 					}
 				},
+				'---',
 				{
 					opcode: 'dataStoreSet',
 					blockIconURI: icons.store,
@@ -795,6 +800,7 @@ class GameJoltAPI {
 						}
 					}
 				},
+				'---',
 				{
 					opcode: 'timeFetch',
 					blockIconURI: icons.time,
