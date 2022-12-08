@@ -1898,13 +1898,14 @@
 			);
 		}
 		dataStoreGetKey(args) {
-			if (args.globalOrPerUser == bool.t && !GameJolt.bLoggedIn) return err.get('noLogin')
+			if (args.globalOrPerUser == bool.t && !GameJolt.bLoggedIn) return err.get('noLogin');
 			GameJolt.DataStoreGetKeysEx(
 				args.globalOrPerUser == bool.t,
 				args.pattern,
 				pResponse =>
 			{
 				if (pResponse.success == bool.f) { err.keys = pResponse.message; return; }
+				if (!pResponse.keys) { err.keys = err.noItem; }
 				data.keys = pResponse.keys;
 			});
 			if (!data.keys) return err.get('keys');
