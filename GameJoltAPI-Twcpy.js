@@ -1043,7 +1043,10 @@
 	 * Used for storing API error messages
 	 */
 	let err = {
-		get(code) {
+		noLogin: 'No user logged in.',
+		noItem: 'Item not found.',
+		noIndex: 'Index not found.',
+		get: code => {
 			return err[code] ? 'Error: ' + err[code] : 'Error.';
 		}
 	};
@@ -1740,10 +1743,11 @@
 		}
 		returnUserData(args) {
 			if (!data.user) return err.get('user');
-			data.user[args.userDataType] = data.user[args.userDataType] ?? err.get('user');
+			data.user[args.userDataType] = data.user[args.userDataType] ?? err.get('noItem');
 			return data.user[args.userDataType];
 		}
 		friendsFetch(args) {
+			if (!GameJolt.bLoggedIn) return err.get('noLogin');
 			GameJolt.FriendsFetch(
 				pResponse =>
 			{
@@ -1751,8 +1755,8 @@
 				data.friends = pResponse.friends;
 			});
 			if (!data.friends) return err.get('friends');
-			if (!data.friends[args.index]) return err.get('friends');
-			data.friends[args.index].friend_id = data.friends[args.index].friend_id ?? err.get('friends');
+			if (!data.friends[args.index]) return err.get('noIndex');
+			data.friends[args.index].friend_id = data.friends[args.index].friend_id ?? err.get('noItem');
 			return data.friends[args.index].friend_id;
 		}
 		trophyAchieve(args) {
@@ -1762,6 +1766,7 @@
 			GameJolt.TrophyRemove(args.ID);
 		}
 		trophyFetch(args) {
+			if (!GameJolt.bLoggedIn) return err.get("noLogin");
 			GameJolt.TrophyFetchComb(
 				args.indexOrID,
 				args.indexOrID ? GameJolt.TROPHY_ALL : args.value,
@@ -1772,11 +1777,11 @@
 			});
 			if (!data.trophies) return err.get('trophies');
 			if (args.indexOrID) {
-				if (!data.trophies[args.value]) return err.get('trophies');
-				data.trophies[args.value][args.trophyDataType] = data.trophies[args.value][args.trophyDataType] ?? err.get('trophies');
+				if (!data.trophies[args.value]) return err.get('noIndex');
+				data.trophies[args.value][args.trophyDataType] = data.trophies[args.value][args.trophyDataType] ?? err.get('noItem');
 				return data.trophies[args.value][args.trophyDataType];
 			}
-			data.trophies[args.trophyDataType] = data.trophies[args.trophyDataType] ?? err.get('trophies');
+			data.trophies[args.trophyDataType] = data.trophies[args.trophyDataType] ?? err.get('noItem');
 			return data.trophies[args.trophyDataType];
 		}
 		scoreAdd(args) {
@@ -1797,6 +1802,7 @@
 			);
 		}
 		scoreFetch(args) {
+			if (args.globalOrPerUser == bool.t && !GameJolt.bLoggedIn) err.scores = err.noLogin;
 			GameJolt.ScoreFetchEx(
 				args.ID,
 				args.globalOrPerUser == bool.t ? GameJolt.SCORE_ONLY_USER : GameJolt.SCORE_ALL,
@@ -1823,14 +1829,14 @@
 		}
 		returnScoreData(args) {
 			if (!data.scores) return err.get('scores');
-			if (!data.scores[args.index]) return err.get('scores');
+			if (!data.scores[args.index]) return err.get('noIndex');
 			if (args.scoreDataType == 'user') {
 				if (!data.scores[args.index].user) {
-					data.scores[args.index].guest = data.scores[args.index]?.guest ?? err.get('scores');
+					data.scores[args.index].guest = data.scores[args.index]?.guest ?? err.get('noItem');
 					return data.scores[args.index].guest;
 				}
 			}
-			data.scores[args.index][args.scoreDataType] = data.scores[args.index][args.scoreDataType] ?? err.get('scores');
+			data.scores[args.index][args.scoreDataType] = data.scores[args.index][args.scoreDataType] ?? err.get('noItem');
 			return data.scores[args.index][args.scoreDataType];
 		}
 		scoreGetRank(args) {
@@ -1853,8 +1859,8 @@
 				data.tables = pResponse.tables;
 			});
 			if (!data.tables) return err.get('tables');
-			if (!data.tables[args.index]) return err.get('tables');
-			data.tables[args.index][args.tableDataType] = data.tables[args.index][args.tableDataType] ?? err.get('tables');
+			if (!data.tables[args.index]) return err.get('noIndex');
+			data.tables[args.index][args.tableDataType] = data.tables[args.index][args.tableDataType] ?? err.get('noItem');
 			return data.tables[args.index][args.tableDataType];
 		}
 		dataStoreSet(args) {
@@ -1865,6 +1871,7 @@
 			);
 		}
 		dataStoreFetch(args) {
+			if (args.globalOrPerUser == bool.t && !GameJolt.bLoggedIn) return err.get('noLogin');
 			GameJolt.DataStoreFetch(
 				args.globalOrPerUser == bool.t,
 				args.key,
@@ -1891,6 +1898,7 @@
 			);
 		}
 		dataStoreGetKey(args) {
+			if (args.globalOrPerUser == bool.t && !GameJolt.bLoggedIn) return err.get('noLogin')
 			GameJolt.DataStoreGetKeysEx(
 				args.globalOrPerUser == bool.t,
 				args.pattern,
@@ -1900,8 +1908,8 @@
 				data.keys = pResponse.keys;
 			});
 			if (!data.keys) return err.get('keys');
-			if (!data.keys[args.index]) return err.get('keys');
-			data.keys[args.index].key = data.keys[args.index].key ?? err.get('keys');
+			if (!data.keys[args.index]) return err.get('noIndex');
+			data.keys[args.index].key = data.keys[args.index].key ?? err.get('noItem');
 			return data.keys[args.index].key;
 		}
 		timeFetch(args) {
@@ -1912,7 +1920,7 @@
 				data.time = pResponse;
 			});
 			if (!data.time) return err.get('time');
-			data.time[args.timeType] = data.time[args.timeType] ?? err.get('time');
+			data.time[args.timeType] = data.time[args.timeType] ?? err.get('noItem');
 			return data.time[args.timeType];
 		}
 	}

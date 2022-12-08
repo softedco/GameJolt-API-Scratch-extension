@@ -259,6 +259,9 @@ if (!sandboxed) {
  * Used for storing API error messages
  */
 let err = {
+	noLogin: 'No user logged in.',
+	noItem: 'Item not found.',
+	noIndex: 'Index not found.',
 	get(code) {
 		return (err[code] == undefined) ? 'Error.' : 'Error: ' + err[code];
 	}
@@ -283,7 +286,7 @@ const bool = {
  * It's a constant so you have to refresh the page to update the upToDate field
  */
 const version = {
-	current: '1.34.66\n',
+	current: '1.34.67\n',
 	upToDate: fetch('https://softedco.github.io/GameJolt-API-Scratch-extension/version').then(response => response.text(''))
 };
 
@@ -910,25 +913,27 @@ class GameJoltAPI {
 		return version[args.versionType];
 	}
 	gamejoltBool() {
-		return GJAPI.bOnGJ;
+		return GameJolt.bOnGJ;
 	}
 	setGame(args) {
-		GJAPI.iGameID = args.ID; GJAPI.sGameKey = args.key;
+		GameJolt.iGameID = args.ID; GameJolt.sGameKey = args.key;
 	}
 	session(args) {
-		GJAPI.SessionSetStatus(args.openOrClose);
+		GameJolt.SessionSetStatus(args.openOrClose);
 	}
 
 	/**
 	 * Not necessary since the library handles pinging for you
 	 */
 	sessionPing() {
-		GJAPI.SessionPing();
+		GameJolt.SessionPing();
 	}
 	sessionBool() {
-		GJAPI.SessionCheck(pResponse => {
+		GameJolt.SessionCheck(
+			pResponse =>
+		{
 			if (pResponse.message) { err.session = pResponse.message; return; }
-			if (pResponse.success == bool.f) { data.session = false; return; } // Jesus Christ
+			if (pResponse.success == bool.f) { data.session = false; return; }
 			data.session = true;
 		});
 		if (!data.session) return err.get('session');
@@ -939,113 +944,152 @@ class GameJoltAPI {
 	 * Not necessary since the library handles logging in for you
 	 */
 	loginManual(args) {
-		GJAPI.UserLoginManual(args.username, args.token);
+		GameJolt.UserLoginManual(
+			args.username,
+			args.token
+		);
 	}
 
 	/**
 	 * Not necessary since the library handles logging in for you
 	 */
 	loginAuto() {
-		GJAPI.UserLoginAuto();
+		GameJolt.UserLoginAuto();
 	}
 	loginAutoBool() {
-		return Boolean(GJAPI.asQueryParam["gjapi_username"]);
+		return Boolean(GameJolt.asQueryParam["gjapi_username"]);
 	}
 	logout() {
-		GJAPI.UserLogout();
+		GameJolt.UserLogout();
 	}
 	loginBool() {
-		return GJAPI.bLoggedIn;
+		return GameJolt.bLoggedIn;
 	}
 	loginUser() {
-		return GJAPI.sUserName;
+		return GameJolt.sUserName;
 	}
 	userFetch(args) {
-		GJAPI.UserFetchComb(args.fetchType, args.usernameOrID, pResponse => {
+		GameJolt.UserFetchComb(
+			args.fetchType,
+			args.usernameOrID,
+			pResponse =>
+		{
 			if (pResponse.success == bool.f) { err.user = pResponse.message; return; }
 			data.user = pResponse.users[0];
 		});
 	}
 	userFetchCurrent() {
-		GJAPI.UserFetchCurrent(pResponse => {
+		GameJolt.UserFetchCurrent(
+			pResponse =>
+		{
 			if (pResponse.success == bool.f) { err.user = pResponse.message; return; }
 			data.user = pResponse.users[0];
 		});
 	}
 	returnUserData(args) {
 		if (!data.user) return err.get('user');
-		data.user[args.userDataType] = data.user[args.userDataType] ?? err.get('user');
+		data.user[args.userDataType] = data.user[args.userDataType] ?? err.get('noItem');
 		return data.user[args.userDataType];
 	}
 	friendsFetch(args) {
-		GJAPI.FriendsFetch(pResponse => {
+		if (!GameJolt.bLoggedIn) return err.get('noLogin');
+		GameJolt.FriendsFetch(
+			pResponse =>
+		{
 			if (pResponse.success == bool.f) { err.friends = pResponse.message; return; }
 			data.friends = pResponse.friends;
 		});
 		if (!data.friends) return err.get('friends');
-		if (!data.friends[args.index]) return err.get('friends');
-		data.friends[args.index].friend_id = data.friends[args.index].friend_id ?? err.get('friends');
+		if (!data.friends[args.index]) return err.get('noIndex');
+		data.friends[args.index].friend_id = data.friends[args.index].friend_id ?? err.get('noItem');
 		return data.friends[args.index].friend_id;
 	}
 	trophyAchieve(args) {
-		GJAPI.TrophyAchieve(args.ID);
+		GameJolt.TrophyAchieve(args.ID);
 	}
 	trophyRemove(args) {
-		GJAPI.TrophyRemove(args.ID);
+		GameJolt.TrophyRemove(args.ID);
 	}
 	trophyFetch(args) {
-		GJAPI.TrophyFetchComb(args.indexOrID, args.indexOrID ? GJAPI.TROPHY_ALL : args.value, pResponse => {
+		if (!GameJolt.bLoggedIn) return err.get("noLogin");
+		GameJolt.TrophyFetchComb(
+			args.indexOrID,
+			args.indexOrID ? GameJolt.TROPHY_ALL : args.value,
+			pResponse =>
+		{
 			if (pResponse.success == bool.f) { err.trophies = pResponse.message; return; }
 			data.trophies = args.indexOrID ? pResponse.trophies : pResponse.trophies[0];
 		});
 		if (!data.trophies) return err.get('trophies');
 		if (args.indexOrID) {
-			if (!data.trophies[args.value]) return err.get('trophies');
-			data.trophies[args.value][args.trophyDataType] = data.trophies[args.value][args.trophyDataType] ?? err.get('trophies');
+			if (!data.trophies[args.value]) return err.get('noIndex');
+			data.trophies[args.value][args.trophyDataType] = data.trophies[args.value][args.trophyDataType] ?? err.get('noItem');
 			return data.trophies[args.value][args.trophyDataType];
 		}
-		data.trophies[args.trophyDataType] = data.trophies[args.trophyDataType] ?? err.get('trophies');
+		data.trophies[args.trophyDataType] = data.trophies[args.trophyDataType] ?? err.get('noItem');
 		return data.trophies[args.trophyDataType];
 	}
 	scoreAdd(args) {
-		GJAPI.ScoreAdd(args.ID, args.value, args.text, args.extraData);
+		GameJolt.ScoreAdd(
+			args.ID,
+			args.value,
+			args.text,
+			args.extraData
+		);
 	}
 	scoreAddGuest(args) {
-		GJAPI.ScoreAddGuest(args.ID, args.value, args.text, args.username, args.extraData);
+		GameJolt.ScoreAddGuest(
+			args.ID,
+			args.value,
+			args.text,
+			args.username,
+			args.extraData
+		);
 	}
 	scoreFetch(args) {
-		GJAPI.ScoreFetchEx(args.ID,
-		args.globalOrPerUser == bool.t ? GJAPI.SCORE_ONLY_USER : GJAPI.SCORE_ALL,
-		args.amount,
-		args.betterOrWorse,
-		args.value, pResponse => {
+		if (args.globalOrPerUser == bool.t && !GameJolt.bLoggedIn) err.scores = err.noLogin;
+		GameJolt.ScoreFetchEx(
+			args.ID,
+			args.globalOrPerUser == bool.t ? GameJolt.SCORE_ONLY_USER : GameJolt.SCORE_ALL,
+			args.amount,
+			args.betterOrWorse,
+			args.value,
+			pResponse =>
+		{
 			if (pResponse.success == bool.f) { err.scores = pResponse.message; return; }
 			data.scores = pResponse.scores;
 		});
 	}
 	scoreFetchGuest(args) {
-		GJAPI.ScoreFetchGuestEx(args.ID,
-		args.username, args.amount,
-		args.betterOrWorse,
-		args.value, pResponse => {
+		GameJolt.ScoreFetchGuestEx(
+			args.ID,
+			args.username, args.amount,
+			args.betterOrWorse,
+			args.value,
+			pResponse =>
+		{
 			if (pResponse.success == bool.f) { err.scores = pResponse.message; return; }
 			data.scores = pResponse.scores;
 		});
 	}
 	returnScoreData(args) {
 		if (!data.scores) return err.get('scores');
-		if (!data.scores[args.index]) return err.get('scores');
+		if (!data.scores[args.index]) return err.get('noIndex');
 		if (args.scoreDataType == 'user') {
 			if (!data.scores[args.index].user) {
-				data.scores[args.index].guest = data.scores[args.index]?.guest ?? err.get('scores');
+				data.scores[args.index].guest = data.scores[args.index]?.guest ?? err.get('noItem');
 				return data.scores[args.index].guest;
 			}
 		}
-		data.scores[args.index][args.scoreDataType] = data.scores[args.index][args.scoreDataType] ?? err.get('scores');
+		data.scores[args.index][args.scoreDataType] = data.scores[args.index][args.scoreDataType] ?? err.get('noItem');
 		return data.scores[args.index][args.scoreDataType];
 	}
 	scoreGetRank(args) {
-		GJAPI.ScoreGetRank(args.ID, args.value, pResponse => {
+		GameJolt.ScoreGetRank(
+			args.ID,
+			args.value,
+			pResponse =>
+		{
 			if (pResponse.success == bool.f) { err.rank = pResponse.message; return; }
 			data.rank = pResponse.rank;
 		});
@@ -1053,20 +1097,31 @@ class GameJoltAPI {
 		return data.rank;
 	}
 	scoreGetTables(args) {
-		GJAPI.ScoreGetTables(pResponse => {
+		GameJolt.ScoreGetTables(
+			pResponse =>
+		{
 			if (pResponse.success == bool.f) { err.tables = pResponse.message; return; }
 			data.tables = pResponse.tables;
 		});
 		if (!data.tables) return err.get('tables');
-		if (!data.tables[args.index]) return err.get('tables');
-		data.tables[args.index][args.tableDataType] = data.tables[args.index][args.tableDataType] ?? err.get('tables');
+		if (!data.tables[args.index]) return err.get('noIndex');
+		data.tables[args.index][args.tableDataType] = data.tables[args.index][args.tableDataType] ?? err.get('noItem');
 		return data.tables[args.index][args.tableDataType];
 	}
 	dataStoreSet(args) {
-		GJAPI.DataStoreSet(args.globalOrPerUser, args.key, args.data);
+		GameJolt.DataStoreSet(
+			args.globalOrPerUser == bool.t,
+			args.key,
+			args.data
+		);
 	}
 	dataStoreFetch(args) {
-		GJAPI.DataStoreFetch(args.globalOrPerUser == bool.t, args.key, pResponse => {
+		if (args.globalOrPerUser == bool.t && !GameJolt.bLoggedIn) return err.get('noLogin');
+		GameJolt.DataStoreFetch(
+			args.globalOrPerUser == bool.t,
+			args.key,
+			pResponse =>
+		{
 			if (pResponse.success == bool.f) { err.store = pResponse.message; return; }
 			data.store = pResponse.data;
 		});
@@ -1074,28 +1129,43 @@ class GameJoltAPI {
 		return data.store;
 	}
 	dataStoreUpdate(args) {
-		GJAPI.DataStoreUpdate(args.globalOrPerUser == bool.t, args.key, args.operationType, args.value);
+		GameJolt.DataStoreUpdate(
+			args.globalOrPerUser == bool.t,
+			args.key,
+			args.operationType,
+			args.value
+		);
 	}
 	dataStoreRemove(args) {
-		GJAPI.DataStoreRemove(args.globalOrPerUser == bool.t, args.key);
+		GameJolt.DataStoreRemove(
+			args.globalOrPerUser == bool.t,
+			args.key
+		);
 	}
 	dataStoreGetKey(args) {
-		GJAPI.DataStoreGetKeysEx(args.globalOrPerUser == bool.t, args.pattern, pResponse => {
+		if (args.globalOrPerUser == bool.t && !GameJolt.bLoggedIn) return err.get('noLogin')
+		GameJolt.DataStoreGetKeysEx(
+			args.globalOrPerUser == bool.t,
+			args.pattern,
+			pResponse =>
+		{
 			if (pResponse.success == bool.f) { err.keys = pResponse.message; return; }
 			data.keys = pResponse.keys;
 		});
 		if (!data.keys) return err.get('keys');
-		if (!data.keys[args.index]) return err.get('keys');
-		data.keys[args.index].key = data.keys[args.index].key ?? err.get('keys');
+		if (!data.keys[args.index]) return err.get('noIndex');
+		data.keys[args.index].key = data.keys[args.index].key ?? err.get('noItem');
 		return data.keys[args.index].key;
 	}
 	timeFetch(args) {
-		GJAPI.TimeFetch(pResponse => {
+		GameJolt.TimeFetch(
+			pResponse =>
+		{
 			if (pResponse.success == bool.f) { err.time = pResponse.message; return; }
 			data.time = pResponse;
 		});
 		if (!data.time) return err.get('time');
-		data.time[args.timeType] = data.time[args.timeType] ?? err.get('time');
+		data.time[args.timeType] = data.time[args.timeType] ?? err.get('noItem');
 		return data.time[args.timeType];
 	}
 }
