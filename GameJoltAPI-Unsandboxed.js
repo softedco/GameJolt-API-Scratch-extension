@@ -213,7 +213,10 @@
 	 * Used for storing API error messages
 	 */
 	let err = {
-		get(code) {
+		noLogin: 'No user logged in.',
+		noItem: 'Item not found.',
+		noIndex: 'Index not found.',
+		get: code => {
 			return (err[code] == undefined) ? 'Error.' : 'Error: ' + err[code];
 		}
 	};
