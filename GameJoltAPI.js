@@ -245,12 +245,12 @@ if (!sandboxed) {
 			 * Change extensionInstance to your extension class
 			 */
 			register: args => {
-                (() => {
-                    let extensionInstance = new GameJoltAPI(window.vm.extensionManager.runtime);
-                    let serviceName = window.vm.extensionManager._registerInternalExtension(extensionInstance);
-                    window.vm.extensionManager._loadedExtensions.set(extensionInstance.getInfo().id, serviceName);
-                })();
-            }
+				(() => {
+					let extensionInstance = new GameJoltAPI(window.vm.extensionManager.runtime);
+					let serviceName = window.vm.extensionManager._registerInternalExtension(extensionInstance);
+					window.vm.extensionManager._loadedExtensions.set(extensionInstance.getInfo().id, serviceName);
+				})();
+			}
 		}
 	};
 }
