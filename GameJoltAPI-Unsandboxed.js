@@ -867,23 +867,23 @@
 			return version[args.versionType];
 		}
 		gamejoltBool() {
-			return GameJolt.bOnGJ;
+			return GJAPI.bOnGJ;
 		}
 		setGame(args) {
-			GameJolt.iGameID = args.ID; GameJolt.sGameKey = args.key;
+			GJAPI.iGameID = args.ID; GJAPI.sGameKey = args.key;
 		}
 		session(args) {
-			GameJolt.SessionSetStatus(args.openOrClose);
+			GJAPI.SessionSetStatus(args.openOrClose);
 		}
 
 		/**
 		 * Not necessary since the library handles pinging for you
 		 */
 		sessionPing() {
-			GameJolt.SessionPing();
+			GJAPI.SessionPing();
 		}
 		sessionBool() {
-			GameJolt.SessionCheck(
+			GJAPI.SessionCheck(
 				pResponse =>
 			{
 				if (pResponse.message) { err.session = pResponse.message; return; }
@@ -898,7 +898,7 @@
 		 * Not necessary since the library handles logging in for you
 		 */
 		loginManual(args) {
-			GameJolt.UserLoginManual(
+			GJAPI.UserLoginManual(
 				args.username,
 				args.token
 			);
@@ -908,22 +908,22 @@
 		 * Not necessary since the library handles logging in for you
 		 */
 		loginAuto() {
-			GameJolt.UserLoginAuto();
+			GJAPI.UserLoginAuto();
 		}
 		loginAutoBool() {
-			return Boolean(GameJolt.asQueryParam["gjapi_username"]);
+			return Boolean(GJAPI.asQueryParam["gjapi_username"]);
 		}
 		logout() {
-			GameJolt.UserLogout();
+			GJAPI.UserLogout();
 		}
 		loginBool() {
-			return GameJolt.bLoggedIn;
+			return GJAPI.bLoggedIn;
 		}
 		loginUser() {
-			return GameJolt.sUserName;
+			return GJAPI.sUserName;
 		}
 		userFetch(args) {
-			GameJolt.UserFetchComb(
+			GJAPI.UserFetchComb(
 				args.fetchType,
 				args.usernameOrID,
 				pResponse =>
@@ -933,7 +933,7 @@
 			});
 		}
 		userFetchCurrent() {
-			GameJolt.UserFetchCurrent(
+			GJAPI.UserFetchCurrent(
 				pResponse =>
 			{
 				if (pResponse.success == bool.f) { err.user = pResponse.message; return; }
@@ -946,8 +946,8 @@
 			return data.user[args.userDataType];
 		}
 		friendsFetch(args) {
-			if (!GameJolt.bLoggedIn) return err.get('noLogin');
-			GameJolt.FriendsFetch(
+			if (!GJAPI.bLoggedIn) return err.get('noLogin');
+			GJAPI.FriendsFetch(
 				pResponse =>
 			{
 				if (pResponse.success == bool.f) { err.friends = pResponse.message; return; }
@@ -959,16 +959,16 @@
 			return data.friends[args.index].friend_id;
 		}
 		trophyAchieve(args) {
-			GameJolt.TrophyAchieve(args.ID);
+			GJAPI.TrophyAchieve(args.ID);
 		}
 		trophyRemove(args) {
-			GameJolt.TrophyRemove(args.ID);
+			GJAPI.TrophyRemove(args.ID);
 		}
 		trophyFetch(args) {
-			if (!GameJolt.bLoggedIn) return err.get("noLogin");
-			GameJolt.TrophyFetchComb(
+			if (!GJAPI.bLoggedIn) return err.get("noLogin");
+			GJAPI.TrophyFetchComb(
 				args.indexOrID,
-				args.indexOrID ? GameJolt.TROPHY_ALL : args.value,
+				args.indexOrID ? GJAPI.TROPHY_ALL : args.value,
 				pResponse =>
 			{
 				if (pResponse.success == bool.f) { err.trophies = pResponse.message; return; }
@@ -984,7 +984,7 @@
 			return data.trophies[args.trophyDataType];
 		}
 		scoreAdd(args) {
-			GameJolt.ScoreAdd(
+			GJAPI.ScoreAdd(
 				args.ID,
 				args.value,
 				args.text,
@@ -992,7 +992,7 @@
 			);
 		}
 		scoreAddGuest(args) {
-			GameJolt.ScoreAddGuest(
+			GJAPI.ScoreAddGuest(
 				args.ID,
 				args.value,
 				args.text,
@@ -1001,10 +1001,10 @@
 			);
 		}
 		scoreFetch(args) {
-			if (args.globalOrPerUser == bool.t && !GameJolt.bLoggedIn) err.scores = err.noLogin;
-			GameJolt.ScoreFetchEx(
+			if (args.globalOrPerUser == bool.t && !GJAPI.bLoggedIn) err.scores = err.noLogin;
+			GJAPI.ScoreFetchEx(
 				args.ID,
-				args.globalOrPerUser == bool.t ? GameJolt.SCORE_ONLY_USER : GameJolt.SCORE_ALL,
+				args.globalOrPerUser == bool.t ? GJAPI.SCORE_ONLY_USER : GJAPI.SCORE_ALL,
 				args.amount,
 				args.betterOrWorse,
 				args.value,
@@ -1015,7 +1015,7 @@
 			});
 		}
 		scoreFetchGuest(args) {
-			GameJolt.ScoreFetchGuestEx(
+			GJAPI.ScoreFetchGuestEx(
 				args.ID,
 				args.username, args.amount,
 				args.betterOrWorse,
@@ -1039,7 +1039,7 @@
 			return data.scores[args.index][args.scoreDataType];
 		}
 		scoreGetRank(args) {
-			GameJolt.ScoreGetRank(
+			GJAPI.ScoreGetRank(
 				args.ID,
 				args.value,
 				pResponse =>
@@ -1051,7 +1051,7 @@
 			return data.rank;
 		}
 		scoreGetTables(args) {
-			GameJolt.ScoreGetTables(
+			GJAPI.ScoreGetTables(
 				pResponse =>
 			{
 				if (pResponse.success == bool.f) { err.tables = pResponse.message; return; }
@@ -1063,15 +1063,15 @@
 			return data.tables[args.index][args.tableDataType];
 		}
 		dataStoreSet(args) {
-			GameJolt.DataStoreSet(
+			GJAPI.DataStoreSet(
 				args.globalOrPerUser == bool.t,
 				args.key,
 				args.data
 			);
 		}
 		dataStoreFetch(args) {
-			if (args.globalOrPerUser == bool.t && !GameJolt.bLoggedIn) return err.get('noLogin');
-			GameJolt.DataStoreFetch(
+			if (args.globalOrPerUser == bool.t && !GJAPI.bLoggedIn) return err.get('noLogin');
+			GJAPI.DataStoreFetch(
 				args.globalOrPerUser == bool.t,
 				args.key,
 				pResponse =>
@@ -1083,7 +1083,7 @@
 			return data.store;
 		}
 		dataStoreUpdate(args) {
-			GameJolt.DataStoreUpdate(
+			GJAPI.DataStoreUpdate(
 				args.globalOrPerUser == bool.t,
 				args.key,
 				args.operationType,
@@ -1091,14 +1091,14 @@
 			);
 		}
 		dataStoreRemove(args) {
-			GameJolt.DataStoreRemove(
+			GJAPI.DataStoreRemove(
 				args.globalOrPerUser == bool.t,
 				args.key
 			);
 		}
 		dataStoreGetKey(args) {
-			if (args.globalOrPerUser == bool.t && !GameJolt.bLoggedIn) return err.get('noLogin');
-			GameJolt.DataStoreGetKeysEx(
+			if (args.globalOrPerUser == bool.t && !GJAPI.bLoggedIn) return err.get('noLogin');
+			GJAPI.DataStoreGetKeysEx(
 				args.globalOrPerUser == bool.t,
 				args.pattern,
 				pResponse =>
@@ -1113,7 +1113,7 @@
 			return data.keys[args.index].key;
 		}
 		timeFetch(args) {
-			GameJolt.TimeFetch(
+			GJAPI.TimeFetch(
 				pResponse =>
 			{
 				if (pResponse.success == bool.f) { err.time = pResponse.message; return; }
