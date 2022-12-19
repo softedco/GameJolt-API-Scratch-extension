@@ -130,7 +130,7 @@ This block is needed to access previously fetched score data by index.
 
 This block is needed to check the rank of a passed value in a score table by table ID (0 is primary table ID).
 #### 2.5.7 Return table data reporter block
-![image](https://user-images.githubusercontent.com/100989385/205432477-8b25d6c6-e03a-483e-9477-f3a8510f6e4b.png)
+![image](https://user-images.githubusercontent.com/100989385/208526865-886970e3-7aa5-4fac-8b55-471da13aca5e.png)
 
 This block is needed to access individual table data by index.
 ### 2.6 Data storage blocks
