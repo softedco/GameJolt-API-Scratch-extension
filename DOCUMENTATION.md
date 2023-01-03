@@ -156,14 +156,31 @@ This block is needed to remove global/user data by key.
 #### 2.6.5 Fetch keys reporter block
 ![image](https://user-images.githubusercontent.com/100989385/205447058-830e0c6a-6a60-40fd-97e7-14a4e4c614bc.png)
 
-This block is needed to access fetched keys that are following the passed pattern value by index, the placeholder character for patterns is \*
+This block is needed to access fetched keys that are following the passed pattern value by index, the placeholder character for patterns is \*.
 ### 2.7 Return server time command block
 The following block will not work unless you set the game ID and the private game key. [see 2.2.1](#221-set-game-id-and-key-command-block)
 
 ![image](https://user-images.githubusercontent.com/100989385/205447230-7d3ccaf7-4e34-49c5-ab24-b2aff7719860.png)
 
-This block is needed to access server's current time
+This block is needed to access server's current time.
 ## 3. Error descriptions
-Work in progress
+### 3.1 The game ID you passed in does not point to a valid game
+This error means that the game ID and the private game key are not set or are incorrect. [see 2.2.1](#221-set-game-id-and-key-command-block)
+### 3.2 No user logged in
+This error means that the username and the game token are not set or are incorrect. [see 2.3.1](#231-login-with-username-and-token-command-block)
+### 3.3 No index found
+This error means that the index you passed is incorrect, please make sure that your index is:
+- Not a floating point value.
+- Not a string value.
+- Not out of range.
+### 3.4 No item found
+This error means that the menu item you passed is incorrect, which is unexpected to happen.
 ## 4. Examples
-Work in progress
+This paragraph is work in progress.
+## 5. Troubleshooting
+If something doesn't work, refer to the following steps:
+- Check if you have set the game ID and the private game key. [see 2.2.1](#221-set-game-id-and-key-command-block)
+- Check if you are logged in. [see 2.3.1](#231-login-with-username-and-token-command-block)
+- Read what the error messages say, if you're having a trouble understanding them, [see 3](#3-error-descriptions).
+
+Note: It is not the extension's issue if the command blocks return "undefined", they should still be working properly.
