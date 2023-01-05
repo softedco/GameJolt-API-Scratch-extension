@@ -173,6 +173,7 @@ This error means that the index you passed is incorrect, please make sure that y
 - Not a floating point value.
 - Not a string value.
 - Not out of range.
+
 ### 3.4 No item found
 This error means that the menu item you passed is incorrect, which is unexpected to happen.
 ## 4. Examples
