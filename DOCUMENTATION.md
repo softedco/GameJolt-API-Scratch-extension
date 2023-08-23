@@ -157,7 +157,7 @@ This block is needed to remove global/user data by key.
 ![image](https://user-images.githubusercontent.com/100989385/205447058-830e0c6a-6a60-40fd-97e7-14a4e4c614bc.png)
 
 This block is needed to access fetched keys that are following the passed pattern value by index, the placeholder character for patterns is \*.
-### 2.7 Return server time command block
+### 2.7 Return server time reporter block
 The following block will not work unless you set the game ID and the private game key. [see 2.2.1](#221-set-game-id-and-key-command-block)
 
 ![image](https://user-images.githubusercontent.com/100989385/205447230-7d3ccaf7-4e34-49c5-ab24-b2aff7719860.png)
