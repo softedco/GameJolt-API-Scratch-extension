@@ -1,8 +1,9 @@
 ## Powered by [GameJolt API js library](https://github.com/MausGames/game-jolt-api-js-library) by Martin Mauersics or [MausGames](https://github.com/MausGames)
-### Latest Turbowarp version (Official)
+### Latest Unsandboxed Turbowarp version
 #### ● [Direct link](https://extensions.turbowarp.org/gamejolt.js), [Editor](https://turbowarp.org/editor?extension=https://extensions.turbowarp.org/gamejolt.js)
 ### Latest Turbowarp version
 #### ● [Direct link](https://softedco.github.io/GameJolt-API-Scratch-extension/GameJoltAPI-Twcpy.js), [Editor](https://turbowarp.org/editor?extension=https://softedco.github.io/GameJolt-API-Scratch-extension/GameJoltAPI-Twcpy.js)
-### Latest version (Epicques, Adacraft)
+### Latest version (Deprecated, use Latest Unsandboxed Turbowarp version or Latest Turbowarp version instead)
 #### ● [Direct link](https://softedco.github.io/GameJolt-API-Scratch-extension/GameJoltAPI.js)
-### [Documentation](https://softedco.github.io/GameJolt-API-Scratch-extension/DOCUMENTATION)
+### Docs
+#### ● [Direct link](https://softedco.github.io/GameJolt-API-Scratch-extension/DOCUMENTATION)
