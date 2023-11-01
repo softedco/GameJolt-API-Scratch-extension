@@ -3,7 +3,7 @@
 #### ● [Direct link](https://extensions.turbowarp.org/gamejolt.js), [Editor](https://turbowarp.org/editor?extension=https://extensions.turbowarp.org/gamejolt.js)
 ### Latest Turbowarp version
 #### ● [Direct link](https://softedco.github.io/GameJolt-API-Scratch-extension/GameJoltAPI-Twcpy.js), [Editor](https://turbowarp.org/editor?extension=https://softedco.github.io/GameJolt-API-Scratch-extension/GameJoltAPI-Twcpy.js)
-### Latest version (Deprecated, use Latest Unsandboxed Turbowarp version or Latest Turbowarp version instead)
+### Latest version (Deprecated, use above versions instead)
 #### ● [Direct link](https://softedco.github.io/GameJolt-API-Scratch-extension/GameJoltAPI.js)
 ### Docs
-#### ● [Direct link](https://softedco.github.io/GameJolt-API-Scratch-extension/DOCUMENTATION)
+#### ● [Direct link](https://extensions.turbowarp.org/gamejolt)
